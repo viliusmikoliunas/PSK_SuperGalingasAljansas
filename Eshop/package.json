@@ -1,0 +1,50 @@
+{
+   "name": "eshop",
+   "private": true,
+   "version": "0.0.1",
+   "description": "Front-end of an eshop",
+   "main": "index.jsx",
+   "scripts": {
+      "start": "webpack-dev-server --open --hot"
+   },
+   "dependencies": {
+      "moment": "^2.21.0",
+      "react": "16.2.0",
+      "react-dom": "16.2.0",
+      "react-hot-loader": "4.0.0",
+      "react-moment": "^0.7.0",
+      "react-redux": "5.0.7",
+      "react-router": "3.2.1",
+      "react-router-pagination": "^1.2.4",
+      "react-router-redux": "4.0.8",
+      "redux": "3.7.2",
+      "redux-thunk": "2.2.0"
+   },
+   "devDependencies": {
+      "aspnet-webpack": "2.0.3",
+      "aspnet-webpack-react": "3.0.0",
+      "babel-core": "6.26.0",
+      "babel-eslint": "^8.2.2",
+      "babel-loader": "7.1.4",
+      "babel-plugin-transform-class-properties": "6.24.1",
+      "babel-plugin-transform-object-rest-spread": "6.26.0",
+      "babel-preset-env": "1.6.1",
+      "babel-preset-es2015": "6.24.1",
+      "babel-preset-react": "6.24.1",
+      "babel-preset-stage-0": "^6.24.1",
+      "css-loader": "0.28.11",
+      "eslint": "4.18.2",
+      "eslint-loader": "2.0.0",
+      "eslint-plugin-import": "2.9.0",
+      "eslint-plugin-jsx-a11y": "6.0.3",
+      "eslint-plugin-react": "7.7.0",
+      "history": "4.7.2",
+      "html-webpack-plugin": "3.1.0",
+      "style-loader": "0.20.3",
+      "url-loader": "^1.0.1",
+      "webpack": "4.1.0",
+      "webpack-cli": "^2.0.10",
+      "webpack-dev-server": "3.1.0",
+      "webpack-hot-middleware": "2.21.2"
+   }
+}
