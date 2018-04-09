@@ -3,10 +3,11 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Route, Router, browserHistory } from 'react-router';
 
+import Navbar from './LayoutComponents/Navbar';
 
 const App = () => (
 	<Router key={Math.random()} history={browserHistory}>
-        <Route path="/" component={TempComponent}/>
+        <Route path="/" component={Navbar}/>
 	</Router>
 );
 
