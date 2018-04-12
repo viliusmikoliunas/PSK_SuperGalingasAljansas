@@ -1,0 +1,8 @@
+﻿.sidebar {
+    width: 200px;
+    border-width: 1px;
+    border-style: solid;
+    min-height: 100%;
+    margin: 10px;
+    padding: 5px;
+}

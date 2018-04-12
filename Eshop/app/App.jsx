@@ -2,16 +2,18 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Route, Router, browserHistory } from 'react-router';
+import './styles.css';
 
+import MainLayout from './WebPages/MainLayout';
+import LoginPage from './WebPages/LoginPage';
 
 const App = () => (
 	<Router key={Math.random()} history={browserHistory}>
-        <Route path="/" component={TempComponent}/>
+        <Route path="/" component={MainLayout}>
+            
+        </Route>
+        <Route path="/login" component={LoginPage} />
 	</Router>
 );
-
-const TempComponent = () => {
-    return(<h1>Hello there</h1>);
-}
 
 export default hot(module)(App);
