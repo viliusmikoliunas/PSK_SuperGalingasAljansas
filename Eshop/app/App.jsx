@@ -10,8 +10,9 @@ import LoginPage from './WebPages/LoginPage';
 const App = () => (
 	<Router key={Math.random()} history={browserHistory}>
         <Route path="/" component={MainLayout}>
-            <Route path="/login" component={LoginPage} />
+            
         </Route>
+        <Route path="/login" component={LoginPage} />
 	</Router>
 );
 
