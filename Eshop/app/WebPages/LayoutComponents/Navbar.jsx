@@ -6,14 +6,12 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem
+    NavLink
     } from 'reactstrap';
+import {Link} from 'react-router';
 
-export default class Example extends Component {
+
+export default class extends Component {
     constructor(props) {
         super(props);
 
@@ -31,18 +29,18 @@ export default class Example extends Component {
         return (
             <div>
                 <Navbar color="primary" light expand="md">
-                    <NavbarBrand href="/">Super Galingas Shop'as</NavbarBrand>
+                    <NavbarBrand tag={Link} to='/'>Super Galingas Shop'as</NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink color="warning" href="/components/">Login</NavLink>
+                                <NavLink tag={Link} to='/login'>Login</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/components/">Shopping Cart</NavLink>
+                                <NavLink tag={Link} to='/cart'>Shopping Cart</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/components/">Settings</NavLink>
+                                <NavLink tag={Link} to='/settings'>Settings</NavLink>
                             </NavItem>
                         </Nav>
                     </Collapse>
