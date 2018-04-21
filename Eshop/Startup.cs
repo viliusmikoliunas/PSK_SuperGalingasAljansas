@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Eshop.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,11 +22,20 @@ namespace Eshop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            //services.AppDbContext<AppDbContext>(options =>
+                //options.UseSqlServer(Configuration.GetConnectionString("EshopConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            /*using (var serviceScope = app.ApplicationServices.GetService<IDesignTimeDbContextFactory>(e))
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
+                context.Database.Migrate();
+            }
+            */
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
