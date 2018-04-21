@@ -5,6 +5,7 @@ using System.Linq;
 using Eshop.Data;
 using Eshop.Data.Entities;
 using Eshop.DataContracts;
+using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Eshop.Controllers
@@ -13,26 +14,20 @@ namespace Eshop.Controllers
     [Route("api/Items")]
     public class ItemsController : Controller
     {
-        //this and ctor are required in ef core v2
-        private readonly AppDbContext _dbContext;
+        private readonly IItemsRepository _itemsRepository;
 
-        public ItemsController(AppDbContext dbContext)
+        public ItemsController(IItemsRepository itemsRepository)
         {
-            _dbContext = dbContext;
+            _itemsRepository = itemsRepository;
         }
 
         //method name doesn't matter much its all about [http] tags
         [HttpGet]
         public IEnumerable<Item> GetAll()
         {
-            IEnumerable<Item> items;
-            using (_dbContext)
-            {
-                items = _dbContext.Items.ToList();
-            }
-            return items;
+            return _itemsRepository.GetAll();
         }
-
+        
         //needs token checking because this is admin operation
         [HttpPost]
         public IActionResult AddItem([FromBody] ItemDto itemData)
@@ -50,12 +45,8 @@ namespace Eshop.Controllers
                 Title = itemData.Title,
                 Description = itemData.Description
             };
+            _itemsRepository.SaveSingleItem(newItem);
 
-            using (_dbContext)
-            {
-                _dbContext.Items.Add(newItem);
-                _dbContext.SaveChanges();
-            }
             return Ok("Item added successfully");
         }
     }
