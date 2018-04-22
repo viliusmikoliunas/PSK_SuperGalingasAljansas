@@ -12,7 +12,7 @@ How to Controller (for example check ItemsController.cs):
 How to Data Access Layer (Repository pattern) (check ItemsRepository.cs for example):
 1. Create Repository class that corresponds to DB table. Ex.: for DB table "Items" create class ItemsRepository.cs in Data/Repositories folder
 2. In every repository you have to call DB context. So create private readonly AppDbContext variable and set in constructor.
-3. Write methods that will manipulate DB data. Most common ones include: Item Get(int Id), void Add(Item newItem), void Update(Item item), void Delete(Item item).
+3. Write methods that will manipulate DB data. Most common ones include: Item Get(int Id), Item Add(Item newItem), Item Update(Item item), void Delete(Item item). (It's good practice to return created/updated element back to bussiness layer and let it decide what to with it - return to client or just ignore it).
 4. Create Interface IItemsRepository.cs in DataContracts/RepositoryInterfaces and write all method signatures for methods that you wrote in ItemsRepository.cs
 5. In ItemsRepository reference created interface - public class ItemsRepository : IItemsRepository {//code}
 6. Inject class in Startup.cs ConfigureServices method like this - services.AddScoped<IItemsRepository, ItemsRepository>();
