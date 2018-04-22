@@ -19,10 +19,11 @@ namespace Eshop.Data.Repositories
             return _dbContext.Items.ToList();
         }
 
-        public void Add(Item newItem)
+        public Item Add(Item newItem)
         {
             _dbContext.Items.Add(newItem);
             _dbContext.SaveChanges();
+            return newItem;
         }
     }
 }

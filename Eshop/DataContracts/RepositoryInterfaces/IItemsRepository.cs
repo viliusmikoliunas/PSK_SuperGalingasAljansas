@@ -6,6 +6,10 @@ namespace Eshop.DataContracts.RepositoryInterfaces
     public interface IItemsRepository
     {
         IEnumerable<Item> GetAll();
-        void Add(Item newItem);
+        //IEnumerable<Item> Get(int startIndex, int itemsToTake);
+        Item Add(Item newItem);
+        //Item Add(IEnumerable<Item> items);
+        //Item Update(Item updatedItem);
+        //void Delete(Item item);
     }
 }
