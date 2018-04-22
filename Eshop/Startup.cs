@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Eshop.Data;
+using Eshop.Data.Repositories;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
