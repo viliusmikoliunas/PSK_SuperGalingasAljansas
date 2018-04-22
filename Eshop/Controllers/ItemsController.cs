@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Eshop.Data;
+﻿using System.Collections.Generic;
 using Eshop.Data.Entities;
-using Eshop.DataContracts;
+using Eshop.DataContracts.DataTransferObjects;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,7 +41,7 @@ namespace Eshop.Controllers
                 Title = itemData.Title,
                 Description = itemData.Description
             };
-            _itemsRepository.SaveSingleItem(newItem);
+            _itemsRepository.Add(newItem);
 
             return Ok("Item added successfully");
         }

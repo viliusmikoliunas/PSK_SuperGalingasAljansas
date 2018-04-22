@@ -1,4 +1,4 @@
-﻿namespace Eshop.DataContracts
+﻿namespace Eshop.DataContracts.DataTransferObjects
 {
     public class ItemDto
     {
