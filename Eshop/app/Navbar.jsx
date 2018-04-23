@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
 import {
     Collapse,
-    Navbar,
+    Navbar as ReactstrapNavBar,
     NavbarToggler,
     NavbarBrand,
     Nav,
@@ -11,7 +11,7 @@ import {
 import {Link} from 'react-router';
 
 
-export default class extends Component {
+export default class Navbar extends Component {
     constructor(props) {
         super(props);
 
@@ -28,7 +28,7 @@ export default class extends Component {
     render() {
         return (
             <div>
-                <Navbar color="primary" light expand="md">
+                <ReactstrapNavBar color="primary" light expand="md">
                     <NavbarBrand tag={Link} to='/'>Super Galingas Shop'as</NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
@@ -44,7 +44,7 @@ export default class extends Component {
                             </NavItem>
                         </Nav>
                     </Collapse>
-                </Navbar>
+                </ReactstrapNavBar>
             </div>
         );
     }

@@ -2,10 +2,10 @@
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import './SidebarStyles.css';
 
-export default class extends Component {
+export default class Sidebar extends Component {
     render() {
         return (
-            <div class="sidebar">
+            <div className="sidebar">
                 <p>List Based</p>
                 <Nav vertical>
                     <NavItem>
