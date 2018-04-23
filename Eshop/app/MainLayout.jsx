@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
 
-import Navbar from './LayoutComponents/Navbar';
-import Sidebar from './LayoutComponents/Sidebar/Sidebar';
+import Navbar from './Navbar';
+import Sidebar from './Sidebar/Sidebar';
 
 export default class extends Component {
     constructor(props) {

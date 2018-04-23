@@ -4,8 +4,8 @@ import { render } from 'react-dom';
 import { Route, Router, browserHistory } from 'react-router';
 import './styles.css';
 
-import MainLayout from './WebPages/MainLayout';
-import LoginPage from './WebPages/LoginPage';
+import MainLayout from './MainLayout';
+import LoginPage from './LoginPage';
 
 const App = () => (
 	<Router key={Math.random()} history={browserHistory}>
