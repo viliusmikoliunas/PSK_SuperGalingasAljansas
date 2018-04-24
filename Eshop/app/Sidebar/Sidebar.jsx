@@ -5,7 +5,7 @@ import './SidebarStyles.css';
 export default class Sidebar extends Component {
     render() {
         return (
-            <div className="sidebar">
+            <div>
                 <p>List Based</p>
                 <Nav vertical>
                     <NavItem>

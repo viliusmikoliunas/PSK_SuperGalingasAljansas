@@ -15,7 +15,7 @@ export default class MainLayout extends Component {
                 <div className="Header">
                     <Navbar/>
                 </div>
-                <div className="SideBar">
+                <div className="sidebar">
                     <Sidebar/>
                 </div>
                 <div className="MainField">

@@ -12,10 +12,10 @@ import { history } from './store';
 
 const App = () => (
 	<Router key={Math.random()} history={history}>
-                <Route path="/" component={MainLayout}>
-                        <Route path="/cart" component={MainPage}/>
-                </Route>
-                <Route path="/login" component={LoginPage} />
+		<Route component={MainLayout}>
+			<Route path="/" component={MainPage}/>
+		</Route>
+		<Route path="/login" component={LoginPage} />
 	</Router>
 );
 
