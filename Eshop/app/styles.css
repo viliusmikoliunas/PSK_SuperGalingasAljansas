@@ -10,6 +10,7 @@
 }
 .MainField {
     margin: 20px;
-    width: 80%;
+    min-width: 500px;
+    width: 70%;
     float: right;
 }

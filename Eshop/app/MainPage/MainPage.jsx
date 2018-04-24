@@ -4,9 +4,18 @@ import { bindActionCreators } from 'redux'
 
 import { loadItems } from './MainPageActions'
 import { Table } from 'reactstrap';
+import ItemRow from './ItemRow/ItemRow'
 
 class MainPage extends React.Component {
   render() {
+    const htmlItems = [];
+    const {items} = this.props;
+    for(let i = 0; i < 5; i++) {
+      for (const rowNumber in items ){
+        htmlItems.push(<ItemRow params = {items[rowNumber]}/>);
+      }
+    }
+
     return (
     <div className="itemTable">
       <Table responsive>
@@ -20,27 +29,7 @@ class MainPage extends React.Component {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-          </tr>
+          {htmlItems}
         </tbody>
       </Table>
     </div>
