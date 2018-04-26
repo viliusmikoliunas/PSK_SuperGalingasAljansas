@@ -12,7 +12,7 @@ class MainPage extends React.Component {
     const {items} = this.props;
     for(let i = 0; i < 5; i++) {
       for (const rowNumber in items ){
-        htmlItems.push(<ItemRow params = {items[rowNumber]}/>);
+        htmlItems.push(<ItemRow key={i+rowNumber} params = {items[rowNumber]}/>);
       }
     }
 
@@ -21,7 +21,7 @@ class MainPage extends React.Component {
       <Table responsive>
         <thead>
           <tr>
-            <th>Thumbnail</th>
+            <th></th>
             <th>Title</th>
             <th>Category</th>
             <th>Cost</th>
