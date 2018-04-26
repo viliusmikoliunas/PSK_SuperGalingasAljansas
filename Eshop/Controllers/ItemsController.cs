@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Eshop.Data.Entities;
+using Eshop.Data.OneTimers;
 using Eshop.DataContracts.DataTransferObjects;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -20,13 +21,14 @@ namespace Eshop.Controllers
 
         //method name doesn't matter much its all about [http] tags
         [HttpGet]
+        [Authorize]
         public IEnumerable<Item> GetAll()
         {
             return _itemsRepository.GetAll();
         }
         
-        //needs token checking because this is admin operation
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddItem([FromBody] ItemDto itemData)
         {
             if (string.IsNullOrEmpty(itemData.Title))

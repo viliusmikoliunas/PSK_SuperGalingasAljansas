@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Text;
 using Eshop.Data;
+using Eshop.Data.OneTimers;
 using Eshop.Data.Repositories;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -78,7 +80,7 @@ namespace Eshop
                         ValidAudience = Configuration["JstIssuer"],
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
-                        ValidateIssuer = false,
+                        //ValidateIssuer = false,
                         ValidateAudience = false,
                         ClockSkew = TimeSpan.Zero //remove delay of token when expires
                     };
@@ -89,7 +91,7 @@ namespace Eshop
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             // Apply any pending migrations. Create database if it does not exist
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
@@ -123,6 +125,18 @@ namespace Eshop
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
+            //Seeding roles
+            using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var dbContext = serviceScope.ServiceProvider.GetService<AppDbContext>();
+                try
+                {
+                    dbContext.Database.OpenConnection();
+                    dbContext.Database.CloseConnection();
+                }
+                catch (SqlException) { }
+                DataInitializer.SeedRoles(serviceScope).Wait();
+            }
         }
     }
 }

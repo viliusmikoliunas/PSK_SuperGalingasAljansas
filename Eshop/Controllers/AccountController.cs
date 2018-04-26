@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Eshop.DataContracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -39,7 +40,11 @@ namespace Eshop.Controllers
             if (result.Succeeded)
             {
                 var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-                return await GenerateJwtToken(model.Email, appUser);
+                var userRoles = await _userManager.GetRolesAsync(appUser);
+                var role =  userRoles.Contains(UserRoles.Admin.ToString())
+                    ? UserRoles.Admin
+                    : UserRoles.User;
+                return GenerateJwtToken(model.Email, appUser, role);
             }
 
             throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
@@ -51,26 +56,28 @@ namespace Eshop.Controllers
             var user = new IdentityUser
             {
                 UserName = model.Email,
-                Email = model.Email
+                Email = model.Email,
             };
+
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                return await GenerateJwtToken(model.Email, user);
+                return GenerateJwtToken(model.Email, user);
             }
 
             throw new ApplicationException("UNKNOWN_ERROR");
         }
 
-        private async Task<object> GenerateJwtToken(string email, IdentityUser user)
+        private object GenerateJwtToken(string email, IdentityUser user, UserRoles role = UserRoles.User)
         {
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Role, role.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
