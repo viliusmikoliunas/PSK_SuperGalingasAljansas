@@ -55,10 +55,9 @@ namespace Eshop
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;
                 options.Lockout.AllowedForNewUsers = true;
-                
+                */
                 // User settings
                 options.User.RequireUniqueEmail = true;
-                */
             });
 
             //Add Jwt Authentication

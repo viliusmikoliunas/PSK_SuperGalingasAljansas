@@ -21,7 +21,6 @@ namespace Eshop.Controllers
 
         //method name doesn't matter much its all about [http] tags
         [HttpGet]
-        [Authorize]
         public IEnumerable<Item> GetAll()
         {
             return _itemsRepository.GetAll();
