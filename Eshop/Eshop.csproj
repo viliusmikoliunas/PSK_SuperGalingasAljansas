@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="DataContracts\DataTransferObjects\Responses\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
