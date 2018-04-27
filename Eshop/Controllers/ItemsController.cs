@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Eshop.Data.Entities;
-using Eshop.Data.OneTimers;
 using Eshop.DataContracts.DataTransferObjects;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Authorization;

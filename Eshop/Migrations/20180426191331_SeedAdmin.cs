@@ -1,45 +1,54 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Eshop.DataContracts;
-using Eshop.Extensions;
+using Microsoft.AspNetCore.Identity;
 
 namespace Eshop.Migrations
 {
     public partial class SeedAdmin : Migration
     {
-        private string[][] roles = new string[][]
+        //first role has to be admin, other roles order doesn't matter
+        private readonly IdentityRole[] _roles =
         {
-             new string[]{"1", "55fb2793-4b89-4cfd-97fc-796b7b62df23",
-                 UserRoles.Admin.ToString()},
-             new string[]{"2", "5f4f1cb2-ba69-4195-92b9-2a4fe9a19f69",
-                 UserRoles.User.ToString()}
+            new IdentityRole{Id = "1", ConcurrencyStamp = Guid.NewGuid().ToString("D"),
+                Name = UserRoles.Admin.ToString(), NormalizedName = UserRoles.Admin.ToString().ToUpper()},
+            new IdentityRole{Id = "2", ConcurrencyStamp = Guid.NewGuid().ToString("D"),
+                Name = UserRoles.User.ToString(), NormalizedName = UserRoles.User.ToString().ToUpper()}
         };
 
-        private string[] adminData = new string[]
+        private string adminPassword = "SuperPassword.9";
+        private IdentityUser _admin = new IdentityUser
         {
-            //username, password, email
-            "Admin", "SuperPassword.9", "superShop@gmail.com",
-            //id, concurrencyStamp, securityStamp
-            "7a31dd72-36df-42e5-a052-f778b44397aa", "2f6a69cb-22b5-47aa-9844-24a5ad4fbc72", "5ba481d4-5b60-4812-9448-e526b5e6ecd3"
+            UserName = "Admin",
+            NormalizedUserName = "ADMIN",
+            Email = "superShop@gmail.com",
+            NormalizedEmail = "SUPERSHOP@GMAIL.COM",
+            Id = Guid.NewGuid().ToString("D"),
+            ConcurrencyStamp = Guid.NewGuid().ToString("D"),
+            SecurityStamp = Guid.NewGuid().ToString("D")
         };
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             var roleSeed = 
                 "INSERT INTO [dbo].[AspNetRoles] ([Id], [ConcurrencyStamp], [Name], [NormalizedName]) " +
-                $"VALUES ({roles[0][0]}, '{roles[0][1]}', '{roles[0][2]}', '{roles[0][2].ToUpper()}'), " +
-                $"({roles[1][0]}, '{roles[1][1]}', '{roles[1][2]}', '{roles[1][2].ToUpper()}')";
+                $"VALUES ('{_roles[0].Id}', '{_roles[0].ConcurrencyStamp}', '{_roles[0].Name}', '{_roles[0].NormalizedName}'), " +
+                $"('{_roles[1].Id}', '{_roles[1].ConcurrencyStamp}', '{_roles[1].Name}', '{_roles[1].NormalizedName}')";
 
-            var hashedAdminPw = adminData[1].HashPassword();
+            var password = new PasswordHasher<IdentityUser>();
+            var hashed = password.HashPassword(_admin, adminPassword);
+            _admin.PasswordHash = hashed;
 
             var adminAccSeed =
                 "INSERT INTO [dbo].[AspNetUsers] ([Id], [ConcurrencyStamp], [Email], [NormalizedEmail], " +
-                "[NormalizedUserName], [PasswordHash], [SecurityStamp], [UserName]) " +
-                $"VALUES ({adminData[3]}, {adminData[4]}, {adminData[2]}, {adminData[2].ToUpper()}, " +
-                $"{adminData[0].ToUpper()}, {hashedAdminPw}, {adminData[5]}, {adminData[0]})";
+                "[NormalizedUserName], [PasswordHash], [SecurityStamp], [UserName], " +
+                "[AccessFailedCount], [EmailConfirmed], [LockoutEnabled], [PhoneNumberConfirmed], [TwoFactorEnabled]) " +
+                $"VALUES ('{_admin.Id}', '{_admin.ConcurrencyStamp}', '{_admin.Email}', '{_admin.NormalizedEmail}', " +
+                $"'{_admin.NormalizedUserName}', '{_admin.PasswordHash}', '{_admin.SecurityStamp}', '{_admin.UserName}', " +
+                "0, 0, 0, 0, 0)";
 
             var userRolesSeed = "INSERT INTO [dbo].[AspNetUserRoles] ([UserId], [RoleId]) " +
-                                $"VALUES ({adminData[3]}, {roles[0][0]})";
+                                $"VALUES ('{_admin.Id}', '{_roles[0].Id}')";
 
             migrationBuilder.Sql(roleSeed);
             migrationBuilder.Sql(adminAccSeed);
@@ -48,9 +57,9 @@ namespace Eshop.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            var removeAdminFromUserRolesString = $"DELETE FROM [dbo].[AspNetUserRoles] WHERE UserId={adminData[3]}";
-            var purgeRolesString = $"DELETE FROM [dbo].[AspNetRoles]";
-            var purgeAdminString = $"DELETE FROM [dbo].[AspNetUsers] WHERE Id={adminData[3]}";
+            var removeAdminFromUserRolesString = "DELETE FROM [dbo].[AspNetUserRoles]";
+            var purgeRolesString = "DELETE FROM [dbo].[AspNetRoles]";
+            var purgeAdminString = $"DELETE FROM [dbo].[AspNetUsers] WHERE Email='{_admin.Email}'";
 
             migrationBuilder.Sql(removeAdminFromUserRolesString);
             migrationBuilder.Sql(purgeRolesString);

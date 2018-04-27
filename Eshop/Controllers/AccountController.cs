@@ -33,18 +33,19 @@ namespace Eshop.Controllers
         }
 
         [HttpPost]
+        //username model
         public async Task<object> Login([FromBody] LoginRequest model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
 
             if (result.Succeeded)
             {
-                var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
+                var appUser = _userManager.Users.SingleOrDefault(r => r.UserName == model.Username);
                 var userRoles = await _userManager.GetRolesAsync(appUser);
                 var role =  userRoles.Contains(UserRoles.Admin.ToString())
                     ? UserRoles.Admin
                     : UserRoles.User;
-                return GenerateJwtToken(model.Email, appUser, role);
+                return GenerateJwtToken(model.Username, appUser, role);
             }
 
             throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
