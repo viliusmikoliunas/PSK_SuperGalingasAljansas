@@ -2,6 +2,7 @@
 using Eshop.Data.Entities;
 using Eshop.DataContracts.DataTransferObjects;
 using Eshop.DataContracts.RepositoryInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Eshop.Controllers
@@ -24,8 +25,8 @@ namespace Eshop.Controllers
             return _itemsRepository.GetAll();
         }
         
-        //needs token checking because this is admin operation
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddItem([FromBody] ItemDto itemData)
         {
             if (string.IsNullOrEmpty(itemData.Title))
