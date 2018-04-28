@@ -7,6 +7,6 @@ namespace Eshop.Data.Entities
 {
     public class ShoppingCart
     {
-
+        
     }
 }
