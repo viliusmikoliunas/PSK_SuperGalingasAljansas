@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Eshop.Data.Entities
 {
-    public class User
+    public class UserAccount
     {
         public int Id { get; set; }
         public string Firstname { get; set; }

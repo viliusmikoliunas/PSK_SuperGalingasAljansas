@@ -8,7 +8,7 @@ namespace Eshop.Data.Entities
         [ForeignKey("User")]
         public int Id { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual UserAccount User { get; set; }
 
         public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
     }
