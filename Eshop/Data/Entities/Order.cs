@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Eshop.Data.Entities
@@ -11,5 +12,12 @@ namespace Eshop.Data.Entities
         public bool HasBeenPaidFor { get; set; }
         [Required]
         public decimal Cost { get; set; }
+
+        public virtual Review Review { get; set; }
+
+        public ICollection<OrderedItem> OrderedItem { get; set; }
+
+        public int UserId { get; set; }
+        public User User { get; set; }
     }
 }

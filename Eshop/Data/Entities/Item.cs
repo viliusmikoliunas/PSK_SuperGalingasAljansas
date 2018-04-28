@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Eshop.Data.Entities
 {
@@ -12,6 +13,12 @@ namespace Eshop.Data.Entities
         public string Description { get; set; }
         public string PictureLocation { get; set; }
 
+        public virtual ICollection<Category> Categories { get; set; } 
 
+        public virtual ICollection<Trait> Traits { get; set; }
+
+        public ICollection<OrderedItem> OrderedItems { get; set; }
+
+        public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
     }
 }
