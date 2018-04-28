@@ -90,12 +90,13 @@ namespace Eshop
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             // Apply any pending migrations. Create database if it does not exist
+            
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
                 context.Database.Migrate();
             }
-
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
