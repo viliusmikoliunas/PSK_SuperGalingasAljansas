@@ -13,7 +13,7 @@ namespace Eshop.Data.Entities
         [Required]
         public decimal Cost { get; set; }
 
-        public virtual Review Review { get; set; }
+        public Review Review { get; set; }
 
         public ICollection<OrderedItem> OrderedItem { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Eshop.Data.Entities.JoinTables;
 
 namespace Eshop.Data.Entities
 {
@@ -13,9 +14,9 @@ namespace Eshop.Data.Entities
         public string Description { get; set; }
         public string PictureLocation { get; set; }
 
-        public virtual ICollection<Category> Categories { get; set; } 
+        public ICollection<ItemCategory> ItemCategories { get; set; }
 
-        public virtual ICollection<Trait> Traits { get; set; }
+        public ICollection<ItemTrait> ItemTraits { get; set; }
 
         public ICollection<OrderedItem> OrderedItems { get; set; }
 

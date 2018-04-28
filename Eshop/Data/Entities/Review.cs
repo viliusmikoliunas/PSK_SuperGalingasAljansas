@@ -13,6 +13,6 @@ namespace Eshop.Data.Entities
         public int Stars { get; set; }
         public string Description { get; set; }
 
-        public virtual Order Order { get; set; }
+        public Order Order { get; set; }
     }
 }
