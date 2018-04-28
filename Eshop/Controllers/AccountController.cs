@@ -56,8 +56,8 @@ namespace Eshop.Controllers
         {
             var user = new IdentityUser
             {
-                UserName = model.Email,
-                Email = model.Email,
+                UserName = model.Username,
+                Email = model.Email
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -65,17 +65,17 @@ namespace Eshop.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                return GenerateJwtToken(model.Email, user);
+                return GenerateJwtToken(model.Username, user);
             }
 
             return BadRequest(result.Errors.First().Description);
         }
 
-        private object GenerateJwtToken(string email, IdentityUser user, UserRoles role = UserRoles.User)
+        private object GenerateJwtToken(string username, IdentityUser user, UserRoles role = UserRoles.User)
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, email),
+                new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Role, role.ToString())

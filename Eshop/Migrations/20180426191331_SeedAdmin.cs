@@ -16,7 +16,7 @@ namespace Eshop.Migrations
                 Name = UserRoles.User.ToString(), NormalizedName = UserRoles.User.ToString().ToUpper()}
         };
 
-        private string adminPassword = "SuperPassword.9";
+        private readonly string adminPassword = "SuperPassword.9";
         private IdentityUser _admin = new IdentityUser
         {
             UserName = "Admin",
