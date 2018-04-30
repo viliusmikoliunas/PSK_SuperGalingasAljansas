@@ -1,7 +1,7 @@
 # PSK_SuperGalingasAljansas
 
 How to Controller (for example check ItemsController.cs):
-1. Create controller class in Controllers folder. (controllers are not restricted for usage of only one DB table, you can create all kinds of mixed controllers that use all DB tables and stuff)
+1. Create class in Controllers folder. (controllers are not restricted for usage of only one DB table, you can create all kinds of mixed controllers that use all DB tables and stuff)
 2. Add inheritance from Controller class.
 3. Above the class name add tag [Route(subAddressString)] (subAddressString is what goes after domain name - gerasshop.lt/ subAddressString and through this address the controller will be called by client)
 4. Write methods that respond to http requests (one method - one request type for that address; you cant write multiple httpGet mehtods for same address). Above method write a http request type tag. For example - [HttpGet] or [HttpPost] and there are some others.
