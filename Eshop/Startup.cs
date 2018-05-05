@@ -2,7 +2,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Eshop.Data;
-using Eshop.Data.Entities;
 using Eshop.Data.Repositories;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -37,7 +36,7 @@ namespace Eshop
                 options.UseSqlServer(Configuration.GetConnectionString("EshopConnection")));
 
             //Add Identity
-            services.AddIdentity<UserAccount, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Eshop.Data
 {
-    public class AppDbContext : IdentityDbContext<UserAccount>
+    public class AppDbContext : IdentityDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
