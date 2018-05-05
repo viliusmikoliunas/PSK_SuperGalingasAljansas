@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Eshop.Data;
+using Eshop.Data.Entities;
 using Eshop.Data.Repositories;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,7 +37,7 @@ namespace Eshop
                 options.UseSqlServer(Configuration.GetConnectionString("EshopConnection")));
 
             //Add Identity
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<UserAccount, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -84,6 +85,7 @@ namespace Eshop
 
             //Dependency Injection Stuff - Repositories
             services.AddScoped<IItemsRepository, ItemsRepository>();
+            services.AddScoped<IUserAccountsRepository, UserAccountsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
