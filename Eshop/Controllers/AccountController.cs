@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Eshop.Data.Entities;
 using Eshop.DataContracts;
 using Eshop.DataContracts.DataTransferObjects.Requests;
 using Microsoft.AspNetCore.Identity;
@@ -17,13 +18,13 @@ namespace Eshop.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<UserAccount> _signInManager;
+        private readonly UserManager<UserAccount> _userManager;
         private readonly IConfiguration _configuration;
 
         public AccountController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<UserAccount> userManager,
+            SignInManager<UserAccount> signInManager,
             IConfiguration configuration
         )
         {
@@ -50,7 +51,7 @@ namespace Eshop.Controllers
 
             throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
         }
-
+        /*
         [HttpPost]
         public async Task<object> Register([FromBody] RegisterRequest model)
         {
@@ -69,7 +70,7 @@ namespace Eshop.Controllers
             }
 
             return BadRequest(result.Errors.First().Description);
-        }
+        }*/
 
         private object GenerateJwtToken(string username, IdentityUser user, UserRoles role = UserRoles.User)
         {
