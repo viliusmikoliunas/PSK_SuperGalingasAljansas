@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Eshop.Data.Entities;
 using Eshop.DataContracts;
 using Eshop.DataContracts.DataTransferObjects.Requests;
 using Microsoft.AspNetCore.Identity;
@@ -11,13 +12,13 @@ namespace Eshop.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<UserAccount> _signInManager;
+        private readonly UserManager<UserAccount> _userManager;
         private readonly IConfiguration _configuration;
 
         public AccountController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<UserAccount> userManager,
+            SignInManager<UserAccount> signInManager,
             IConfiguration configuration
         )
         {
