@@ -1,18 +1,21 @@
 ﻿import { hot } from 'react-hot-loader';
 import React from 'react';
 import { render } from 'react-dom';
-import { Route, Router, browserHistory } from 'react-router';
+import { Route, Router } from 'react-router';
 import './styles.css';
 
-import MainLayout from './WebPages/MainLayout';
-import LoginPage from './WebPages/LoginPage';
+import MainLayout from './MainLayout';
+import LoginPage from './LoginPage';
+import MainPage from './MainPage/MainPage';
+
+import { history } from './store';
 
 const App = () => (
-	<Router key={Math.random()} history={browserHistory}>
-        <Route path="/" component={MainLayout}>
-            
-        </Route>
-        <Route path="/login" component={LoginPage} />
+	<Router key={Math.random()} history={history}>
+		<Route component={MainLayout}>
+			<Route path="/" component={MainPage}/>
+		</Route>
+		<Route path="/login" component={LoginPage} />
 	</Router>
 );
 

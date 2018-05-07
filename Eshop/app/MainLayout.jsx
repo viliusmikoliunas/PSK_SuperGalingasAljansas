@@ -1,9 +1,9 @@
 ﻿import React, {Component} from 'react';
 
-import Navbar from './LayoutComponents/Navbar';
-import Sidebar from './LayoutComponents/Sidebar/Sidebar';
+import Navbar from './Navbar';
+import Sidebar from './Sidebar/Sidebar';
 
-export default class extends Component {
+export default class MainLayout extends Component {
     constructor(props) {
         super(props);
     }
@@ -15,7 +15,7 @@ export default class extends Component {
                 <div className="Header">
                     <Navbar/>
                 </div>
-                <div className="SideBar">
+                <div className="sidebar">
                     <Sidebar/>
                 </div>
                 <div className="MainField">
