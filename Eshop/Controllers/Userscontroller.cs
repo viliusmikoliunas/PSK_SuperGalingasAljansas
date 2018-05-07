@@ -1,33 +1,40 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Eshop.Data.Entities;
+using Eshop.DataContracts;
 using Eshop.DataContracts.DataTransferObjects.Requests;
-using Eshop.DataContracts.RepositoryInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Eshop.Controllers
 {
-    [Route("api/Users")]
+    [Route("api/users")]
+    [Authorize(Roles = UserRoleString.Admin)]
     public class UsersController : Controller
     {
-        private readonly IUserAccountsRepository _userAccountsRepository;
         private readonly UserManager<UserAccount> _userManager;
 
-        public UsersController(IUserAccountsRepository userAccountsRepository, UserManager<UserAccount> userManager)
+        public UsersController(UserManager<UserAccount> userManager)
         {
-            _userAccountsRepository = userAccountsRepository;
             _userManager = userManager;
         }
 
-        [HttpPut]
-        public UserAccount BlockUser([FromQuery] BlockRequest blockRequest)
+        [HttpPut("block")]
+        public async Task<IActionResult> BlockUser([FromBody] BlockRequest blockRequest)
         {
-            //validation
-            var kitas = _userManager.Users;//.First(user => user.UserName.Equals(blockRequest.Username));
-            var apsdasd = _userAccountsRepository.Get(blockRequest.Username);
-            _userAccountsRepository.BlockUser(apsdasd);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            return apsdasd;
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName.Equals(blockRequest.Username));
+            if (user != null)
+            {
+                user.IsBlocked = blockRequest.Block;
+                await _userManager.UpdateAsync(user);
+                if (blockRequest.Block) return Ok($"User \"{blockRequest.Username}\" blocked successfully");
+                return Ok($"User \"{blockRequest.Username}\" unblocked successfully");
+            }
+
+            return BadRequest($"User with username - \"{blockRequest.Username}\" does not exist");
         }
     }
 }

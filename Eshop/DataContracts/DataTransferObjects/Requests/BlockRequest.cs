@@ -7,6 +7,6 @@ namespace Eshop.DataContracts.DataTransferObjects.Requests
         [Required]
         public string Username { get; set; }
         [Required]
-        public bool ShouldUserBeBlocked { get; set; }
+        public bool Block { get; set; }
     }
 }
