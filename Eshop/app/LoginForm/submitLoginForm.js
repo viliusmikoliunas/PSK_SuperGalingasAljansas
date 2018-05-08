@@ -1,19 +1,36 @@
-import { SubmissionError } from 'redux-form'
 import history from '../history'
 
 
-const registerAddress = '/api/Account/register'
+const registerAddress = '/api/account/login'
+
+const requestParams = (bodyVal) => {
+    return({
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyVal)
+    })
+}
 
 const submit = (values) => {
-    console.log(values)
-    /*
-    api.post(registerAddress, values)
-    .then((response) => {
-        if(response.ok) {
-            alert("User created successfully")
-            history.push('/admin')
-        }
-    })  */
+    fetch(registerAddress,requestParams(values))
+        .then(data => {
+            if (data.status === 200){
+                data.text().then(
+                    (jwtToken) => {
+                        localStorage.setItem('jwtToken', jwtToken)
+                    }
+                )
+                history.push('/')
+            }
+            else if (data.status === 401){
+                alert("username and password doesn't match")
+            }
+            else {
+                alert("login failed for unknown reasons")
+            }
+        })
 }
 
 export default submit

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Eshop.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly SignInManager<UserAccount> _signInManager;

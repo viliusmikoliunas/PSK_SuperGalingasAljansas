@@ -12,10 +12,10 @@ const LoginForm = props => {
   return (
     <form onSubmit={handleSubmit(submit)} className="form-registerUser">
         <Field
-            name="email"
-            type="email"
+            name="username"
+            type="string"
             component={renderField}
-            label="Email"
+            label="Username"
         />
         <Field
             name="password"
@@ -27,7 +27,7 @@ const LoginForm = props => {
       {error && <strong>{error}</strong>}
       <div>
         <button type="submit" disabled={submitting}>
-          Create
+          Login
         </button>
       </div>
     </form>
