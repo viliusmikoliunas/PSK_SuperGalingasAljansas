@@ -28,7 +28,7 @@ namespace Eshop
 
             var token = new JwtSecurityToken(
                 configuration["JwtIssuer"],
-                configuration["JwtIssuer"],
+                null,
                 claims,
                 expires: expires,
                 signingCredentials: creds
