@@ -1,9 +1,9 @@
-﻿import React from 'react';
+﻿import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { loadItems } from './MainPageActions'
-import { Table } from 'reactstrap';
+import { Table } from 'reactstrap'
 import ItemRow from './ItemRow/ItemRow'
 
 class MainPage extends React.Component {

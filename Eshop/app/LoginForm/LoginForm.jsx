@@ -1,25 +1,40 @@
-import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
-import './LoginFormStyles.css';
+import React from 'react'
+import {connect} from 'react-redux'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 
-export default class LoginForm extends Component {
-  constructor(props) {
-      super(props);
-  }
+import submit from './submitLoginForm'
+import validate from './validateFormFields'
+import {renderField, renderSelectField} from './FieldRenderingMethods'
 
-  render() {
-    return (
-      <Form id="loginForm">
-        <FormGroup>
-          <Label for="exampleEmail">Email</Label>
-          <Input type="email" name="email" id="exampleEmail" placeholder="example@mail.com" />
-        </FormGroup>
-        <FormGroup>
-          <Label for="examplePassword">Password</Label>
-          <Input type="password" name="password" id="examplePassword" placeholder="Password" />
-        </FormGroup>
-        <Button>Submit</Button>
-      </Form>
-    );
-  }
+
+const LoginForm = props => {
+  const { error, handleSubmit, pristine, reset, submitting } = props
+  return (
+    <form onSubmit={handleSubmit(submit)} className="form-registerUser">
+        <Field
+            name="email"
+            type="email"
+            component={renderField}
+            label="Email"
+        />
+        <Field
+            name="password"
+            type="password"
+            component={renderField}
+            label="Password"
+        />
+
+      {error && <strong>{error}</strong>}
+      <div>
+        <button type="submit" disabled={submitting}>
+          Create
+        </button>
+      </div>
+    </form>
+  )
 }
+
+export default reduxForm({
+  form: 'loginForm',
+  validate
+})(LoginForm)
