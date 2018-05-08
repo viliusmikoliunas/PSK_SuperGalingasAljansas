@@ -13,7 +13,7 @@ const requestParams = (bodyVal) => {
     })
 }
 
-const submit = (values) => {
+const login = (values) => {
     fetch(registerAddress,requestParams(values))
         .then(data => {
             if (data.status === 200){
@@ -33,4 +33,4 @@ const submit = (values) => {
         })
 }
 
-export default submit
+export default login

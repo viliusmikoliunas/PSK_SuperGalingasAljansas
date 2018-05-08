@@ -1,7 +1,7 @@
-﻿import React, {Component} from 'react';
+﻿import React, {Component} from 'react'
 
-import Navbar from './Navbar';
-import Sidebar from './Sidebar/Sidebar';
+import Navbar from './Navbar'
+import Sidebar from './Sidebar/Sidebar'
 
 export default class MainLayout extends Component {
     constructor(props) {

@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 
-import submit from './submitLoginForm'
+import login from './submitLoginForm'
 import validate from './validateFormFields'
 import {renderField, renderSelectField} from './FieldRenderingMethods'
 
@@ -10,7 +10,7 @@ import {renderField, renderSelectField} from './FieldRenderingMethods'
 const LoginForm = props => {
   const { error, handleSubmit, pristine, reset, submitting } = props
   return (
-    <form onSubmit={handleSubmit(submit)} className="form-registerUser">
+    <form onSubmit={handleSubmit(login)} className="form-registerUser">
         <Field
             name="username"
             type="string"

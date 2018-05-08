@@ -9,6 +9,7 @@ import {
     NavLink
     } from 'reactstrap'
 import {Link} from 'react-router-dom'
+import parseJwt from './jwt/parseJwt'
 
 
 export default class Navbar extends Component {
@@ -19,6 +20,9 @@ export default class Navbar extends Component {
         this.state = {
             isOpen: false
         };
+        this.userElement = localStorage['jwtToken'] 
+            ? (parseJwt(localStorage['jwtToken']))['sub']
+            : <NavLink tag={Link} to='/login'>Login</NavLink>
     }
     toggle() {
         this.setState({
@@ -34,13 +38,7 @@ export default class Navbar extends Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink tag={Link} to='/login'>Login</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink tag={Link} to='/cart'>Shopping Cart</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink tag={Link} to='/settings'>Settings</NavLink>
+                                {this.userElement}
                             </NavItem>
                         </Nav>
                     </Collapse>
@@ -48,4 +46,12 @@ export default class Navbar extends Component {
             </div>
         );
     }
-}
+} 
+/*
+<NavItem>
+                                <NavLink tag={Link} to='/cart'>Shopping Cart</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink tag={Link} to='/settings'>Settings</NavLink>
+                            </NavItem>
+*/
