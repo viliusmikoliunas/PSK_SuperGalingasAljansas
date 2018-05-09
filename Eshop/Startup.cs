@@ -83,8 +83,9 @@ namespace Eshop
                     };
                 });
 
-            //Dependency Injection Stuff - Repositories
+            //Dependency Injection - Repositories
             services.AddScoped<IItemsRepository, ItemsRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
