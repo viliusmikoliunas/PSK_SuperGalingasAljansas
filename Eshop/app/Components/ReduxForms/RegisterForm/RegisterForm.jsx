@@ -2,39 +2,39 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import login from '../../Redux/actions/LoginActions'
+import register from '../../../Redux/actions/RegisterActions'
 
-//import validate from './validateFormFields'
+import validate from './validateFormFields'
 import renderTextField from '../ReduxFormFields/renderTextField'
 
 
 let RegisterForm = props => {
-  const { error, handleSubmit, pristine, reset, submitting, dispatchLogin} = props
+  const { error, handleSubmit, submitting, dispatchRegister} = props
   return (
-    <form onSubmit={handleSubmit(dispatchLogin)} className="form-registerUser">
+    <form onSubmit={handleSubmit(dispatchRegister)} className="form-registerUser">
         <Field
             name="username"
             type="string"
             component={renderTextField}
-            label="Username"
+            label="Username*"
         />
         <Field
             name="password"
             type="password"
             component={renderTextField}
-            label="Password"
+            label="Password*"
         />
         <Field
             name="password2"
             type="password"
             component={renderTextField}
-            label="Confirm password"
+            label="Confirm password*"
         />
         <Field
             name="email"
             type="email"
             component={renderTextField}
-            label="Email"
+            label="Email*"
         />
         <Field
             name="firstname"
@@ -67,15 +67,15 @@ let RegisterForm = props => {
 
 RegisterForm = connect(
   (state) => ({
-    error: state.LoginReducer.error
+    error: state.RegisterReducer.error
   }),
   (dispatch) => bindActionCreators({
-    dispatchLogin: login
+    dispatchRegister: register
   }
   ,dispatch)
 )(RegisterForm)
 
 export default reduxForm({
-  form: 'registerForm'//,
-  //validate
+  form: 'registerForm',
+  validate
 })(RegisterForm)

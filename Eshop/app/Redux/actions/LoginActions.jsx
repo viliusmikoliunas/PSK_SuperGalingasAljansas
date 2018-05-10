@@ -1,26 +1,16 @@
 import LoginActionTypes from '../actionTypes/LoginActionTypes'
+import generateRequest from '../../FunctionalComponents/httpRequests/generateRequest'
 import history from '../../Redux/history'
 
 
-const registerAddress = '/api/account/login'
-
-const requestParams = (bodyVal) => {
-    return({
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(bodyVal)
-    })
-}
+const loginAddress = '/api/account/login'
 
 const login = (loginValues) => (dispatch) => {
     dispatch({
         type: LoginActionTypes.LOGIN_REQUEST
     })
-    fetch(registerAddress,requestParams(loginValues))
+    fetch(loginAddress,generateRequest('POST',loginValues))
         .then(response => {
-            console.log(response)
             if (response.ok){
                 response.text().then(
                     (jwtToken) => {

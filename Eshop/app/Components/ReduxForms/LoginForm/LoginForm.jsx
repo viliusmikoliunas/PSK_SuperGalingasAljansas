@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import {Link} from 'react-router-dom'
-import login from '../../Redux/actions/LoginActions'
+import login from '../../../Redux/actions/LoginActions'
 
 import validate from './validateFormFields'
 import renderTextField from '../ReduxFormFields/renderTextField'
