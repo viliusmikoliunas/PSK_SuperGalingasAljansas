@@ -1,4 +1,4 @@
-import history from '../history'
+import history from '../../Redux/history'
 
 
 const registerAddress = '/api/account/login'

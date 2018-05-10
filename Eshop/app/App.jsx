@@ -4,18 +4,18 @@ import { render } from 'react-dom'
 import { Route, Router } from 'react-router-dom'
 import './styles.css'
 
-import MainLayout from './MainLayout'
-import LoginPage from './LoginPage'
-import MainPage from './MainPage/MainPage'
+import MainLayout from './Layouts/MainLayout'
+import LoginPage from './Layouts/LoginPageLayout'
+import ItemTable from './Components/ItemTable/ItemTable'
 
-import RouteWithLayout from './customRouteComponents/RouteWithLayout'
+import RouteWithLayout from './Components/CustomRouteComponents/RouteWithLayout'
 
-import history from './history'
+import history from './Redux/history'
 
 const App = () => (
 	<Router key={Math.random()} history={history}>
 		<div>
-			<RouteWithLayout exact path='/' layout={MainLayout} component={MainPage}/>
+			<RouteWithLayout exact path='/' layout={MainLayout} component={ItemTable}/>
 			<Route exact path='/login' component={LoginPage}/>
 		</div>
 	</Router>

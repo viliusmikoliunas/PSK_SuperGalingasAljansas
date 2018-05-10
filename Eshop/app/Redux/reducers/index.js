@@ -2,11 +2,11 @@ import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import { reducer as formReducer } from 'redux-form'
 
-import MainPageReducer from './MainPage/MainPageReducer'
+import ItemTableReducer from './ItemTableReducer'
 
 
 const rootReducer = combineReducers({
-    MainPageReducer,
+    ItemTableReducer,
     routing: routerReducer,
     form: formReducer
 })

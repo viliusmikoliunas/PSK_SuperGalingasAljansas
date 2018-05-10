@@ -1,15 +1,15 @@
 ﻿import React, {Component} from 'react'
 
-import Navbar from './Navbar'
-import Sidebar from './Sidebar/Sidebar'
+import Navbar from '../Components/Navbar'
+import Sidebar from '../Components/Sidebar/Sidebar'
 
 export default class MainLayout extends Component {
     constructor(props) {
-        super(props);
+        super(props)
     }
 
     render() {
-        const { children } = this.props;
+        const { children } = this.props
         return (
             <div className="MainLayout">
                 <div className="Header">
@@ -22,6 +22,6 @@ export default class MainLayout extends Component {
                     {children}
                 </div>
             </div>
-        );
+        )
     }
 }

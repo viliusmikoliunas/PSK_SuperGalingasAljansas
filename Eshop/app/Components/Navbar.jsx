@@ -9,7 +9,7 @@ import {
     NavLink
     } from 'reactstrap'
 import {Link} from 'react-router-dom'
-import parseJwt from './jwt/parseJwt'
+import parseJwt from '../FunctionalComponents/jwt/parseJwt'
 
 
 export default class Navbar extends Component {
