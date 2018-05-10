@@ -1,37 +1,41 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
+import { Field, reduxForm } from 'redux-form'
+import {Link} from 'react-router-dom'
 import login from '../../Redux/actions/LoginActions'
 
 import validate from './validateFormFields'
-import {renderField, renderSelectField} from './FieldRenderingMethods'
+import renderTextField from '../ReduxFormFields/renderTextField'
 
 
 let LoginForm = props => {
-  const { error, handleSubmit, pristine, reset, submitting, dispatchLogin} = props
+  const { error, handleSubmit, submitting, dispatchLogin} = props
   return (
-    <form onSubmit={handleSubmit(dispatchLogin)} className="form-registerUser">
-        <Field
-            name="username"
-            type="string"
-            component={renderField}
-            label="Username"
-        />
-        <Field
-            name="password"
-            type="password"
-            component={renderField}
-            label="Password"
-        />
+    <div>
+      <form onSubmit={handleSubmit(dispatchLogin)} className="form-login">
+          <Field
+              name="username"
+              type="string"
+              component={renderTextField}
+              label="Username"
+          />
+          <Field
+              name="password"
+              type="password"
+              component={renderTextField}
+              label="Password"
+          />
 
-      {error && <strong>{error}</strong>}
-      <div>
-        <button type="submit" disabled={submitting}>
-          Login
-        </button>
-      </div>
-    </form>
+        {error && <strong>{error}</strong>}
+        <div>
+          <button type="submit" disabled={submitting}>
+            Login
+          </button>
+        </div>
+      </form>
+      <Link to="/register">Don't have an account? Register here</Link>
+    </div>
   )
 }
 

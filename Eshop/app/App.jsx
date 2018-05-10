@@ -6,6 +6,7 @@ import './styles.css'
 
 import MainLayout from './Layouts/MainLayout'
 import LoginPage from './Layouts/LoginPageLayout'
+import RegisterPage from './Layouts/RegisterPageLayout'
 import ItemTable from './Components/ItemTable/ItemTable'
 
 import RouteWithLayout from './Components/CustomRouteComponents/RouteWithLayout'
@@ -17,8 +18,9 @@ const App = () => (
 		<div>
 			<RouteWithLayout exact path='/' layout={MainLayout} component={ItemTable}/>
 			<Route exact path='/login' component={LoginPage}/>
+			<Route exact path='/register' component={RegisterPage}/>
 		</div>
 	</Router>
-);
+)
 
 export default hot(module)(App)
