@@ -1,4 +1,4 @@
-import sampleData from './sampleData'
+import sampleData from '../../Components/ItemTable/sampleData'
 
 const initialState = {
     items: sampleData
@@ -12,6 +12,6 @@ export default (state = initialState, action) => {
                 items: action.items
             }
         default:
-            return state;
+            return state
     }
 }

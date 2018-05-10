@@ -1,9 +1,9 @@
-﻿import React from 'react';
+﻿import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { loadItems } from './MainPageActions'
-import { Table } from 'reactstrap';
+import { loadItems } from '../../Redux/actions/MainPageActions'
+import { Table } from 'reactstrap'
 import ItemRow from './ItemRow/ItemRow'
 
 class MainPage extends React.Component {
@@ -38,7 +38,7 @@ class MainPage extends React.Component {
 }
 export default connect(
     (state) => ({
-        items: state.MainPageReducer.items
+        items: state.ItemTableReducer.items
     }),
     (dispatch) => bindActionCreators({
         dispatchLoadItems: loadItems
