@@ -22,14 +22,14 @@ const login = (loginValues) => (dispatch) => {
         .then(response => {
             console.log(response)
             if (response.ok){
-                dispatch({
-                    type: LoginActionTypes.LOGIN_SUCCESS
-                })
                 response.text().then(
                     (jwtToken) => {
                         localStorage.setItem('jwtToken', jwtToken)
                     }
                 )
+                dispatch({
+                    type: LoginActionTypes.LOGIN_SUCCESS
+                })
                 history.push('/')
             }
             else {
@@ -45,6 +45,11 @@ const login = (loginValues) => (dispatch) => {
                 error: String(err)
             })
         })
+}
+
+export const logout = () => {
+    localStorage.removeItem('jwtToken')
+    history.push('/')
 }
 
 export default login

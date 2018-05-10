@@ -1,7 +1,8 @@
 import loginActionTypes from '../actionTypes/LoginActionTypes'
 
 const initialState = {
-
+  loggedIn: localStorage['jwtToken'] != null,
+  loggingIn: false
 }
 
 export default (state = initialState, action) => {
@@ -12,6 +13,7 @@ export default (state = initialState, action) => {
       }
     case loginActionTypes.LOGIN_SUCCESS:
       return {
+        loggedIn: true,
         loggingIn: false,
         error: null
       }
@@ -19,6 +21,10 @@ export default (state = initialState, action) => {
       return {
         loggingIn: false,
         error: action.error
+      }
+    case loginActionTypes.LOGOUT:
+      return {
+        loggedIn: false
       }
     default:
       return state

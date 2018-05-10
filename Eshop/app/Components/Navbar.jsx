@@ -1,4 +1,6 @@
 ﻿import React, {Component} from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import {
     Collapse,
     Navbar as ReactstrapNavBar,
@@ -6,13 +8,14 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink
+    NavLink,
+    Button
     } from 'reactstrap'
 import {Link} from 'react-router-dom'
 import parseJwt from '../FunctionalComponents/jwt/parseJwt'
+import {logout} from '../Redux/actions/LoginActions'
 
-
-export default class Navbar extends Component {
+class Navbar extends Component {
     constructor(props) {
         super(props);
 
@@ -20,9 +23,12 @@ export default class Navbar extends Component {
         this.state = {
             isOpen: false
         };
-        this.userElement = localStorage['jwtToken'] 
-            ? (parseJwt(localStorage['jwtToken']))['sub']
-            : <NavLink tag={Link} to='/login'>Login</NavLink>
+        this.userElement = localStorage['jwtToken']
+            ?   <div>
+                    <text>Welcome {(parseJwt(localStorage['jwtToken']))['sub']}</text>
+                    <Button onClick={this.props.dispatchLogout}>Logout</Button>
+                </div>
+            :   <Button tag={Link} to='/login'>Login</Button>
     }
     toggle() {
         this.setState({
@@ -46,12 +52,14 @@ export default class Navbar extends Component {
             </div>
         );
     }
-} 
-/*
-<NavItem>
-                                <NavLink tag={Link} to='/cart'>Shopping Cart</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink tag={Link} to='/settings'>Settings</NavLink>
-                            </NavItem>
-*/
+}
+
+export default connect(
+    (state) => ({
+        isLoggedIn: state.LoginReducer.loggedIn
+    }),
+    (dispatch) => bindActionCreators({
+        dispatchLogout: logout
+    }
+    ,dispatch)
+)(Navbar)
