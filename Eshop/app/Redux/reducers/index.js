@@ -4,11 +4,13 @@ import { reducer as formReducer } from 'redux-form'
 
 import ItemTableReducer from './ItemTableReducer'
 import LoginReducer from './LoginReducer'
+import RegisterReducer from './RegisterReducer'
 
 
 const rootReducer = combineReducers({
     ItemTableReducer,
     LoginReducer,
+    RegisterReducer,
     routing: routerReducer,
     form: formReducer
 })

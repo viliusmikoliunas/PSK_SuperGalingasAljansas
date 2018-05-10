@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react'
 
-import LoginForm from '../Components/LoginForm/LoginForm'
+import LoginForm from '../Components/ReduxForms/LoginForm/LoginForm'
 
 export default class LoginPage extends Component {
     constructor(props) {
