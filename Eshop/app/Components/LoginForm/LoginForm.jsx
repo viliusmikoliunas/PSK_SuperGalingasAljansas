@@ -1,16 +1,17 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
+import login from '../../Redux/actions/LoginActions'
 
-import login from './submitLoginForm'
 import validate from './validateFormFields'
 import {renderField, renderSelectField} from './FieldRenderingMethods'
 
 
-const LoginForm = props => {
-  const { error, handleSubmit, pristine, reset, submitting } = props
+let LoginForm = props => {
+  const { error, handleSubmit, pristine, reset, submitting, dispatchLogin} = props
   return (
-    <form onSubmit={handleSubmit(login)} className="form-registerUser">
+    <form onSubmit={handleSubmit(dispatchLogin)} className="form-registerUser">
         <Field
             name="username"
             type="string"
@@ -33,6 +34,16 @@ const LoginForm = props => {
     </form>
   )
 }
+
+LoginForm = connect(
+  (state) => ({
+    error: state.LoginReducer.error
+  }),
+  (dispatch) => bindActionCreators({
+    dispatchLogin: login
+  }
+  ,dispatch)
+)(LoginForm)
 
 export default reduxForm({
   form: 'loginForm',
