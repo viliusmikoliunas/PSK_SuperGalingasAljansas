@@ -16,12 +16,14 @@ namespace Eshop.Controllers
     public class UsersController : Controller
     {
         private readonly UserManager<UserAccount> _userManager;
+        private readonly RoleManager<UserAccount> _roleManager;
 
-        public UsersController(UserManager<UserAccount> userManager)
+        public UsersController(UserManager<UserAccount> userManager, RoleManager<UserAccount> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
-
+        
         [HttpGet]
         [Produces("application/json")]
         public IActionResult Get()
@@ -44,9 +46,12 @@ namespace Eshop.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var user = _userManager.Users.FirstOrDefault(u => u.UserName.Equals(blockRequest.Username));
+            var user = _userManager.Users.FirstOrDefault(u => u.UserName.Equals(blockRequest.Username)); 
             if (user != null)
             {
+                var role = await _roleManager.GetRoleNameAsync(user);
+                if (role.Equals(UserRoleString.Admin)) return Forbid("Admins cannot be blocked");
+
                 user.IsBlocked = blockRequest.Block;
                 await _userManager.UpdateAsync(user);
                 if (blockRequest.Block) return Ok($"User \"{blockRequest.Username}\" blocked successfully");
