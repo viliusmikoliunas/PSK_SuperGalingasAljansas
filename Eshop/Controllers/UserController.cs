@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Eshop.Data.Entities;
 using Eshop.DataContracts;
@@ -18,6 +19,12 @@ namespace Eshop.Controllers
         public UsersController(UserManager<UserAccount> userManager)
         {
             _userManager = userManager;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] UserListRequest userListRequest)
+        {
+            return NoContent();
         }
 
         [HttpPut("block")]
