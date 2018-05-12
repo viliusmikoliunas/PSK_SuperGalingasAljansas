@@ -27,26 +27,13 @@ namespace Eshop.Data.Repositories
             return newItem;
         }
 
-        public Boolean Delete(int itemId)
+        public bool Delete(int itemId)
         {
-            try
-            {
-                var item = GetItem(itemId);
-                if (item == null) throw new NullReferenceException();
-                _dbContext.Items.Remove(GetItem(itemId));
-                _dbContext.SaveChanges();
-                return true;
-            }
-            catch (NullReferenceException)
-            {
-                return false;
-            }
-        }
-
-        public Item GetItem(int id)
-        {
-            var item_ = _dbContext.Items.FirstOrDefault(item => item.Id == id);           
-            return item_;
-        }
+            var item_ = _dbContext.Items.FirstOrDefault(item => item.Id == itemId); 
+            if (item_ == null) return false;
+            _dbContext.Items.Remove(item_);
+            _dbContext.SaveChanges();
+            return true;
+        }      
     }
 }
