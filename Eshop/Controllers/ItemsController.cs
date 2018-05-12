@@ -5,6 +5,7 @@ using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace Eshop.Controllers
 {
     [Produces("application/json")]
@@ -48,7 +49,8 @@ namespace Eshop.Controllers
         }
 
         [HttpDelete]
-        //[Authorize(Roles = "Admin")]
+        //[Authorize(Roles = UserRoleString.Admin)]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteItem([FromBody] DeleteItemDto itemDto)
         {      
             if (_itemsRepository.Delete(itemDto.Id) == true) return Ok("Item has been deleted");
