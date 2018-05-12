@@ -6,7 +6,7 @@ using Eshop.Data.Entities;
 
 namespace Eshop.DataContracts.RepositoryInterfaces
 {
-    interface IShoppingCartRepository
+    public interface IShoppingCartRepository
     {
         ShoppingCart Get(int id);
         ShoppingCart Add(ShoppingCart shoppingCart);
