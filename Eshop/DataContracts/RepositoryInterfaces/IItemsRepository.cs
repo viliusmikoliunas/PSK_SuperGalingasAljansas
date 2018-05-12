@@ -10,6 +10,7 @@ namespace Eshop.DataContracts.RepositoryInterfaces
         Item Add(Item newItem);
         //Item Add(IEnumerable<Item> items);
         //Item Update(Item updatedItem);
-        //void Delete(Item item);
+        bool Delete(int itemId);
+        Item GetItem(int id);
     }
 }

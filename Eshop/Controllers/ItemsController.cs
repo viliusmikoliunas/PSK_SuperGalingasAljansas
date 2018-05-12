@@ -24,7 +24,7 @@ namespace Eshop.Controllers
         {
             return _itemsRepository.GetAll();
         }
-        
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult AddItem([FromBody] ItemDto itemData)
@@ -46,6 +46,15 @@ namespace Eshop.Controllers
 
             return Ok("Item added successfully");
         }
+
+        [HttpDelete]
+        //[Authorize(Roles = "Admin")]
+        public IActionResult DeleteItem([FromBody] DeleteItemDto itemDto)
+        {      
+            if (_itemsRepository.Delete(itemDto.Id) == true) return Ok("Item has been deleted");
+            else return NotFound("The item does not exist in the database");
+        }
+
     }
 }
 
