@@ -3,9 +3,11 @@ using System.Threading.Tasks;
 using Eshop.Data.Entities;
 using Eshop.DataContracts;
 using Eshop.DataContracts.DataTransferObjects.Requests;
+using Eshop.DataContracts.DataTransferObjects.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Eshop.Controllers
 {
@@ -18,6 +20,23 @@ namespace Eshop.Controllers
         public UsersController(UserManager<UserAccount> userManager)
         {
             _userManager = userManager;
+        }
+
+        [HttpGet]
+        [Produces("application/json")]
+        public IActionResult Get()
+        {
+            List<UserInfoResponse> userInfoList = new List<UserInfoResponse>();
+            userInfoList.AddRange(_userManager.Users.Select(user => new UserInfoResponse
+            {
+                Email = user.Email,
+                Firstname = user.Firstname,
+                Lastname = user.Lastname,
+                IsBlocked = user.IsBlocked,
+                UserName = user.UserName
+            }));
+
+            return Ok(userInfoList);
         }
 
         [HttpPut("block")]
