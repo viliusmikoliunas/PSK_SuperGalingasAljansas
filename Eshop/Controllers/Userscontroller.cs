@@ -16,12 +16,10 @@ namespace Eshop.Controllers
     public class UsersController : Controller
     {
         private readonly UserManager<UserAccount> _userManager;
-        private readonly RoleManager<UserAccount> _roleManager;
 
-        public UsersController(UserManager<UserAccount> userManager, RoleManager<UserAccount> roleManager)
+        public UsersController(UserManager<UserAccount> userManager)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
         }
         
         [HttpGet]
@@ -49,8 +47,8 @@ namespace Eshop.Controllers
             var user = _userManager.Users.FirstOrDefault(u => u.UserName.Equals(blockRequest.Username)); 
             if (user != null)
             {
-                var role = await _roleManager.GetRoleNameAsync(user);
-                if (role.Equals(UserRoleString.Admin)) return Forbid("Admins cannot be blocked");
+                var isAdmin = await _userManager.IsInRoleAsync(user, UserRoleString.Admin);
+                if (isAdmin) return Forbid("Admins cannot be blocked");
 
                 user.IsBlocked = blockRequest.Block;
                 await _userManager.UpdateAsync(user);

@@ -2,11 +2,11 @@ import generateRequestWithAuth from '../../FunctionalComponents/httpRequests/gen
 import UserListActionTypes from '../actionTypes/UserListActionTypes'
 
 
-const address = '/api/users'
+const loadUsersAddress = '/api/users'
 
 const loadUsers = () => (dispatch) => {
     const request = generateRequestWithAuth('GET', null)
-    fetch(address,request)
+    fetch(loadUsersAddress,request)
         .then((response) => {
             if (response.ok){
                 response.json()
@@ -15,6 +15,7 @@ const loadUsers = () => (dispatch) => {
                         userList: jsonResponse
                     }))
             }
+            else console.log(response.status + " " + response.statusText)
         })
 }
 

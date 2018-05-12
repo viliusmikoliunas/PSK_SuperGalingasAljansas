@@ -34,16 +34,16 @@ class UserTable extends React.Component {
         return (
             <Table responsive>
                 <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Block Status</th>
-                </tr>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Block Status</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {users}
+                    {users}
                 </tbody>
             </Table>
         )
