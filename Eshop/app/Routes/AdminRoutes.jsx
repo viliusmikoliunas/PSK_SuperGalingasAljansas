@@ -1,26 +1,18 @@
 import React from 'react'
-import {Switch} from 'react-router-dom'
-import AdminLayout from '../Layouts/adminLayout/Layout'
-import MainContentLayout from './Main Content Layout/MainContentLayout'
+import {Switch, Route, Redirect} from 'react-router-dom'
+import AdminLayout from '../Layouts/admin/Layout'
 import PrivateRoute from '../Components/CustomRouteComponents/PrivateRoute'
+import userTable from '../Components/UserTable/UserTable'
+
 
 const AdminRoleRoute = ({...rest}) => 
     <PrivateRoute roles={["Admin"]} layout={AdminLayout} {...rest}/>
 
-const sitesRoute = () => {
-    return (
-        <MainContentLayout
-            title='User list'
-            mainTable={<AddNewSiteForm parameters={addNewSiteFormParameters} />}
-        />
-    )
-}
-
 const adminRoute = ({match}) => {
     return (
-        //order matters! last element (in this case <switch>/reports) acts as index redirect
         <Switch>
-            <AdminRoleRoute exact path={`${match.path}/user-list`} component={sitesRoute} />
+            <AdminRoleRoute exact path={`${match.path}/user-list`} component={userTable} />
+            <Route exact path={`${match.path}/`} render={() => <Redirect to={`${match.path}/user-list`}/>}/>
         </Switch>
     )
 }
