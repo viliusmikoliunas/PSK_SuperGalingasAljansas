@@ -1,19 +1,23 @@
 import React from 'react'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import User from './User'
 import {Table} from 'reactstrap'
+import loadUsers from '../../Redux/actions/UserListActions'
+
 
 class UserTable extends React.Component {
     constructor(props) {
         super(props)
     }
+
+    componentDidMount() {
+        this.props.dispatchLoadList()
+    }
+
     render() {
-        const userList = [{
-            'username': 'gaidys',
-            'email': 'asdasdd',
-            'firstname': 'turbo',
-            'lastname': 'equa',
-            'isBlocked': true
-        }]
+        const {userList} = this.props
+        console.log(userList)
         const users = userList.map(user => {
             return (
                 <User 
@@ -24,8 +28,8 @@ class UserTable extends React.Component {
                     lastname={user.lastname}
                     isBlocked={user.isBlocked}
                 />
-            );
-        });
+            )
+        })
 
         return (
             <Table responsive>
@@ -42,8 +46,15 @@ class UserTable extends React.Component {
                 {users}
                 </tbody>
             </Table>
-        );
+        )
     }
 }
-
-export default UserTable
+export default connect(
+    (state) => ({
+        userList: state.UserListReducer.userList
+    }),
+    (dispatch) => bindActionCreators({
+        dispatchLoadList: loadUsers
+    }
+    ,dispatch)
+)(UserTable)

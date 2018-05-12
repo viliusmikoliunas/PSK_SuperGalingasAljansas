@@ -14,7 +14,7 @@ class User extends React.Component {
             <td>{this.props.email}</td>
             <td>{this.props.firstname}</td>
             <td>{this.props.lastname}</td>
-            <td><Button>Block button</Button></td>
+            <td><Button>Block</Button></td>
         </tr>
     )
   }

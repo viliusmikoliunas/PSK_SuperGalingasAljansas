@@ -33,7 +33,7 @@ namespace Eshop.Controllers
                 Firstname = user.Firstname,
                 Lastname = user.Lastname,
                 IsBlocked = user.IsBlocked,
-                UserName = user.UserName
+                Username = user.UserName
             }));
 
             return Ok(userInfoList);

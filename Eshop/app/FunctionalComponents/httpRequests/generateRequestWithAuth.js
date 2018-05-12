@@ -1,11 +1,12 @@
 const generateHttpRequestAuth = (reqMethod,bodyVal) => {
+    const jwtToken = localStorage.getItem('jwtToken')
     return({
         method: reqMethod,
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem['jwtToken']}`
+            'Authorization': `Bearer ${jwtToken}`
         },
-        body: body ? JSON.stringify(body) : undefined
+        body: bodyVal ? JSON.stringify(bodyVal) : undefined
     })
 }
 

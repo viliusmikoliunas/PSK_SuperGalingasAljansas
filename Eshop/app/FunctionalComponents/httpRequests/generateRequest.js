@@ -4,7 +4,7 @@ const generateHttpRequest = (reqMethod,bodyVal) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: body ? JSON.stringify(body) : undefined
+        body: bodyVal ? JSON.stringify(bodyVal) : undefined
     })
 }
 
