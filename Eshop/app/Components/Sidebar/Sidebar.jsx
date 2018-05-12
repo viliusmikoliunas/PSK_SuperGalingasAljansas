@@ -1,6 +1,6 @@
-﻿import React, {Component} from 'react';
-import { Nav, NavItem, NavLink } from 'reactstrap';
-import './SidebarStyles.css';
+﻿import React, {Component} from 'react'
+import { Nav, NavItem, NavLink } from 'reactstrap'
+import './SidebarStyles.css'
 
 export default class Sidebar extends Component {
     render() {
@@ -9,7 +9,7 @@ export default class Sidebar extends Component {
                 <p>List Based</p>
                 <Nav vertical>
                     <NavItem>
-                        <NavLink href="#">Link</NavLink>
+                        <NavLink>Link</NavLink>
                     </NavItem>
                     <NavItem>
                         <NavLink href="#">Link</NavLink>

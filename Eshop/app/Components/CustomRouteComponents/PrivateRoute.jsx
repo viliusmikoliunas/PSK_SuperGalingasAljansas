@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
-import { bindActionCreators } from 'redux';
-import {connect} from 'react-redux';
-import {Redirect, Route, withRouter} from 'react-router-dom';
-import * as actions from '../Redux/actions';
-import RouteWithLayout from './RouteWithLayout';
+import React, {Component} from 'react'
+import { bindActionCreators } from 'redux'
+import {connect} from 'react-redux'
+import {Redirect, Route, withRouter} from 'react-router-dom'
+import RouteWithLayout from './RouteWithLayout'
 
 class PrivateRoute extends Component {
 

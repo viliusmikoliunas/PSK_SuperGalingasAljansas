@@ -1,9 +1,13 @@
-export default (reqMethod,bodyVal) => {
+const generateHttpRequest = (reqMethod,bodyVal) => {
     return({
         method: reqMethod,
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(bodyVal)
+        body: body ? JSON.stringify(body) : undefined
     })
 }
+
+export default generateHttpRequest
+
+export const generatePOSTrequest = (bodyVal) => generateHttpRequest('POST', bodyVal)
