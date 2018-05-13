@@ -2,8 +2,9 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import User from './User'
-import {Table} from 'reactstrap'
+import {Table, Button} from 'reactstrap'
 import loadUsers from '../../Redux/actions/UserListActions'
+import changeBlockStatus from '../../Redux/actions/UserBlockActions'
 
 
 class UserTable extends React.Component {
@@ -15,9 +16,20 @@ class UserTable extends React.Component {
         this.props.dispatchLoadList()
     }
 
+    handleUserBlock(userTableLine){
+        this.setState({
+            userList: {
+                ...this.props.userList,
+                [userTableLine]: {
+                    isBlocked: true
+                }
+            }
+        })
+    }
+
     render() {
         const {userList} = this.props
-        console.log(userList)
+            
         const users = userList.map(user => {
             return (
                 <User 
@@ -27,10 +39,10 @@ class UserTable extends React.Component {
                     firstname={user.firstname}
                     lastname={user.lastname}
                     isBlocked={user.isBlocked}
+                    handleUserBlock={this.handleUserBlock.bind(this)}
                 />
             )
         })
-
         return (
             <Table responsive>
                 <thead>
@@ -54,7 +66,8 @@ export default connect(
         userList: state.UserListReducer.userList
     }),
     (dispatch) => bindActionCreators({
-        dispatchLoadList: loadUsers
+        dispatchLoadList: loadUsers,
+        dispatchBlock: changeBlockStatus
     }
     ,dispatch)
 )(UserTable)

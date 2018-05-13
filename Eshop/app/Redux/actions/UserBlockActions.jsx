@@ -19,7 +19,7 @@ const changeBlockStatus = (username) => (dispatch) => {
                     type: UserBlockActionTypes.BLOCK
                 })
             }
-            else console.log(response.status + " " + response.statusText)
+            else alert(response.status + " " + response.statusText)
         })
 }
 

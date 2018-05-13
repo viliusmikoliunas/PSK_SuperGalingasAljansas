@@ -38,7 +38,9 @@ namespace Eshop.Controllers
 
             if (result.Succeeded)
             {
-                var appUser = _userManager.Users.SingleOrDefault(r => r.UserName == model.Username);
+                var appUser =  _userManager.Users.SingleOrDefault(r => r.UserName == model.Username);
+                if (appUser.IsBlocked) return Forbid("Your account is blocked for indefinite time");
+
                 var userRoles = await _userManager.GetRolesAsync(appUser);
                 var role =  userRoles.Contains(UserRoles.Admin.ToString())
                     ? UserRoles.Admin
