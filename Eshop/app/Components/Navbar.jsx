@@ -23,19 +23,25 @@ class Navbar extends Component {
         this.state = {
             isOpen: false
         };
-        this.userElement = localStorage['jwtToken']
-            ?   <div>
-                    Welcome {(parseJwt(localStorage['jwtToken']))['sub']}
-                    <Button onClick={this.props.dispatchLogout}>Logout</Button>
-                </div>
-            :   <Button tag={Link} to='/login'>Login</Button>
     }
+
+    componentDidMount(){
+        this.props.isLoggedIn
+    }
+
     toggle() {
         this.setState({
             isOpen: !this.state.isOpen
         });
     }
     render() {
+        const userElement = this.props.isLoggedIn && localStorage['jwtToken'] != null
+            ?   <div>
+                    Welcome {(parseJwt(localStorage['jwtToken']))['sub']}
+                    <Button onClick={() => this.props.dispatchLogout()}>Logout</Button>
+                </div>
+            :   <Button tag={Link} to='/login'>Login</Button>
+
         return (
             <div>
                 <ReactstrapNavBar color="primary" light expand="md">
@@ -44,7 +50,7 @@ class Navbar extends Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                {this.userElement}
+                                {userElement}
                             </NavItem>
                         </Nav>
                     </Collapse>

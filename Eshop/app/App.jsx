@@ -3,6 +3,8 @@ import { hot } from 'react-hot-loader'
 import React, {Component} from 'react'
 import { render } from 'react-dom'
 import { Route, Router } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import './styles.css'
 import history from './Redux/history'
 //layouts
@@ -17,6 +19,11 @@ import adminRoute from './Routes/AdminRoutes'
 
 
 class App extends Component{
+
+	componentDidMount(){
+		//console.log(this.props.loggedIn)
+	}
+
 	render(){
 		return(
 			<Router key={Math.random()} history={history}>
@@ -30,5 +37,15 @@ class App extends Component{
 		)
 	}
 }
+const connectedApp = connect(
+    (state) => ({
+        loggedIn: state.LoginReducer.loggedIn
+    }),
+    /*(dispatch) => bindActionCreators({
+        dispatchLoadList: loadUsers,
+        dispatchBlockUser: blockUser
+    }
+    ,dispatch)*/null
+)(App)
 
-export default hot(module)(App)
+export default hot(module)(connectedApp)
