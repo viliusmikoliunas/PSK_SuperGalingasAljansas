@@ -7,7 +7,6 @@ namespace Eshop.Migrations
 {
     public partial class SeedRoles : Migration
     {
-        //first role has to be admin, other roles order doesn't matter
         private readonly IdentityRole[] _roles =
         {
             new IdentityRole{Id = "1", ConcurrencyStamp = Guid.NewGuid().ToString("D"),
@@ -18,7 +17,7 @@ namespace Eshop.Migrations
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            var roleSeed = 
+            var roleSeed =
                 "INSERT INTO [dbo].[AspNetRoles] ([Id], [ConcurrencyStamp], [Name], [NormalizedName]) " +
                 $"VALUES ('{_roles[0].Id}', '{_roles[0].ConcurrencyStamp}', '{_roles[0].Name}', '{_roles[0].NormalizedName}'), " +
                 $"('{_roles[1].Id}', '{_roles[1].ConcurrencyStamp}', '{_roles[1].Name}', '{_roles[1].NormalizedName}')";

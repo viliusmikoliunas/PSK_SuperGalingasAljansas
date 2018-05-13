@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Eshop.Data.Entities.JoinTables;
-using Eshop.DataContracts.DataTransferObjects;
 using Newtonsoft.Json;
 
 namespace Eshop.Data.Entities

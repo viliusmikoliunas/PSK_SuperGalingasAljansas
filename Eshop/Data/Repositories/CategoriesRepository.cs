@@ -2,8 +2,6 @@
 using System.Linq;
 using Eshop.Data.Entities;
 using Eshop.DataContracts.RepositoryInterfaces;
-using Microsoft.EntityFrameworkCore;
-using Eshop.DataContracts.DataTransferObjects;
 
 namespace Eshop.Data.Repositories
 {
@@ -43,9 +41,7 @@ namespace Eshop.Data.Repositories
 
         public Category GetCategory(int id)
         {
-            var selectedCategory = _dbContext.Categories.FirstOrDefault(category => category.Id == id);
-            return selectedCategory;
+            return _dbContext.Categories.FirstOrDefault(category => category.Id == id);
         }
     }
 }
-

@@ -5,43 +5,10 @@ using System.Collections.Generic;
 
 namespace Eshop.Migrations
 {
-    public partial class MainTablesCreation : Migration
+    public partial class AddMainTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "Title",
-                table: "Items",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldNullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "PictureLocation",
-                table: "Items",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Firstname",
-                table: "AspNetUsers",
-                nullable: true);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "IsBlocked",
-                table: "AspNetUsers",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Lastname",
-                table: "AspNetUsers",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Discriminator",
-                table: "AspNetUsers",
-                nullable: false,
-                defaultValue: "");
-
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -56,23 +23,39 @@ namespace Eshop.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
+                name: "Items",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Cost = table.Column<decimal>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    PictureLocation = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Confirmed = table.Column<bool>(nullable: false),
+                    Cost = table.Column<decimal>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     HasBeenPaidFor = table.Column<bool>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    UserId1 = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Orders_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -82,8 +65,7 @@ namespace Eshop.Migrations
                 name: "ShoppingCarts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -188,7 +170,8 @@ namespace Eshop.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ItemId = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
-                    ShoppingCartId = table.Column<int>(nullable: false)
+                    ShoppingCartId = table.Column<int>(nullable: false),
+                    ShoppingCartId1 = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -200,11 +183,11 @@ namespace Eshop.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ShoppingCartItems_ShoppingCarts_ShoppingCartId",
-                        column: x => x.ShoppingCartId,
+                        name: "FK_ShoppingCartItems_ShoppingCarts_ShoppingCartId1",
+                        column: x => x.ShoppingCartId1,
                         principalTable: "ShoppingCarts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -252,9 +235,9 @@ namespace Eshop.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_UserId1",
+                name: "IX_Orders_UserId",
                 table: "Orders",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShoppingCartItems_ItemId",
@@ -262,9 +245,9 @@ namespace Eshop.Migrations
                 column: "ItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShoppingCartItems_ShoppingCartId",
+                name: "IX_ShoppingCartItems_ShoppingCartId1",
                 table: "ShoppingCartItems",
-                column: "ShoppingCartId");
+                column: "ShoppingCartId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShoppingCarts_UserId",
@@ -301,33 +284,10 @@ namespace Eshop.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
+                name: "Items");
+
+            migrationBuilder.DropTable(
                 name: "ShoppingCarts");
-
-            migrationBuilder.DropColumn(
-                name: "PictureLocation",
-                table: "Items");
-
-            migrationBuilder.DropColumn(
-                name: "Firstname",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "IsBlocked",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "Lastname",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "Discriminator",
-                table: "AspNetUsers");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Title",
-                table: "Items",
-                nullable: true,
-                oldClrType: typeof(string));
         }
     }
 }
