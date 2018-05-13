@@ -13,6 +13,9 @@ export default class Sidebar extends Component {
                         <Link to='/admin'>Admin page</Link>
                     </NavItem>
                 </Nav>
+                <NavItem>
+                    <Link to='/user'>User page</Link>
+                </NavItem>
             </div>
         )
     }

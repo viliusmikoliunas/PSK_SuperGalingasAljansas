@@ -5,14 +5,22 @@ import './sidebar.css'
 
 const Sidebar = (props) => {
   const adminRoutes = 
-    <ul>
-      <SidebarLink to='/' matchexactpathforactive={1}>Main Page</SidebarLink>
+    <div>
       <SidebarLink to='/admin/user-list'>User List</SidebarLink>
-    </ul>
+    </div>
+
+  const userRoutes = 
+    <div>
+      <SidebarLink to='/user/shopping-cart'>Shopping Cart</SidebarLink>
+    </div>
 
   return (
     <div id="sidebar">
-      {adminRoutes}
+      <ul>
+        <SidebarLink to='/' matchexactpathforactive={1}>Main Page</SidebarLink>
+        {adminRoutes}
+        {userRoutes}
+      </ul>
     </div>
   )
 }
