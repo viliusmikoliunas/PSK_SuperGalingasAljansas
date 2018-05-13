@@ -15,11 +15,11 @@ const login = (loginValues) => (dispatch) => {
                 response.text().then(
                     (jwtToken) => {
                         localStorage.setItem('jwtToken', jwtToken)
+                        dispatch({
+                            type: LoginActionTypes.LOGIN_SUCCESS
+                        })
                     }
                 )
-                dispatch({
-                    type: LoginActionTypes.LOGIN_SUCCESS
-                })
                 history.push('/')
             }
             else {
@@ -37,9 +37,13 @@ const login = (loginValues) => (dispatch) => {
         })
 }
 
-export const logout = () => {
-    localStorage.removeItem('jwtToken')
-    history.push('/')
-}
-
 export default login
+
+export const logout = () => (dispatch) => {
+    localStorage.removeItem('jwtToken')
+    dispatch({
+        type: LoginActionTypes.LOGOUT
+    })
+    history.push('/')
+    alert("You have logged out")
+}
