@@ -15,11 +15,11 @@ const login = (loginValues) => (dispatch) => {
                 response.text().then(
                     (jwtToken) => {
                         localStorage.setItem('jwtToken', jwtToken)
+                        dispatch({
+                            type: LoginActionTypes.LOGIN_SUCCESS
+                        })
                     }
                 )
-                dispatch({
-                    type: LoginActionTypes.LOGIN_SUCCESS
-                })
                 history.push('/')
             }
             else {

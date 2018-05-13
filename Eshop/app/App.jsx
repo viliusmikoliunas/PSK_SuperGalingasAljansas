@@ -20,10 +20,6 @@ import adminRoute from './Routes/AdminRoutes'
 
 class App extends Component{
 
-	componentDidMount(){
-		//console.log(this.props.loggedIn)
-	}
-
 	render(){
 		return(
 			<Router key={Math.random()} history={history}>
@@ -37,15 +33,5 @@ class App extends Component{
 		)
 	}
 }
-const connectedApp = connect(
-    (state) => ({
-        loggedIn: state.LoginReducer.loggedIn
-    }),
-    /*(dispatch) => bindActionCreators({
-        dispatchLoadList: loadUsers,
-        dispatchBlockUser: blockUser
-    }
-    ,dispatch)*/null
-)(App)
 
-export default hot(module)(connectedApp)
+export default hot(module)(App)
