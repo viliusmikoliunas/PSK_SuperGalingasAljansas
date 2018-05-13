@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
-import { bindActionCreators } from 'redux';
-import {connect} from 'react-redux';
-import {Redirect, Route, withRouter} from 'react-router-dom';
-import * as actions from '../Redux/actions';
-import RouteWithLayout from './RouteWithLayout';
+import React, {Component} from 'react'
+import { bindActionCreators } from 'redux'
+import {connect} from 'react-redux'
+import {Redirect, Route, withRouter} from 'react-router-dom'
+import RouteWithLayout from './RouteWithLayout'
 
 class PrivateRoute extends Component {
 
@@ -27,7 +26,7 @@ class PrivateRoute extends Component {
             ? '/login' : '/admin';
         
         return (
-            <Route {...rest} render={(props) => (
+            <Route {...rest} render={(props) => (<RouteWithLayout layout={layout} component={Component} {...props}/>/*
                 this.props.loggingIn
                 ? null
                 : 
@@ -38,17 +37,17 @@ class PrivateRoute extends Component {
                         state: { from: props.location }
                     }}/>
                 )
-            )} />
+            */)} />
         )
     }   
 }
 
 const connectedPrivateRoute = connect(
     (state) => ({
-        loggingIn: state.userInfoReducer.loading,
-        loggedIn: state.userInfoReducer.userInfo
+        loggingIn: state.LoginReducer.loading,
+        loggedIn: state.LoginReducer.userInfo
     }),
     null
-)(PrivateRoute);
+)(PrivateRoute)
 
-export default withRouter(connectedPrivateRoute);
+export default withRouter(connectedPrivateRoute)

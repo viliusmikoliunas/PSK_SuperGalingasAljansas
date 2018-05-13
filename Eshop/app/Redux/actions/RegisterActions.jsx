@@ -1,12 +1,12 @@
 import LoginActionTypes from '../actionTypes/RegisterActionTypes'
-import generateRequest from '../../FunctionalComponents/httpRequests/generateRequest'
+import {generatePOSTrequest} from '../../FunctionalComponents/httpRequests/generateRequest'
 import history from '../../Redux/history'
 
 
 const registerAddress = '/api/account/register'
 
 const register = (loginValues) => (dispatch) => {
-    fetch(registerAddress,generateRequest('POST',loginValues))
+    fetch(registerAddress,generatePOSTrequest(loginValues))
         .then(response => {
             if (response.ok){
                 response.text().then(

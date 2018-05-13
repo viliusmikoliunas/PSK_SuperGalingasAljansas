@@ -6,7 +6,7 @@ import { loadItems } from '../../Redux/actions/MainPageActions'
 import { Table } from 'reactstrap'
 import ItemRow from './ItemRow/ItemRow'
 
-class MainPage extends React.Component {
+class ItemTable extends React.Component {
   render() {
     const htmlItems = [];
     const {items} = this.props;
@@ -33,9 +33,10 @@ class MainPage extends React.Component {
         </tbody>
       </Table>
     </div>
-    );
+    )
   }
 }
+
 export default connect(
     (state) => ({
         items: state.ItemTableReducer.items
@@ -44,4 +45,4 @@ export default connect(
         dispatchLoadItems: loadItems
     }
     ,dispatch)
-)(MainPage)
+)(ItemTable)
