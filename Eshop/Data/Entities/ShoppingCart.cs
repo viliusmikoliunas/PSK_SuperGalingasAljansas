@@ -6,7 +6,7 @@ namespace Eshop.Data.Entities
     public class ShoppingCart
     {
         [ForeignKey("UserAccount")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public virtual UserAccount User { get; set; }
 

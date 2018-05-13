@@ -19,37 +19,39 @@ namespace Eshop.Data.Repositories
 
         public IEnumerable<Item> GetAll()
         {
-            return _dbContext.Items.ToList();
+            //return _dbContext.Items.ToList();
+            return null;
         }
 
         public Item Add(Item newItem)
-        {
+        {/*
             _dbContext.Items.Add(newItem);
-            _dbContext.SaveChanges();
+            _dbContext.SaveChanges();*/
             return newItem;
         }
 
         public bool Delete(int itemId)
-        {
+        {/*
             var item_ = _dbContext.Items.FirstOrDefault(item => item.Id == itemId); 
             if (item_ == null) return false;
             _dbContext.Items.Remove(item_);
-            _dbContext.SaveChanges();
+            _dbContext.SaveChanges();*/
             return true;
         }      
 
         public Item Update(Item itemToUpdate)
-        {         
+        {     /*    
             _dbContext.Items.Update(itemToUpdate);
-            _dbContext.SaveChanges();
+            _dbContext.SaveChanges();*/
             return itemToUpdate;
         }
 
         public Item GetItem(int id)
-        {
+        {/*
             // var selectedItem = _dbContext.Items.FirstOrDefault(item => item.Id == id);
             var selectedItem = _dbContext.Items.Include(item=>item.ItemTraits).Include(item =>item.ItemCategories).FirstOrDefault(item => item.Id == id);
-            return selectedItem;
+            return selectedItem;*/
+            return null;
         }
     }
 }
