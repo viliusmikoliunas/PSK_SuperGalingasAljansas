@@ -25,7 +25,7 @@ class Navbar extends Component {
         };
         this.userElement = localStorage['jwtToken']
             ?   <div>
-                    <text>Welcome {(parseJwt(localStorage['jwtToken']))['sub']}</text>
+                    Welcome {(parseJwt(localStorage['jwtToken']))['sub']}
                     <Button onClick={this.props.dispatchLogout}>Logout</Button>
                 </div>
             :   <Button tag={Link} to='/login'>Login</Button>

@@ -12,7 +12,7 @@ namespace Eshop.Data
         {
             
         }
-        //this is there you put tables to DB
+
         public DbSet<Category> Categories { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -23,7 +23,7 @@ namespace Eshop.Data
         public DbSet<Trait> Traits { get; set; }
         public DbSet<UserAccount> UserAccounts { get; set; }
 
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

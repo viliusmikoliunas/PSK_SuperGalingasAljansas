@@ -1,0 +1,40 @@
+#sidebar ul li{
+    color: white;
+    list-style:none;
+    padding:20px 15px;
+    border-bottom:2px solid rgba(100,100,100,0.3);
+    text-transform: uppercase;
+}
+
+#sidebar ul a{
+    text-decoration: unset;
+}
+
+#sidebar ul a:visited{
+    color: inherit;
+    text-decoration: inherit;
+}
+
+#sidebar ul :hover{
+    background-color: #3f6c94 !important;
+}
+
+#sidebar ul{
+    margin-top: 0px;
+}
+
+.active{
+    background-color: #051625;
+}
+
+.active::after {
+    content: '';
+    position: relative;
+    width: 0;
+    height: 0;
+    right: -25px;
+    float: right;
+    border-style: solid;
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent #051625;
+}

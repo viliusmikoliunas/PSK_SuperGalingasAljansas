@@ -48,14 +48,15 @@ namespace Eshop
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireNonAlphanumeric = true;
-                /*
-                // Lockout settings
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
-                options.Lockout.MaxFailedAccessAttempts = 10;
-                options.Lockout.AllowedForNewUsers = true;
-                */
+                options.Password.RequireDigit = false;
+
                 // User settings
                 options.User.RequireUniqueEmail = true;
+
+                // Lockout settings
+                options.Lockout.AllowedForNewUsers = false;
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
             });
 
             //Add Jwt Authentication
@@ -83,8 +84,10 @@ namespace Eshop
                     };
                 });
 
-            //Dependency Injection Stuff - Repositories
+            //Dependency Injection - Repositories
             services.AddScoped<IItemsRepository, ItemsRepository>();
+            services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+            services.AddScoped<ITraitsRepository, TraitsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

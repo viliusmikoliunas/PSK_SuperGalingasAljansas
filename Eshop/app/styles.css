@@ -1,4 +1,4 @@
-﻿.sidebar {
+﻿/*.sidebar {
     width: 12%;
     min-width: 175px;
     border-width: 1px;
@@ -7,7 +7,7 @@
     margin: 10px;
     padding: 5px;
     float: left;
-}
+}*/
 .MainField {
     margin: 20px;
     min-width: 500px;
