@@ -15,6 +15,8 @@ namespace Eshop.Migrations
             NormalizedUserName = "ADMIN",
             Email = "superShop@gmail.com",
             NormalizedEmail = "SUPERSHOP@GMAIL.COM",
+            Firstname = "Petras",
+            Lastname = "Pavardenis",
             IsBlocked = false,
             Id = Guid.NewGuid().ToString("D"),
             ConcurrencyStamp = Guid.NewGuid().ToString("D"),
