@@ -10,6 +10,7 @@ namespace Eshop.Data.Entities
         [Required]
         public DateTime Date { get; set; }
         public bool HasBeenPaidFor { get; set; }
+        public bool Confirmed { get; set; }
         [Required]
         public decimal Cost { get; set; }
 

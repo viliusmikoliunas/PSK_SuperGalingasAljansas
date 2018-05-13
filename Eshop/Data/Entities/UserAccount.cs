@@ -9,8 +9,8 @@ namespace Eshop.Data.Entities
         public string Lastname { get; set; }
         public bool IsBlocked { get; set; }
 
-        //public virtual ShoppingCart ShoppingCart { get; set; }
+        public virtual ShoppingCart ShoppingCart { get; set; }
 
-        //public ICollection<Order> Orders { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 }
