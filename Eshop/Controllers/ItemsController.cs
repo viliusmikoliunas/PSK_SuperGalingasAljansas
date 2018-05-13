@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Eshop.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Items")]
+    [Route("api/items")]
     public class ItemsController : Controller
     {
         private readonly IItemsRepository _itemsRepository;
@@ -60,7 +60,7 @@ namespace Eshop.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public Item GetItem(int id)
         {
             return _itemsRepository.GetItem(id);
