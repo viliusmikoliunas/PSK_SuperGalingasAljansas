@@ -13,6 +13,20 @@ export default (state = initialState, action) => {
                 userList: action.userList
             }
         }
+        case (UserListActionTypes.BLOCK_USER):{
+            return {
+                ...state,
+                userList: state.userList.map(user => {
+                    if (user.username === action.username){
+                        return {
+                            ...user,
+                            isBlocked: true
+                        }
+                    }
+                    return user
+                })
+            }
+        }
         default:
             return state
     }
