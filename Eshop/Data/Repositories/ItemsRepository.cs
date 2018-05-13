@@ -2,6 +2,8 @@
 using System.Linq;
 using Eshop.Data.Entities;
 using Eshop.DataContracts.RepositoryInterfaces;
+using Microsoft.EntityFrameworkCore;
+using Eshop.DataContracts.DataTransferObjects;
 
 namespace Eshop.Data.Repositories
 {
@@ -24,6 +26,20 @@ namespace Eshop.Data.Repositories
             _dbContext.Items.Add(newItem);
             _dbContext.SaveChanges();
             return newItem;
+        }
+
+        public Item Update(Item itemToUpdate)
+        {         
+            _dbContext.Items.Update(itemToUpdate);
+            _dbContext.SaveChanges();
+            return itemToUpdate;
+        }
+
+        public Item GetItem(int id)
+        {
+            // var selectedItem = _dbContext.Items.FirstOrDefault(item => item.Id == id);
+            var selectedItem = _dbContext.Items.Include(item=>item.ItemTraits).Include(item =>item.ItemCategories).FirstOrDefault(item => item.Id == id);
+            return selectedItem;
         }
     }
 }
