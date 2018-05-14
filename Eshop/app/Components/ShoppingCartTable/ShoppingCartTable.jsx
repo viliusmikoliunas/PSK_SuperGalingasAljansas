@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Table, Button} from 'reactstrap'
 import loadUsers from '../../Redux/actions/UserListActions'
-import changeBlockStatus from '../../Redux/actions/UserBlockActions'
 import ShoppingCartItem from './ShoppingCartItem'
 
 class ShoppingCartTable extends React.Component {
@@ -16,16 +15,13 @@ class ShoppingCartTable extends React.Component {
     }
 
     render() {
-        //const {cartItemList} = this.props
-        const cartItemList = [{
-            imagePath: 'https://www.ikea.com/PIAimages/0238241_PE377689_S5.JPG',
-            title: 'Kedute',
-            price: 10.56,
-            quantity: 2
-        }]
+        const {cartItemList} = this.props
+        let key = 1
+
         const cartItems = cartItemList.map(cartItem => {
             return (
                 <ShoppingCartItem 
+                    key={key++}
                     imagePath={cartItem.imagePath}
                     title={cartItem.title}
                     price={cartItem.price}
@@ -37,27 +33,33 @@ class ShoppingCartTable extends React.Component {
             <Table responsive>
                 <thead>
                     <tr>
-                        <th>Image</th>
+                        <th></th>
                         <th>Title</th>
                         <th>Unit Price</th>
                         <th>Quantity</th>
-                        <th>Total Price</th>
+                        <th>Remove Item?</th>
                     </tr>
                 </thead>
                 <tbody>
                     {cartItems}
                 </tbody>
+                <tbody>
+                    <tr>
+                        <td/>
+                        <td/>
+                        <td/>
+                        <td>Total Price</td>
+                        <td>10</td>
+                    </tr>
+                </tbody>
             </Table>
         )
     }
 }
+
 export default connect(
     (state) => ({
-        userList: state.UserListReducer.userList
+        cartItemList: state.ShoppingCartReducer.shoppingCart
     }),
-    (dispatch) => bindActionCreators({
-        dispatchLoadList: loadUsers,
-        dispatchBlock: changeBlockStatus
-    }
-    ,dispatch)
+    null
 )(ShoppingCartTable)

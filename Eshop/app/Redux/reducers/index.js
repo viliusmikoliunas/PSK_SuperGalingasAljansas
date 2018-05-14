@@ -7,12 +7,14 @@ import LoginReducer from './LoginReducer'
 import RegisterReducer from './RegisterReducer'
 import UserListReducer from './UserListReducer'
 import UserBlockStatusReducer from './UserListReducer'
+import ShoppingCartReducer from './ShoppingCartReducer'
 
 
 const rootReducer = combineReducers({
     ItemTableReducer,
     LoginReducer,
     RegisterReducer,
+    ShoppingCartReducer,
     UserBlockStatusReducer,
     UserListReducer,
     routing: routerReducer,

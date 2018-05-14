@@ -1,0 +1,3 @@
+export default {
+    LOAD_SHOPPING_CART: 'LOAD_SHOPPING_CART'
+}
