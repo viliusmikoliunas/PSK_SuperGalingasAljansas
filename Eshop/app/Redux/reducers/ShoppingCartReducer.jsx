@@ -9,6 +9,13 @@ const initialState = {
             price: 10.56,
             quantity: 2,
             id: 1
+        },
+        {
+            imagePath: 'https://www.ikea.com/PIAimages/0238241_PE377689_S5.JPG',
+            title: 'Staliukas',
+            price: 5.61,
+            quantity: 3,
+            id: 2
         }
     ]
 }
@@ -44,6 +51,13 @@ export default (state = initialState, action) => {
                     }
                     return shoppingCartItem
                 })
+            }
+        }
+
+        case (ShoppingCartActionTypes.REMOVE_ITEM):{
+            return{
+                ...state,
+                shoppingCart: state.shoppingCart.filter(item => item.id !== action.shoppingCartItemId)
             }
         }
 
