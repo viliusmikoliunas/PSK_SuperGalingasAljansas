@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux'
 import {Table, Button} from 'reactstrap'
 import ShoppingCartItem from './ShoppingCartItem'
 import toFixed from '../../FunctionalComponents/formatting/toFixed'
-import loadCartFromDb, {loadShoppingCartFromLocalStorage} from '../../Redux/actions/ShoppingCartActions'
+import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart} from '../../Redux/actions/ShoppingCartActions'
 
 
 class ShoppingCartTable extends React.Component {
@@ -40,7 +40,7 @@ class ShoppingCartTable extends React.Component {
     }
 
     render() {
-        const {cartItemList} = this.props
+        const {cartItemList, dispatchClearCart} = this.props
         let total = 0
         const cartItems = cartItemList.map(cartItem => {
             total += cartItem.price*cartItem.quantity
@@ -72,10 +72,13 @@ class ShoppingCartTable extends React.Component {
                 <tbody>
                     <tr>
                         <td/>
-                        <td/>
-                        <td/>
                         <td>Total Price</td>
                         <td>{toFixed(total,2)}</td>
+                        <td/>
+                        <td><Button onClick={() => dispatchClearCart()}>Clear Cart</Button></td>
+                    </tr>
+                    <tr>
+                        <td colSpan="5"><Button>Proceed to checkout</Button></td>
                     </tr>
                 </tbody>
             </Table>
@@ -90,7 +93,8 @@ export default connect(
     }),
     (dispatch) => bindActionCreators({
         dispatchLoadCartFromDb: loadCartFromDb,
-        dispatchLoadCartFromLocalStorage: loadShoppingCartFromLocalStorage
+        dispatchLoadCartFromLocalStorage: loadShoppingCartFromLocalStorage,
+        dispatchClearCart: clearCart
     },
     dispatch)
 )(ShoppingCartTable)

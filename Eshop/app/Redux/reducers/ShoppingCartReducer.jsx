@@ -68,6 +68,13 @@ export default (state = initialState, action) => {
             }
         }
 
+        case (ShoppingCartActionTypes.CLEAR_ALL_ITEMS):{
+            return{
+                ...state,
+                shoppingCart: []
+            }
+        }
+
         default:
             return state
     }
