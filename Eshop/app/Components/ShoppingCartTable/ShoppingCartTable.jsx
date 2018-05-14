@@ -8,8 +8,8 @@ import toFixed from '../../FunctionalComponents/formatting/toFixed'
 
 class ShoppingCartTable extends React.Component {
 
-    handleManualQuantityInput(quantityFieldId, value){
-
+    componentWillUnmount(){
+        //save changes
     }
 
     render() {

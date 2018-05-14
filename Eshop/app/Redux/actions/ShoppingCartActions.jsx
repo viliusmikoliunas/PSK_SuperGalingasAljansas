@@ -15,6 +15,14 @@ export const decrementQuantity = (shoppingCartItemId) => (dispatch) => {
     })
 }
 
+export const updateQuantity = (shoppingCartItemId, newQuantity) => (dispatch) => {
+    dispatch({
+        type: ShoppingCartActionTypes.UPDATE_QUANTITY_FIELD,
+        shoppingCartItemId: shoppingCartItemId,
+        newQuantity: newQuantity
+    })
+}
+
 export const removeFromCart = (shoppingCartItemId) => (dispatch) => {
     dispatch({
         type: ShoppingCartActionTypes.REMOVE_ITEM,

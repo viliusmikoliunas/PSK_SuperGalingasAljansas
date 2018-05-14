@@ -54,6 +54,21 @@ export default (state = initialState, action) => {
             }
         }
 
+        case(ShoppingCartActionTypes.UPDATE_QUANTITY_FIELD):{
+            return{
+                ...state,
+                shoppingCart: state.shoppingCart.map(shoppingCartItem => {
+                    if (shoppingCartItem.id === action.shoppingCartItemId){
+                        return {
+                            ...shoppingCartItem,
+                            quantity: action.newQuantity
+                        }
+                    }
+                    return shoppingCartItem
+                })
+            }
+        }
+
         case (ShoppingCartActionTypes.REMOVE_ITEM):{
             return{
                 ...state,
