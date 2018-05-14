@@ -4,12 +4,39 @@ import {bindActionCreators} from 'redux'
 import {Table, Button} from 'reactstrap'
 import ShoppingCartItem from './ShoppingCartItem'
 import toFixed from '../../FunctionalComponents/formatting/toFixed'
+import loadCartFromDb, {loadShoppingCartFromLocalStorage} from '../../Redux/actions/ShoppingCartActions'
 
 
 class ShoppingCartTable extends React.Component {
+    constructor(){
+        super()
+        this.onLeavingCart = this.onLeavingCart.bind(this)
+    }
+
+    onLeavingCart(){
+        const {loggedIn} = this.props
+        if (loggedIn){
+            //send cart to DB
+        }
+        else {
+            localStorage.setItem('shoppingCart', JSON.stringify(this.props.cartItemList))
+        }
+    }
+
+    componentDidMount(){
+        window.addEventListener('beforeunload', this.onLeavingCart)
+        const {loggedIn, dispatchLoadCartFromDb, dispatchLoadCartFromLocalStorage} = this.props
+        if (loggedIn){
+            dispatchLoadCartFromDb()
+        }
+        else {
+            dispatchLoadCartFromLocalStorage()
+        }
+    }
 
     componentWillUnmount(){
-        //save changes
+        this.onLeavingCart()
+        window.removeEventListener('beforeunload', this.onLeavingCart)
     }
 
     render() {
@@ -58,10 +85,12 @@ class ShoppingCartTable extends React.Component {
 
 export default connect(
     (state) => ({
-        cartItemList: state.ShoppingCartReducer.shoppingCart
+        cartItemList: state.ShoppingCartReducer.shoppingCart,
+        loggedIn: state.LoginReducer.loggedIn
     }),
     (dispatch) => bindActionCreators({
-
+        dispatchLoadCartFromDb: loadCartFromDb,
+        dispatchLoadCartFromLocalStorage: loadShoppingCartFromLocalStorage
     },
     dispatch)
 )(ShoppingCartTable)
