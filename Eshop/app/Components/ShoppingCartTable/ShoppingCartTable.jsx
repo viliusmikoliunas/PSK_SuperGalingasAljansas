@@ -3,13 +3,17 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Table, Button} from 'reactstrap'
 import ShoppingCartItem from './ShoppingCartItem'
-import {incrementQuantity} from '../../Redux/actions/ShoppingCartActions'
+import {incrementQuantity, decrementQuantity} from '../../Redux/actions/ShoppingCartActions'
 
 
 class ShoppingCartTable extends React.Component {
 
     handleQuantityIncrement(quantityFieldId){
         this.props.dispatchIncrementQuantity(quantityFieldId)
+    }
+
+    handleQuantityDecrement(quantityFieldId){
+        this.props.dispatchDecrementQuantity(quantityFieldId)
     }
 
     render() {
@@ -25,6 +29,7 @@ class ShoppingCartTable extends React.Component {
                     price={cartItem.price}
                     quantity={cartItem.quantity}
                     incrementQuantity={this.handleQuantityIncrement.bind(this)}
+                    decrementQuantity={this.handleQuantityDecrement.bind(this)}
                 />
             )
         })
@@ -61,7 +66,8 @@ export default connect(
         cartItemList: state.ShoppingCartReducer.shoppingCart
     }),
     (dispatch) => bindActionCreators({
-        dispatchIncrementQuantity: incrementQuantity
+        dispatchIncrementQuantity: incrementQuantity,
+        dispatchDecrementQuantity: decrementQuantity
     },
     dispatch)
 )(ShoppingCartTable)

@@ -30,6 +30,23 @@ export default (state = initialState, action) => {
             }
         }
 
+        case(ShoppingCartActionTypes.DECREMENT_QUANTITY):{
+            return{
+                ...state,
+                shoppingCart: state.shoppingCart.map(shoppingCartItem => {
+                    if (shoppingCartItem.id === action.shoppingCartItemId){
+                        return {
+                            ...shoppingCartItem,
+                            quantity: shoppingCartItem.quantity > 1 
+                                ? shoppingCartItem.quantity-1 
+                                : shoppingCartItem.quantity
+                        }
+                    }
+                    return shoppingCartItem
+                })
+            }
+        }
+
         default:
             return state
     }
