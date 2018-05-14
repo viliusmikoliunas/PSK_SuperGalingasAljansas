@@ -3,6 +3,8 @@ import { hot } from 'react-hot-loader'
 import React, {Component} from 'react'
 import { render } from 'react-dom'
 import { Route, Router } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import './styles.css'
 import history from './Redux/history'
 //layouts
@@ -18,6 +20,7 @@ import userRoute from './Routes/UserRoutes'
 
 
 class App extends Component{
+
 	render(){
 		return(
 			<Router key={Math.random()} history={history}>
