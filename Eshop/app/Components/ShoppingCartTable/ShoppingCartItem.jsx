@@ -1,16 +1,9 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
 import {Button,InputGroup,InputGroupAddon,Input} from 'reactstrap'
 
 
-class User extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
-  render() {
-    const {imagePath, title, price, quantity} = this.props
+const ShoppingCartItem = (props) => {
+    const {id, imagePath, title, price, quantity, incrementQuantity} = props
     return(
         <tr>
             <td><img src={imagePath} height="100" height="100"/></td>
@@ -19,21 +12,12 @@ class User extends React.Component {
             <td>      
 			<InputGroup>
 				<InputGroupAddon addonType="prepend"><Button>-</Button></InputGroupAddon>
-				<Input />
-				<InputGroupAddon addonType="append"><Button>+</Button></InputGroupAddon>
+				<Input value={quantity}></Input>
+				<InputGroupAddon addonType="append"><Button onClick={() => incrementQuantity(id)}>+</Button></InputGroupAddon>
 			</InputGroup>
             </td>
         </tr>
     )
-  }
 }
 
-export default connect(
-	(state) => ({
-		blockStatus: state.UserBlockStatusReducer.blockStatus
-	}),
-	(dispatch) => bindActionCreators({
-    
-  },
-  dispatch)
-)(User)
+export default ShoppingCartItem
