@@ -5,6 +5,9 @@ import {Table, Button} from 'reactstrap'
 
 
 class ItemView extends React.Component {
+    //first check if item was passed from above
+    //if not then download item info now
+
 
     componentDidMount() {
 
