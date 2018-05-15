@@ -1,12 +1,12 @@
 import React from 'react'
 import {Switch, Route, Redirect} from 'react-router-dom'
+import ItemViewLayout from '../Layouts/ItemViewLayout'
 import RouteWithLayout from '../Components/CustomRouteComponents/RouteWithLayout'
 
 
 const itemRoute = ({match}) => {
-    const tempComp = random(match.params.id)
     return (
-        tempComp
+        <ItemViewLayout/>
     )
 }
 
