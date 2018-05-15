@@ -7,15 +7,15 @@ export default class Sidebar extends Component {
     render() {
         return (
             <div className="mainPageSidebar">
-                <p>List Based</p>
+                <p>Categories soon(TM)</p>
                 <Nav vertical>
                     <NavItem>
                         <Link to='/admin'>Admin page</Link>
+                    </NavItem>                
+                    <NavItem>
+                        <Link to='/user'>User page</Link>
                     </NavItem>
                 </Nav>
-                <NavItem>
-                    <Link to='/user'>User page</Link>
-                </NavItem>
             </div>
         )
     }

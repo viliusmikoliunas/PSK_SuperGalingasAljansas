@@ -85,7 +85,7 @@ class ShoppingCartTable extends React.Component {
         )
     }
 }
-//toFixed(total,2)
+
 export default connect(
     (state) => ({
         cartItemList: state.ShoppingCartReducer.shoppingCart,

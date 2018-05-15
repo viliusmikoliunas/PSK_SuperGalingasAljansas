@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+import {Link} from 'react-router-dom'
 import {Button,InputGroup,InputGroupAddon,Input} from 'reactstrap'
 import {updateQuantity, removeFromCart} from '../../Redux/actions/ShoppingCartActions'
 import QuantityInput from '../QuantityInput'
@@ -17,7 +18,7 @@ class ShoppingCartItem extends Component{
         return(
             <tr>
                 <td><img src={imagePath} height="80" height="80"/></td>
-                <td>{title}</td>
+                <td><Link to={`/item/${id}`}>{title}</Link></td>
                 <td>{price}</td>
                 <td>
                     <QuantityInput 
