@@ -10,10 +10,10 @@ import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart} from '../..
 class ShoppingCartTable extends React.Component {
     constructor(){
         super()
-        this.onLeavingCart = this.onLeavingCart.bind(this)
+        this.onLeave = this.onLeave.bind(this)
     }
 
-    onLeavingCart(){
+    onLeave(){
         const {loggedIn} = this.props
         //if (loggedIn){
             //send cart to DB
@@ -24,7 +24,7 @@ class ShoppingCartTable extends React.Component {
     }
 
     componentDidMount(){
-        window.addEventListener('beforeunload', this.onLeavingCart)
+        window.addEventListener('beforeunload', this.onLeave)
         const {loggedIn, dispatchLoadCartFromDb, dispatchLoadCartFromLocalStorage} = this.props
         //if (loggedIn){
         //    dispatchLoadCartFromDb()
@@ -35,8 +35,8 @@ class ShoppingCartTable extends React.Component {
     }
 
     componentWillUnmount(){
-        this.onLeavingCart()
-        window.removeEventListener('beforeunload', this.onLeavingCart)
+        this.onLeave()
+        window.removeEventListener('beforeunload', this.onLeave)
     }
 
     render() {
@@ -61,7 +61,7 @@ class ShoppingCartTable extends React.Component {
                     <tr>
                         <th></th>
                         <th>Title</th>
-                        <th>Unit Price</th>
+                        <th>Unit Price(€)</th>
                         <th>Quantity</th>
                         <th>Remove Item?</th>
                     </tr>
@@ -85,7 +85,7 @@ class ShoppingCartTable extends React.Component {
         )
     }
 }
-
+//toFixed(total,2)
 export default connect(
     (state) => ({
         cartItemList: state.ShoppingCartReducer.shoppingCart,

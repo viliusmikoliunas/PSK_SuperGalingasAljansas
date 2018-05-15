@@ -1,10 +1,13 @@
-import React from 'react';
-import './ItemRowStyles.css';
+import React from 'react'
+import {Link} from 'react-router-dom'
+import history from '../../../Redux/history'
+import './ItemRowStyles.css'
 
 export default class ItemRow extends React.Component {
 
     render(){
-        const {title, cost, pictureLocation, itemCategories, itemTraits} = this.props;
+        const {id, title, cost, pictureLocation, itemCategories, itemTraits} = this.props
+
         const categoryString = itemCategories != null
             ? itemCategories.map(category => {
                 return (category + "\r\n")
@@ -18,14 +21,14 @@ export default class ItemRow extends React.Component {
             : "<No traits>"
 
         return(
-            <tr className="itemRow">
+            <tr className="itemRow" onClick={() => history.push(/item/ + id )}>
                 <td scope="row">
                     <img src={pictureLocation}/>
                 </td>
                 <td>{title}</td>
                 <td>{cost}</td>
                 <td>{categoryString}</td>
-                <td>{traitString}</td>                
+                <td>{traitString}</td>
             </tr>
         )
     }

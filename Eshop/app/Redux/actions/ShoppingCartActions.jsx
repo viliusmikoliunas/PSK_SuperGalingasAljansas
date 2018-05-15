@@ -25,28 +25,29 @@ export const loadShoppingCartFromLocalStorage = () => (dispatch) => {
     const cartString = localStorage.getItem('shoppingCart')
     let cart = JSON.parse(cartString)
     if (cart.length < 1){
-        cart = [
-            {
-                imagePath: 'https://www.ikea.com/PIAimages/0238241_PE377689_S5.JPG',
-                title: 'Placeholder',
-                price: 10.56,
-                quantity: 2,
-                id: 1
-            },
-            {
-                imagePath: 'https://www.ikea.com/PIAimages/0238241_PE377689_S5.JPG',
-                title: 'Placeholder',
-                price: 5.61,
-                quantity: 3,
-                id: 2
-            }
-        ]
+        cart = []
     }
 
     dispatch({
         type: ShoppingCartActionTypes.LOAD_SHOPPING_CART,
         shoppingCart: cart
     })
+}
+
+export const addNewItem = (item, quantity) => (dispatch) => {
+    const newShoppingCartItem = {
+        id: item.id,
+        quantity: quantity,
+        title: item.title,
+        price: item.cost,
+        imagePath: item.pictureLocation,
+        key: item.id
+    }
+    dispatch({
+        type: ShoppingCartActionTypes.ADD_ITEM,
+        item: newShoppingCartItem
+    })
+    alert("Item added to cart")
 }
 
 export const incrementQuantity = (shoppingCartItemId) => (dispatch) => {

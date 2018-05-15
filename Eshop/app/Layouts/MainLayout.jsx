@@ -5,10 +5,7 @@ import Sidebar from '../Components/Sidebar/Sidebar'
 
 
 export default class MainLayout extends Component {
-    constructor(props) {
-        super(props)
-    }
-
+    
     render() {
         const { children } = this.props
         return (
@@ -16,7 +13,7 @@ export default class MainLayout extends Component {
                 <div className="Header">
                     <Navbar/>
                 </div>
-                <div className="sidebar">
+                <div>
                     <Sidebar/>
                 </div>
                 <div className="MainField">

@@ -2,7 +2,7 @@
 import { hot } from 'react-hot-loader'
 import React, {Component} from 'react'
 import { render } from 'react-dom'
-import { Route, Router } from 'react-router-dom'
+import { Route, Router, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import './styles.css'
@@ -17,6 +17,7 @@ import RouteWithLayout from './Components/CustomRouteComponents/RouteWithLayout'
 //routes
 import adminRoute from './Routes/AdminRoutes'
 import userRoute from './Routes/UserRoutes'
+import itemRoute from './Routes/ItemRoutes'
 
 
 class App extends Component{
@@ -30,6 +31,9 @@ class App extends Component{
 					<Route exact path='/register' component={RegisterPage}/>
 					<Route path ='/admin' component={adminRoute}/>
 					<Route path ='/user' component={userRoute}/>
+
+					<Route exact path={'/item'} component={() => <Redirect to='/' />} />
+					<RouteWithLayout exact path={'/item/:id'} layout={MainLayout} component={itemRoute} />
 				</div>
 			</Router>
 		)

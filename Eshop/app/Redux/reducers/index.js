@@ -8,10 +8,12 @@ import RegisterReducer from './RegisterReducer'
 import UserListReducer from './UserListReducer'
 import UserBlockStatusReducer from './UserListReducer'
 import ShoppingCartReducer from './ShoppingCartReducer'
+import ItemViewReducer from './ItemViewReducer'
 
 
 const rootReducer = combineReducers({
     ItemTableReducer,
+    ItemViewReducer,
     LoginReducer,
     RegisterReducer,
     ShoppingCartReducer,

@@ -2,3 +2,7 @@
     max-width: 60px;
     max-height: 60px;
 }
+
+.itemRow :hover {
+    background-color: aqua;
+}
