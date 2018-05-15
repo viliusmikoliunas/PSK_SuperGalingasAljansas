@@ -15,6 +15,9 @@ class ItemView extends React.Component {
     constructor(){
         super()
         this.onLeave = this.onLeave.bind(this)
+        this.state = {
+            shoppingCartQuantity: 1
+        }
     }
 
     onLeave(){
@@ -27,7 +30,6 @@ class ItemView extends React.Component {
         //}
     }
 
-
     componentDidMount() {
         window.addEventListener('beforeunload', this.onLeave)
         const {itemList, dispatchLoadItem, itemId, dispatchLoadCartFromLocalStorage} = this.props
@@ -38,6 +40,13 @@ class ItemView extends React.Component {
     componentWillUnmount(){
         this.onLeave()
         window.removeEventListener('beforeunload', this.onLeave)
+    }
+
+    handleQuantityFieldChange(newValue){
+        console.log(newValue)
+        this.setState({
+            shoppingCartQuantity: newValue
+        })
     }
 
     handleAddToCart(number){
@@ -81,10 +90,11 @@ class ItemView extends React.Component {
                         <td rowSpan="4">
                             <QuantityInput
                                 initialValue={1}
+                                onChange={this.handleQuantityFieldChange.bind(this)}
                             />
                         </td>
                         <td>
-                            <Button onClick={() => this.handleAddToCart(9)}>Add to cart</Button>
+                            <Button onClick={() => this.handleAddToCart(this.state.shoppingCartQuantity)}>Add to cart</Button>
                         </td>
                     </tr>
                 </tbody>
