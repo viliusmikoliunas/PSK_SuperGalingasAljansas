@@ -16,6 +16,7 @@ import ItemTable from './Components/ItemTable/ItemTable'
 import RouteWithLayout from './Components/CustomRouteComponents/RouteWithLayout'
 //routes
 import adminRoute from './Routes/AdminRoutes'
+import userRoute from './Routes/UserRoutes'
 
 
 class App extends Component{
@@ -28,6 +29,7 @@ class App extends Component{
 					<Route exact path='/login' component={LoginPage}/>
 					<Route exact path='/register' component={RegisterPage}/>
 					<Route path ='/admin' component={adminRoute}/>
+					<Route path ='/user' component={userRoute}/>
 				</div>
 			</Router>
 		)
