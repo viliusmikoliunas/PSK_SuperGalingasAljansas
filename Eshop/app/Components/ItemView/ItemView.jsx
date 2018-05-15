@@ -43,7 +43,6 @@ class ItemView extends React.Component {
     }
 
     handleQuantityFieldChange(newValue){
-        console.log(newValue)
         this.setState({
             shoppingCartQuantity: newValue
         })
