@@ -1,12 +1,14 @@
 import sampleData from '../../Components/ItemTable/sampleData'
+import ItemTableActions from '../actionTypes/ItemTableActions'
+
 
 const initialState = {
-    items: sampleData
+    items: []
 }
 
 export default (state = initialState, action) => {
     switch (action.type){
-        case 'LOAD_ITEMS':
+        case ItemTableActions.LOAD_ITEMS:
             return {
                 ...state,
                 items: action.items

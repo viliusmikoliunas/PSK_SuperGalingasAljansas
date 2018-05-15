@@ -23,9 +23,9 @@ namespace Eshop.Controllers
 
         //method name doesn't matter much its all about [http] tags
         [HttpGet]
-        public IEnumerable<Item> GetAll()
+        public IActionResult GetAll()
         {
-            return _itemsRepository.GetAll();
+            return Ok(_itemsRepository.GetAll());
         }
 
         [HttpPost]
@@ -61,16 +61,16 @@ namespace Eshop.Controllers
 
 
         [HttpGet("{id}")]
-        public Item GetItem(int id)
+        public IActionResult GetItem(int id)
         {
-            return _itemsRepository.GetItem(id);
+            return Ok(_itemsRepository.GetItem(id));
         }
 
         [HttpPut]
        // [Authorize(Roles = "Admin")]
         public IActionResult UpdateItem([FromBody] UpdatedItemDto updatedItem)
         {
-            var itemToUpdate = GetItem(updatedItem.Id);
+            var itemToUpdate = _itemsRepository.GetItem(updatedItem.Id);
             if (string.IsNullOrEmpty(updatedItem.Title))
                 return BadRequest("Title missing");
             if (updatedItem.Cost == 0)
