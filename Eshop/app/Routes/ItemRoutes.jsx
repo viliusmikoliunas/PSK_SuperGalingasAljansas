@@ -6,13 +6,7 @@ import RouteWithLayout from '../Components/CustomRouteComponents/RouteWithLayout
 
 const itemRoute = ({match}) => {
     return (
-        <ItemViewLayout/>
-    )
-}
-
-const random = (nr) => {
-    return(
-       <div>Hello {nr}</div>
+        <ItemViewLayout itemId={match.params.id}/>
     )
 }
 

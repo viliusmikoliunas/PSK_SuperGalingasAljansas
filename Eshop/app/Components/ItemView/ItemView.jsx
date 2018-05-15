@@ -2,36 +2,46 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Table, Button} from 'reactstrap'
+import loadItem from '../../Redux/actions/ItemViewActions'
 
+import collectionToString from '../../FunctionalComponents/formatting/collectionToString'
 
 class ItemView extends React.Component {
-    //first check if item was passed from above
-    //if not then download item info now
-
 
     componentDidMount() {
-
+        const {itemList, dispatchLoadItem, itemId} = this.props
+        dispatchLoadItem(itemList, itemId)
     }
 
     render() {
+        const {pictureLocation, title, cost, description, categories, traits} = this.props.item
+        const collection = ["plcaholder", "test", "kitas"]
         return (
             <Table responsive className="itemViewTable">
                 <tbody className="itemViewTable-infoBody">
                     <tr>
-                        <td rowSpan="5">IMAGE</td>
-                        <td>Title</td>
+                        <td rowSpan="5">
+                            <img src={pictureLocation}/>
+                        </td>
+                        <td>{title}</td>
                     </tr>
                     <tr>
-                        <td>Cost</td>
+                        <td>Cost: {cost}</td>
                     </tr>
                     <tr>
-                        <td>Description</td>
+                        <td>{description || '"No description was provided for this item"'}</td>
                     </tr>
                     <tr>
-                        <td>Categories</td>
+                        <td>                        
+                            <p>Categories:</p>
+                            {collectionToString(collection)}
+                        </td>
                     </tr>
                     <tr>
-                        <td>Traits</td>
+                    <td>                        
+                        <p>Traits:</p>
+                        {collectionToString(collection)}
+                    </td>
                     </tr>
                 </tbody>
                 <tbody className="itemViewTable-actionsBody">
@@ -45,10 +55,11 @@ class ItemView extends React.Component {
 }
 export default connect(
     (state) => ({
-        
+        itemList: state.ItemTableReducer.items,
+        item: state.ItemViewReducer.item
     }),
     (dispatch) => bindActionCreators({
-        
+        dispatchLoadItem: loadItem
     }
     ,dispatch)
 )(ItemView)

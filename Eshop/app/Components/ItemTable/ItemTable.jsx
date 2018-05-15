@@ -6,6 +6,7 @@ import loadItems from '../../Redux/actions/ItemTableActions'
 import { Table } from 'reactstrap'
 import ItemRow from './ItemRow/ItemRow'
 
+
 class ItemTable extends React.Component {
 
   componentDidMount(){
@@ -14,7 +15,7 @@ class ItemTable extends React.Component {
 
   render() {
     const htmlItems = [];
-    const {items} = this.props;
+    const {items} = this.props
     for (const rowNumber in items ){
       htmlItems.push(<ItemRow key={items[rowNumber].id} {...items[rowNumber]}/>);
     }

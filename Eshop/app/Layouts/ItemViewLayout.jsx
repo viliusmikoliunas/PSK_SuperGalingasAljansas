@@ -6,7 +6,7 @@ export default class ItemViewLayout extends Component {
 
     render() {
         return (
-            <ItemView/>
+            <ItemView itemId={this.props.itemId}/>
         )
     }
 }
