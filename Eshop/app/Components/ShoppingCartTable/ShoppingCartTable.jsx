@@ -61,7 +61,7 @@ class ShoppingCartTable extends React.Component {
                     <tr>
                         <th></th>
                         <th>Title</th>
-                        <th>Unit Price</th>
+                        <th>Unit Price(€)</th>
                         <th>Quantity</th>
                         <th>Remove Item?</th>
                     </tr>
