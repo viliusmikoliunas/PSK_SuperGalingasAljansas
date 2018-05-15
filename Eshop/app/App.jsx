@@ -31,10 +31,9 @@ class App extends Component{
 					<Route exact path='/register' component={RegisterPage}/>
 					<Route path ='/admin' component={adminRoute}/>
 					<Route path ='/user' component={userRoute}/>
-					<Switch>
-						<Route exact path={'/item'} component={() => <Redirect to='/' />} />
-						<Route exact path={'/item/:id'} component={itemRoute} />
-					</Switch>
+
+					<Route exact path={'/item'} component={() => <Redirect to='/' />} />
+					<RouteWithLayout exact path={'/item/:id'} layout={MainLayout} component={itemRoute} />
 				</div>
 			</Router>
 		)

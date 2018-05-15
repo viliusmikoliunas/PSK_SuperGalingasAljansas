@@ -4,7 +4,6 @@ import RouteWithLayout from '../Components/CustomRouteComponents/RouteWithLayout
 
 
 const itemRoute = ({match}) => {
-    console.log(match)
     const tempComp = random(match.params.id)
     return (
         tempComp
