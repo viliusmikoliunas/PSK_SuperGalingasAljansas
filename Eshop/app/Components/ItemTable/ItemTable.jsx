@@ -2,37 +2,40 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { loadItems } from '../../Redux/actions/MainPageActions'
+import loadItems from '../../Redux/actions/ItemTableActions'
 import { Table } from 'reactstrap'
 import ItemRow from './ItemRow/ItemRow'
 
 class ItemTable extends React.Component {
+
+  componentDidMount(){
+    this.props.dispatchLoadItems()
+  }
+
   render() {
     const htmlItems = [];
     const {items} = this.props;
-    for(let i = 0; i < 5; i++) {
-      for (const rowNumber in items ){
-        htmlItems.push(<ItemRow key={i+rowNumber} params = {items[rowNumber]}/>);
-      }
+    for (const rowNumber in items ){
+      htmlItems.push(<ItemRow key={items[rowNumber].id} {...items[rowNumber]}/>);
     }
 
     return (
-    <div className="itemTable">
-      <Table responsive>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Cost</th>
-            <th>Traits</th>
-          </tr>
-        </thead>
-        <tbody>
-          {htmlItems}
-        </tbody>
-      </Table>
-    </div>
+      <div className="itemTable">
+        <Table responsive>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Title</th>
+              <th>Cost</th>
+              <th>Category</th>
+              <th>Traits</th>
+            </tr>
+          </thead>
+          <tbody>
+            {htmlItems}
+          </tbody>
+        </Table>
+      </div>
     )
   }
 }
