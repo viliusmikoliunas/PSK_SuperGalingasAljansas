@@ -8,35 +8,37 @@ class QuantityInput extends Component{
         this.state = {
             fieldValue: this.props.initialValue || 1,
             minValue: this.props.minValue || 1,
-            maxValue: this.props.maxValue || 999999
+            maxValue: this.props.maxValue || 999999,
+            onChange: this.props.onChange || ((temp) => (null))
         }
         this.handleQuantityFieldChange = this.handleQuantityFieldChange.bind(this)
     }
 
     incrementQuantityField(){
-        const {fieldValue} = this.state
-        if (fieldValue < this.state.maxValue){
-            const newValue = this.state.fieldValue + 1
+        const {fieldValue, maxValue, onChange} = this.state
+        if (fieldValue < maxValue){
+            const newValue = fieldValue + 1
             this.setState({
                 fieldValue: newValue
             })   
-            this.props.onChange(newValue)
+            onChange(newValue)
         }
     }
 
     decrementQuantityField(){
-        const {fieldValue} = this.state
-        if (fieldValue > this.state.minValue){
-            const newValue = this.state.fieldValue - 1
+        const {fieldValue, minValue, onChange} = this.state
+        if (fieldValue > minValue){
+            const newValue = fieldValue - 1
             this.setState({
                 fieldValue: newValue
             })
-            this.props.onChange(newValue)
+            onChange(newValue)
         }
     }
 
     handleQuantityFieldChange(event){
-        const maxLength = this.state.maxValue.toString().length
+        const {maxValue, onChange} = this.state
+        const maxLength = maxValue.toString().length
         const newValue = event.target.value
         if (newValue.length > maxLength) return
 
@@ -47,7 +49,7 @@ class QuantityInput extends Component{
             this.setState({
                 fieldValue: parseInt(newValue)
             })
-            this.props.onChange(newValue)
+            onChange(newValue)
         }
     }
 
