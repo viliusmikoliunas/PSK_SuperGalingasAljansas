@@ -15,7 +15,6 @@ class ItemView extends React.Component {
 
     render() {
         const {pictureLocation, title, cost, description, categories, traits} = this.props.item
-        const collection = ["plcaholder", "test", "kitas"]
         return (
             <Table responsive className="itemViewTable">
                 <tbody className="itemViewTable-infoBody">
@@ -26,7 +25,7 @@ class ItemView extends React.Component {
                         <td>{title}</td>
                     </tr>
                     <tr>
-                        <td>Cost: {cost}</td>
+                        <td>Cost: {cost} €</td>
                     </tr>
                     <tr>
                         <td>{description || '"No description was provided for this item"'}</td>
@@ -34,13 +33,13 @@ class ItemView extends React.Component {
                     <tr>
                         <td>                        
                             <p>Categories:</p>
-                            {collectionToString(collection)}
+                            {collectionToString(categories) || "This item doesn't belong to any category"}
                         </td>
                     </tr>
                     <tr>
                     <td>                        
                         <p>Traits:</p>
-                        {collectionToString(collection)}
+                        {collectionToString(traits) || "This item doesn't have any traits"}
                     </td>
                     </tr>
                 </tbody>
