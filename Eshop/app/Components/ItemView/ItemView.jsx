@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Table, Button} from 'reactstrap'
 import loadItem from '../../Redux/actions/ItemViewActions'
+import './ItemViewStyles.css'
 
 import collectionToString from '../../FunctionalComponents/formatting/collectionToString'
 
