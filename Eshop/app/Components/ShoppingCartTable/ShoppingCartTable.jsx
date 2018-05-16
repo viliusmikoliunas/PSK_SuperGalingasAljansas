@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 import {Table, Button} from 'reactstrap'
 import ShoppingCartItem from './ShoppingCartItem'
@@ -79,7 +80,9 @@ class ShoppingCartTable extends React.Component {
                         <td><Button onClick={() => dispatchClearCart()}>Clear Cart</Button></td>
                     </tr>
                     <tr>
-                        <td colSpan="5"><Button>Proceed to checkout</Button></td>
+                        <td colSpan="5">
+                            <Link to={'/checkout'}>Proceed to checkout</Link>
+                        </td>
                     </tr>
                 </tbody>
             </Table>

@@ -41,8 +41,11 @@ const validate = values => {
     if (!values.cvv){
         errors.cvv = 'Required'
     }
+    else if (!/^[0-9]{3}$/.test(values.cvv)){
+        errors.cvv = 'Must 3 digits'
+    }
     else if (values.cvv.length !== 3){
-        errors.cvv = 'Incorrect CVV'
+        errors.cvv = 'Must 3 digits'
     }
 
     return errors
