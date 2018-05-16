@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 //import register from '../../../Redux/actions/RegisterActions'
 
-//import validate from './validateFormFields'
+import validate from './checkOutValidation'
 import renderTextField from '../ReduxFormFields/renderTextField'
 
 
@@ -74,7 +74,7 @@ CheckoutForm = connect(
 )(CheckoutForm)
 
 export default reduxForm({
-  form: 'checkoutForm'//,
-  //validate
+  form: 'checkoutForm',
+  validate
 })(CheckoutForm)
 
