@@ -3,13 +3,7 @@ import isCreditCardNumberValid from '../../../FunctionalComponents/validity/cred
 
 const validate = values => {
     const errors = {}
-    /*
-    "number": "4111111111111111", input
-    "holder": "Vardenis Pavardenis", input/pre-load
-    "exp_year": 2018, //input
-    "exp_month": 9, // input
-    "cvv": "123" // input
-    */
+
     if (!values.number){
         errors.number = 'Required'
     }
@@ -20,40 +14,37 @@ const validate = values => {
         errors.number = 'Credit card number not valid'
     }
 
-/*
-    if (!values.password){
-        errors.password = 'Required'
+    if (!values.holder){
+        errors.holder = 'Required'
     }
-    else if (values.password.length < 8){
-        errors.password = 'Must be 8 characters or more'
+    else if (values.holder.length < 2){
+        errors.holder = 'Name too short to be valid for credit card payment'
     }
-    else if(!/[a-z]/.test(values.password)){
-        errors.password = 'Password must contain a lowercase letter'
-    }
-    else if(!/[A-Z]/.test(values.password)){
-        errors.password = 'Password must contain an uppercase letter'
-    }
-    else if(!/[^a-zA-Z0-9]/.test(values.password)){
-        errors.password = 'Password must contain a non alphanumeric symbol'
+    else if (values.holder.length > 32){
+        errors.holder = 'Name too long to be valid for credit card payment'
     }
 
-    if (!values.password2){
-        errors.password2 = 'Required'
+    if (!values.exp_year){
+        errors.exp_year = 'Required'
     }
-    else if (values.password !== values.password2){
-        errors.password2 = 'Passwords must match'
-    }
-
-    if (!values.email){
-        errors.email = 'Required'
+    else if (values.exp_year < 1970){
+        errors.exp_year = 'Incorrect year'
     }
 
-    if (values.firstname && values.lastname){
-        if (values.firstname.length + values.lastname.length > 31){
-            errors.lastname = 'Full name too long to be valid for credit card payment'
-        }
+    if (!values.exp_month){
+        errors.exp_month = 'Required'
     }
-*/
+    else if (values.exp_month < 1 || values.exp_month > 12){
+        errors.exp_month = 'Incorrect month'
+    }
+
+    if (!values.cvv){
+        errors.cvv = 'Required'
+    }
+    else if (values.cvv.length !== 3){
+        errors.cvv = 'Incorrect CVV'
+    }
+
     return errors
 }
 
