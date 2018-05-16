@@ -20,6 +20,7 @@ export default class Sidebar extends Component {
         )
     }
 }
+
 /*
     <NavItem>
         <NavLink href="#">Link</NavLink>

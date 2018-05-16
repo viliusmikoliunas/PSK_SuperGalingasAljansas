@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 import {Table, Button} from 'reactstrap'
 import ShoppingCartItem from './ShoppingCartItem'
@@ -39,6 +40,7 @@ class ShoppingCartTable extends React.Component {
         window.removeEventListener('beforeunload', this.onLeave)
     }
 
+    //max price 999999 cents == 9999,99 euros. Need constraint
     render() {
         const {cartItemList, dispatchClearCart} = this.props
         let total = 0
@@ -55,6 +57,11 @@ class ShoppingCartTable extends React.Component {
                 />
             )
         })
+
+        const linkToCheckout = this.props.cartItemList.length > 0
+            ? <Link to={'/checkout'}>Proceed to checkout</Link>
+            : <div>Proceed to checkout</div>
+
         return (
             <Table responsive>
                 <thead>
@@ -78,7 +85,9 @@ class ShoppingCartTable extends React.Component {
                         <td><Button onClick={() => dispatchClearCart()}>Clear Cart</Button></td>
                     </tr>
                     <tr>
-                        <td colSpan="5"><Button>Proceed to checkout</Button></td>
+                        <td colSpan="5">
+                            {linkToCheckout}
+                        </td>
                     </tr>
                 </tbody>
             </Table>
