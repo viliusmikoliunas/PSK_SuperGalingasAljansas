@@ -57,6 +57,11 @@ class ShoppingCartTable extends React.Component {
                 />
             )
         })
+
+        const linkToCheckout = this.props.cartItemList.length > 0
+            ? <Link disabled="true" to={'/checkout'}>Proceed to checkout</Link>
+            : <div>Proceed to checkout</div>
+
         return (
             <Table responsive>
                 <thead>
@@ -81,7 +86,7 @@ class ShoppingCartTable extends React.Component {
                     </tr>
                     <tr>
                         <td colSpan="5">
-                            <Link to={'/checkout'}>Proceed to checkout</Link>
+                            {linkToCheckout}
                         </td>
                     </tr>
                 </tbody>
