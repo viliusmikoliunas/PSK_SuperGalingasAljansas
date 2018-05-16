@@ -23,6 +23,10 @@ const validate = values => {
     else if (values.holder.length > 32){
         errors.holder = 'Name too long to be valid for credit card payment'
     }
+    else if (!/^([a-z]|[A-Z]|\s|'){2,32}$/.test(values.holder)){
+        errors.holder = 'Name contains non character symbols'
+    }
+
 
     if (!values.exp_year){
         errors.exp_year = 'Required'

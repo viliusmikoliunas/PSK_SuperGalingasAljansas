@@ -6,6 +6,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 import checkout from '../../../Redux/actions/CheckoutActions'
 import {loadShoppingCartFromLocalStorage} from '../../../Redux/actions/ShoppingCartActions'
 
+import toFixed from '../../../FunctionalComponents/formatting/toFixed'
 import validate from './checkOutValidation'
 import renderTextField from '../ReduxFormFields/renderTextField'
 
@@ -16,7 +17,7 @@ class CheckoutForm extends React.Component{
         this.props.dispatchLoadCartFromLocalStorage()
     }
 
-    handleFormSubmission(data){
+    handleFormSubmission(paymentData){
         let total = 0
         const {cartItemList, dispatchCheckout, error} = this.props
         cartItemList.map(cartItem => {
@@ -24,19 +25,20 @@ class CheckoutForm extends React.Component{
             return
         })
         total *= 100 //euros to euro cents
+        total = parseInt(toFixed(total, 0))
 
-        data = {
-            ...data,
-            ammount: total,
-            number: data.number.replace(/ /g,''),
-            exp_year: parseInt(data.exp_year),
-            exp_month: parseInt(data.exp_month)
+        paymentData = {
+            ...paymentData,
+            ammount:  total,
+            number: paymentData.number.replace(/ /g,''),
+            exp_year: parseInt(paymentData.exp_year),
+            exp_month: parseInt(paymentData.exp_month)
         }
         if (total > 999999){
             alert("Transaction ammount over limit (> 9999,99 euros), please remove something from your cart")
             return
         }
-        dispatchCheckout(data)
+        dispatchCheckout(paymentData)
     }
 
     render(){

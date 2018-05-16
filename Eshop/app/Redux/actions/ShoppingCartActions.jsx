@@ -24,7 +24,7 @@ export default loadCartFromDb
 export const loadShoppingCartFromLocalStorage = () => (dispatch) => {
     const cartString = localStorage.getItem('shoppingCart')
     let cart = JSON.parse(cartString)
-    if (cart.length < 1){
+    if (cart == null){
         cart = []
     }
 
