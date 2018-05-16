@@ -7,7 +7,6 @@ const serverOrderAddress = '/api/orders'
 
 const checkout = (checkoutData) => (dispatch) => {
     const apiServerRequest = generateRequestWithAuth('POST', checkoutData)
-    console.log(apiServerRequest)
 
     fetch(serverOrderAddress, apiServerRequest)
         .then(response => {

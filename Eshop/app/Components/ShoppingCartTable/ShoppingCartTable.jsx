@@ -59,7 +59,7 @@ class ShoppingCartTable extends React.Component {
         })
 
         const linkToCheckout = this.props.cartItemList.length > 0
-            ? <Link disabled="true" to={'/checkout'}>Proceed to checkout</Link>
+            ? <Link to={'/checkout'}>Proceed to checkout</Link>
             : <div>Proceed to checkout</div>
 
         return (
