@@ -15,14 +15,12 @@ export default class Sidebar extends Component {
                     <NavItem>
                         <Link to='/user'>User page</Link>
                     </NavItem>
-                    <NavItem>
-                        <Link to='/checkout'>Checkout page</Link>
-                    </NavItem>
                 </Nav>
             </div>
         )
     }
 }
+
 /*
     <NavItem>
         <NavLink href="#">Link</NavLink>
