@@ -11,6 +11,7 @@ import history from './Redux/history'
 import MainLayout from './Layouts/MainLayout'
 import LoginPage from './Layouts/LoginPageLayout'
 import RegisterPage from './Layouts/RegisterPageLayout'
+import CheckoutLayout from './Layouts/CheckoutLayout'
 //components
 import ItemTable from './Components/ItemTable/ItemTable'
 import RouteWithLayout from './Components/CustomRouteComponents/RouteWithLayout'
@@ -29,6 +30,7 @@ class App extends Component{
 					<RouteWithLayout exact path='/' layout={MainLayout} component={ItemTable}/>
 					<Route exact path='/login' component={LoginPage}/>
 					<Route exact path='/register' component={RegisterPage}/>
+					<Route exact path='/checkout' component={CheckoutLayout}/>
 					<Route path ='/admin' component={adminRoute}/>
 					<Route path ='/user' component={userRoute}/>
 

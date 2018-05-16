@@ -39,6 +39,7 @@ class ShoppingCartTable extends React.Component {
         window.removeEventListener('beforeunload', this.onLeave)
     }
 
+    //max price 999999 cents == 9999,99 euros. Need constraint
     render() {
         const {cartItemList, dispatchClearCart} = this.props
         let total = 0
