@@ -2,17 +2,24 @@ import React from 'react'
 import SidebarLink from './SidebarLink'
 import './sidebar.css'
 
+import {getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
 
 const Sidebar = (props) => {
-  const adminRoutes = 
+  const userRole = getUserRoleFromToken()
+
+  const adminRoutes = userRole === 'Admin'
+    ?
     <div>
       <SidebarLink to='/admin/user-list'>User List</SidebarLink>
     </div>
+    : null
 
-  const userRoutes = 
+  const userRoutes = userRole === 'User'
+    ?
     <div>
       <SidebarLink to='/user/shopping-cart'>Shopping Cart</SidebarLink>
     </div>
+    : null
 
   return (
     <div id="sidebar">
@@ -24,5 +31,6 @@ const Sidebar = (props) => {
     </div>
   )
 }
+
 
 export default Sidebar

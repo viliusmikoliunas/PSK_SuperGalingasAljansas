@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import {connect} from 'react-redux'
 import {Redirect, Route, withRouter} from 'react-router-dom'
 import RouteWithLayout from './RouteWithLayout'
-import parseJwt from '../../FunctionalComponents/jwt/parseJwt'
+import {getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
 
 
 class PrivateRoute extends Component {
@@ -17,11 +17,7 @@ class PrivateRoute extends Component {
     render(){
         const { component: Component, roles: permisedRoles, layout, ...rest } = this.props
 
-        const token = localStorage.getItem('jwtToken')
-        let currentRole = null
-        if (token != null){
-            currentRole = parseJwt(token)['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
-        }
+        const currentRole = getUserRoleFromToken()
 
         const canUserAccessThisRoute = 
             currentRole && this.checkPrivilege(currentRole, permisedRoles)
