@@ -4,12 +4,12 @@ export default[
         "Date": "2018.05.17T20:53:20",
         "Items": [
             {
-                "title": "kede",
-                "quantity": 100
+                "Title": "kede",
+                "Quantity": 100
             },
             {
-                "title": "stalas",
-                "quantity": 100
+                "Title": "stalas",
+                "Quantity": 100
             }
         ],
         "Ammount": 9846.12,
@@ -25,8 +25,8 @@ export default[
         "Date": "2018.05.17T20:53:20",
         "Items": [
             {
-                "title": "kede",
-                "quantity": 12
+                "Title": "kede",
+                "Quantity": 12
             }
         ],
         "Ammount": 1489.37,
