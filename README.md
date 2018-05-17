@@ -1,5 +1,8 @@
 # PSK_SuperGalingasAljansas
 
+Guidelines:
+- In repositories from now on use parametrized sql if possible instead of LINQ (it's usually then you need to get data from 1 table only and/or edit one entry from one table)
+
 How to Controller (for example check ItemsController.cs):
 1. Create class in Controllers folder. (controllers are not restricted for usage of only one DB table, you can create all kinds of mixed controllers that use all DB tables and stuff)
 2. Add inheritance from Controller class.

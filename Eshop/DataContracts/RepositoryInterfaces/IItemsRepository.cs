@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Eshop.Data.Entities;
+using Eshop.DataContracts.DataTransferObjects;
 
 namespace Eshop.DataContracts.RepositoryInterfaces
 {
@@ -9,7 +10,8 @@ namespace Eshop.DataContracts.RepositoryInterfaces
         //IEnumerable<Item> Get(int startIndex, int itemsToTake);
         Item Add(Item newItem);
         //Item Add(IEnumerable<Item> items);
-        //Item Update(Item updatedItem);
-        //void Delete(Item item);
+        bool Delete(int itemId);
+        Item Update(Item itemToUpdate);
+        Item GetItem(int id);
     }
 }
