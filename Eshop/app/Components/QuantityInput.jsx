@@ -39,15 +39,16 @@ class QuantityInput extends Component{
     handleQuantityFieldChange(event){
         const {maxValue, onChange} = this.state
         const maxLength = maxValue.toString().length
-        const newValue = event.target.value
+        let newValue = event.target.value
         if (newValue.length > maxLength) return
 
         const match = /^[1-9][0-9]*/.exec(newValue)
         if(match === null) return
 
         if(newValue.length === match[0].length){
+            newValue = parseInt(newValue)
             this.setState({
-                fieldValue: parseInt(newValue)
+                fieldValue: newValue
             })
             onChange(newValue)
         }
