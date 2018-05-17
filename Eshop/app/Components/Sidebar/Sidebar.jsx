@@ -9,12 +9,7 @@ export default class Sidebar extends Component {
             <div className="mainPageSidebar">
                 <p>Categories soon(TM)</p>
                 <Nav vertical>
-                    <NavItem>
-                        <Link to='/admin'>Admin page</Link>
-                    </NavItem>                
-                    <NavItem>
-                        <Link to='/user'>User page</Link>
-                    </NavItem>
+
                 </Nav>
             </div>
         )
@@ -22,6 +17,12 @@ export default class Sidebar extends Component {
 }
 
 /*
+    <NavItem>
+        <Link to='/admin'>Admin page</Link>
+    </NavItem>                
+    <NavItem>
+        <Link to='/user'>User page</Link>
+    </NavItem>
     <NavItem>
         <NavLink href="#">Link</NavLink>
     </NavItem>

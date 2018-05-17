@@ -12,7 +12,7 @@ import {
     Button
     } from 'reactstrap'
 import {Link} from 'react-router-dom'
-import parseJwt from '../../FunctionalComponents/jwt/parseJwt'
+import {getUsernameFromToken, getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
 import {logout} from '../../Redux/actions/LoginActions'
 import {loadShoppingCartFromLocalStorage} from '../../Redux/actions/ShoppingCartActions'
 import './NavbarStyles.css'
@@ -38,10 +38,16 @@ class Navbar extends Component {
         });
     }
     render() {
+        const userRole = getUserRoleFromToken()
+        const userPageLink = '/' + userRole.toLowerCase()
         const userElement = this.props.isLoggedIn && localStorage['jwtToken'] != null
             ?   <Nav>
-                    <NavItem>Welcome {(parseJwt(localStorage['jwtToken']))['sub']}</NavItem>
-                    <NavItem><Button onClick={() => this.props.dispatchLogout()}>Logout</Button></NavItem>
+                    <NavItem>
+                        <Link to={userPageLink}>Welcome {getUsernameFromToken()}</Link>
+                    </NavItem>
+                    <NavItem>
+                        <Button onClick={() => this.props.dispatchLogout()}>Logout</Button>
+                    </NavItem>
                 </Nav>
             :   <NavItem><Button tag={Link} to='/login'>Login</Button></NavItem>
 
