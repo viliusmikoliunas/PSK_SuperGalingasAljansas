@@ -58,10 +58,16 @@ class ShoppingCartTable extends React.Component {
             )
         })
 
-        const linkToCheckout = this.props.cartItemList.length > 0
+        const linkToCheckout = this.props.cartItemList.length > 0 && total < 10000
             ? <Link to={'/checkout'}>Proceed to checkout</Link>
             : <div>Proceed to checkout</div>
-
+        
+        const errorMsg = total >= 10000
+            ? <div className="ammountErrorMessage">
+                Price exceeds the limit of 9999.99 €<br/>
+                Please remove some items from the cart
+            </div>
+            : null
         return (
             <Table responsive>
                 <thead>
@@ -80,7 +86,7 @@ class ShoppingCartTable extends React.Component {
                     <tr>
                         <td/>
                         <td>Total Price</td>
-                        <td>{toFixed(total,2)}</td>
+                        <td>{toFixed(total,2)} {errorMsg}</td>
                         <td/>
                         <td><Button onClick={() => dispatchClearCart()}>Clear Cart</Button></td>
                     </tr>
