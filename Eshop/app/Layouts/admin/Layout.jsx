@@ -1,5 +1,6 @@
 import React from 'react'
 import AdminSidebar from './Sidebar'
+import Navbar from '../../Components/Navbar/Navbar'
 import './layout.css'
 
 export default class Layout extends React.Component {
@@ -13,7 +14,7 @@ export default class Layout extends React.Component {
     return (
         <div>
             <div className="header">
-                
+                <Navbar/>
             </div>
     
             <div className="sidebar">

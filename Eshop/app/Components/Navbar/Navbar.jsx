@@ -51,6 +51,12 @@ class Navbar extends Component {
                 </Nav>
             :   <NavItem><Button tag={Link} to='/login'>Login</Button></NavItem>
 
+        const shoppingCartElement = userRole === 'User' 
+        ?   <NavItem>
+                <Link to={'/user/shopping-cart'}>Shopping cart({itemCount})</Link>
+            </NavItem> 
+        : null
+
         let itemCount = 0
         this.props.cartItemList.map(item => {
             itemCount += item.quantity
@@ -58,14 +64,12 @@ class Navbar extends Component {
         
         return (
             <div>
-                <ReactstrapNavBar color="primary" light expand="md" className="navigationBar">
+                <ReactstrapNavBar color="primary" light expand="md" className="navigationBar header">
                     <NavbarBrand tag={Link} to='/'>Super Galingas Shop'as</NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
-                            <NavItem>
-                                <Link to={'/user/shopping-cart'}>Shopping cart({itemCount})</Link>
-                            </NavItem>
+                            {shoppingCartElement}
                             {userElement}
                         </Nav>
                     </Collapse>
