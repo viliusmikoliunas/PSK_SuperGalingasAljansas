@@ -39,11 +39,10 @@ class Navbar extends Component {
     }
     render() {
         const userRole = getUserRoleFromToken()
-        const userPageLink = '/' + userRole.toLowerCase()
         const userElement = this.props.isLoggedIn && localStorage['jwtToken'] != null
             ?   <Nav>
                     <NavItem>
-                        <Link to={userPageLink}>Welcome {getUsernameFromToken()}</Link>
+                        <Link to={'/' + userRole.toLowerCase()}>Welcome {getUsernameFromToken()}</Link>
                     </NavItem>
                     <NavItem>
                         <Button onClick={() => this.props.dispatchLogout()}>Logout</Button>

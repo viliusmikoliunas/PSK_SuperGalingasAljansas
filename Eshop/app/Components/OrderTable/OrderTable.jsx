@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {Table} from 'reactstrap'
+import {Table, Modal} from 'reactstrap'
 import Order from './Order'
 import sampleData from './sampleData'
 
@@ -22,7 +22,7 @@ class OrderTable extends React.Component {
                     items={order.Items}
                     ammount={order.Ammount}
                     paymentDate={order.PaymentDate}
-                    review={order.review}
+                    review={order.Review}
                     confirmed={order.Confirmed}
                 />
             )
