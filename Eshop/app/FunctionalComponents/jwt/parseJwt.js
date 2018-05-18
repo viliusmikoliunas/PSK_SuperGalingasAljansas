@@ -5,3 +5,8 @@ const parseJwt = (token) => {
 }
 
 export default parseJwt
+
+export const getUserRoleFromToken = () => {
+    const token = localStorage.getItem('jwtToken')
+    return token && parseJwt(token)['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+}

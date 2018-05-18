@@ -6,17 +6,21 @@ import './SidebarStyles.css'
 export default class Sidebar extends Component {
     render() {
         return (
-            <div>
-                <p>List Based</p>
+            <div className="mainPageSidebar">
+                <p>Categories soon(TM)</p>
                 <Nav vertical>
                     <NavItem>
                         <Link to='/admin'>Admin page</Link>
+                    </NavItem>                
+                    <NavItem>
+                        <Link to='/user'>User page</Link>
                     </NavItem>
                 </Nav>
             </div>
         )
     }
 }
+
 /*
     <NavItem>
         <NavLink href="#">Link</NavLink>
