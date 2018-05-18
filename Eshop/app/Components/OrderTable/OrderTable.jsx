@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Table, Modal} from 'reactstrap'
 import Order from './Order'
-import loadOrders from '../../Redux/actions/OrderListActions'
+import loadOrders, {confirmOrder} from '../../Redux/actions/OrderListActions'
 
 
 class OrderTable extends React.Component {
@@ -12,12 +12,17 @@ class OrderTable extends React.Component {
         this.props.dispatchLoadOrders()
     }
 
+    handleOrderConfirmation(orderId){
+        this.props.dispatchConfirmOrder(orderId)
+    }
+
     render() {
         const {orders} = this.props
         const orderList = orders.map(order => {
             return (
                 <Order
-                    key={order.Username}
+                    key={order.Id}
+                    id={order.Id}
                     username={order.Username}
                     date={order.Date}
                     items={order.Items}
@@ -25,6 +30,7 @@ class OrderTable extends React.Component {
                     paymentDate={order.PaymentDate}
                     review={order.Review}
                     confirmed={order.Confirmed}
+                    onConfirm={this.handleOrderConfirmation.bind(this)}
                 />
             )
         })
@@ -55,7 +61,8 @@ export default connect(
         orders: state.OrderListReducer.orders
     }),
     (dispatch) => bindActionCreators({
-        dispatchLoadOrders: loadOrders
+        dispatchLoadOrders: loadOrders,
+        dispatchConfirmOrder: confirmOrder
     }
     ,dispatch)
 )(OrderTable)

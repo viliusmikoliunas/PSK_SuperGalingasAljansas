@@ -14,6 +14,21 @@ export default (state = initialState, action) => {
                 orders: action.orders
             }
 
+        case (OrderListActionTypes.CONFIRM_ORDER):{
+            return {
+                ...state,
+                orders: state.orders.map(order => {
+                    if (order.Id === action.orderId){
+                        return {
+                            ...order,
+                            Confirmed: true
+                        }
+                    }
+                    return order
+                })
+            }
+        }
+
         default:
             return state
     }

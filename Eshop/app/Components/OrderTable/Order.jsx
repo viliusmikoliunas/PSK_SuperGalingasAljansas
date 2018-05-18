@@ -21,7 +21,7 @@ class Order extends React.Component {
     }
 
     render(){
-        const {username, date, items, ammount, paymentDate, review, confirm} = this.props
+        const {id, username, date, items, ammount, paymentDate, review, confirmed, onConfirm} = this.props
         let key = 0
         const itemListElement = 
         <div>
@@ -54,9 +54,9 @@ class Order extends React.Component {
                 </Modal>
             </div>
     
-        const confirmElement = confirm
+        const confirmElement = confirmed
             ? 'This order is confirmed'
-            : <Button color="success">Confirm order</Button>
+            : <Button color="success" onClick={() => onConfirm(id)}>Confirm order</Button>
         
         return (
             <tr>
