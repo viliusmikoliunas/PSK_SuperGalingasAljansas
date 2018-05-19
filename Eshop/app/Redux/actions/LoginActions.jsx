@@ -23,10 +23,13 @@ const login = (loginValues) => (dispatch) => {
                 history.push('/')
             }
             else {
-                dispatch({
-                    type: LoginActionTypes.LOGIN_FAILURE,
-                    error: "Username and password don't match"
-                })
+                response.text().then(
+                    responseMessage => 
+                        dispatch({
+                            type: LoginActionTypes.LOGIN_FAILURE,
+                            error: responseMessage
+                        })
+                )
             }
         })
         .catch((err) => {

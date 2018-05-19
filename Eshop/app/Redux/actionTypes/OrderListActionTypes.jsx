@@ -1,0 +1,4 @@
+export default {
+    LOAD_ORDERS: 'ORDER_TABLE_LOAD',
+    CONFIRM_ORDER: 'ORDER_TABLE_CONFIRM'
+}

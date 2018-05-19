@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import User from './User'
 import {Table} from 'reactstrap'
-import loadUsers, {blockUser} from '../../Redux/actions/UserListActions'
+import loadUsers, {blockUser, unblockUser} from '../../Redux/actions/UserListActions'
 
 
 class UserTable extends React.Component {
@@ -14,6 +14,10 @@ class UserTable extends React.Component {
 
     handleUserBlock(userCardUsername){
         this.props.dispatchBlockUser(userCardUsername)
+    }
+
+    handleUserUnblock(userCardUsername){
+        this.props.dispatchUnblockUser(userCardUsername)
     }
 
     render() {
@@ -28,6 +32,7 @@ class UserTable extends React.Component {
                     lastname={user.lastname}
                     isBlocked={user.isBlocked}
                     handleUserBlock={this.handleUserBlock.bind(this)}
+                    handleUserUnblock={this.handleUserUnblock.bind(this)}
                 />
             )
         })
@@ -55,7 +60,8 @@ export default connect(
     }),
     (dispatch) => bindActionCreators({
         dispatchLoadList: loadUsers,
-        dispatchBlockUser: blockUser
+        dispatchBlockUser: blockUser,
+        dispatchUnblockUser: unblockUser
     }
     ,dispatch)
 )(UserTable)
