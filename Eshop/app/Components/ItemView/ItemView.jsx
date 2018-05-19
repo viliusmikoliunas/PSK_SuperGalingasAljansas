@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux'
 import {Table, Button,Input,InputGroup,InputGroupAddon} from 'reactstrap'
 import loadItem from '../../Redux/actions/ItemViewActions'
 import {addNewItem} from '../../Redux/actions/ShoppingCartActions'
-import QuantityInput from '../QuantityInput'
+import QuantityInput from '../QuantityInput/QuantityInput'
 import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart} from '../../Redux/actions/ShoppingCartActions'
 import {getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
  
