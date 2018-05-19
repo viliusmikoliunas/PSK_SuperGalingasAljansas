@@ -8,9 +8,10 @@ namespace Eshop.DataContracts.RepositoryInterfaces
 {
     public interface IShoppingCartRepository
     {
-        ShoppingCart Get(int id);
+        ShoppingCart Get(UserAccount acc);
         ShoppingCart Add(ShoppingCart shoppingCart);
-        ShoppingCart Update(ShoppingCart shoppingCart);
-        void Delete(ShoppingCart shoppingCart);
+        //ShoppingCart Update(ShoppingCart shoppingCart);
+        //void Delete(ShoppingCart shoppingCart);
+        UserAccount GetAcc(string accName);
     }
 }
