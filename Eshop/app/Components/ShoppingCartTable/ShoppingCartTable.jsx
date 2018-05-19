@@ -88,7 +88,7 @@ class ShoppingCartTable extends React.Component {
                         <td>Total Price</td>
                         <td>{toFixed(total,2)} {errorMsg}</td>
                         <td/>
-                        <td><Button onClick={() => dispatchClearCart()}>Clear Cart</Button></td>
+                        <td><Button color="danger" onClick={() => dispatchClearCart()}>Clear Cart</Button></td>
                     </tr>
                     <tr>
                         <td colSpan="5">

@@ -6,7 +6,8 @@ import loadItem from '../../Redux/actions/ItemViewActions'
 import {addNewItem} from '../../Redux/actions/ShoppingCartActions'
 import QuantityInput from '../QuantityInput'
 import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart} from '../../Redux/actions/ShoppingCartActions'
-
+import {getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
+ 
 import './ItemViewStyles.css'
 
 import collectionToString from '../../FunctionalComponents/formatting/collectionToString'
@@ -56,6 +57,23 @@ class ItemView extends React.Component {
     render() {
         const {dispatchAddToCart, item, shoppingCartItems} = this.props 
         const {pictureLocation, title, cost, description, categories, traits} = item
+
+        const userRole = getUserRoleFromToken()
+        const addToShoppingCartElement = userRole === 'Admin'
+            ? null
+            :
+            <tr>
+                <td rowSpan="4">
+                    <QuantityInput
+                        initialValue={1}
+                        onChange={this.handleQuantityFieldChange.bind(this)}
+                    />
+                </td>
+                <td>
+                    <Button onClick={() => this.handleAddToCart(this.state.shoppingCartQuantity)}>Add to cart</Button>
+                </td>
+            </tr>
+
         return (
             <Table responsive className="itemViewTable">
                 <tbody className="itemViewTable-infoBody">
@@ -85,17 +103,7 @@ class ItemView extends React.Component {
                     </tr>
                 </tbody>
                 <tbody className="itemViewTable-actionsBody">
-                    <tr>
-                        <td rowSpan="4">
-                            <QuantityInput
-                                initialValue={1}
-                                onChange={this.handleQuantityFieldChange.bind(this)}
-                            />
-                        </td>
-                        <td>
-                            <Button onClick={() => this.handleAddToCart(this.state.shoppingCartQuantity)}>Add to cart</Button>
-                        </td>
-                    </tr>
+                    
                 </tbody>
             </Table>
         )

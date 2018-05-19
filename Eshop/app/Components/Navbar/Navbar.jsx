@@ -45,16 +45,19 @@ class Navbar extends Component {
                         <Link to={'/' + userRole.toLowerCase()}>Welcome {getUsernameFromToken()}</Link>
                     </NavItem>
                     <NavItem>
-                        <Button onClick={() => this.props.dispatchLogout()}>Logout</Button>
+                        <Button color="warning" onClick={() => this.props.dispatchLogout()}>Logout</Button>
                     </NavItem>
                 </Nav>
-            :   <NavItem><Button tag={Link} to='/login'>Login</Button></NavItem>
+            :   <NavItem><Button color="warning" tag={Link} to='/login'>Login</Button></NavItem>
 
 
         let itemCount = 0
         this.props.cartItemList.map(item => {
             itemCount += item.quantity
         })
+
+        if (userRole === 'Admin')
+            localStorage.removeItem('shoppingCart')
 
         const shoppingCartElement = userRole !== 'Admin' 
         ?   <NavItem>

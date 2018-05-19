@@ -57,9 +57,9 @@ class QuantityInput extends Component{
     render(){
         return(
             <InputGroup className="quanitityInputField">
-                <InputGroupAddon addonType="prepend"><Button onClick={() => this.decrementQuantityField()}>-</Button></InputGroupAddon>
+                <InputGroupAddon addonType="prepend"><Button color="danger" onClick={() => this.decrementQuantityField()}>-</Button></InputGroupAddon>
                 <Input value={this.state.fieldValue} onChange={this.handleQuantityFieldChange}/>
-                <InputGroupAddon addonType="append"><Button onClick={() => this.incrementQuantityField()}>+</Button></InputGroupAddon>
+                <InputGroupAddon addonType="append"><Button color="success" onClick={() => this.incrementQuantityField()}>+</Button></InputGroupAddon>
             </InputGroup>
         )
     }

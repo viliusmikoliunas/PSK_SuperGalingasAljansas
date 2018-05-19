@@ -6,8 +6,8 @@ const User = (props) => {
     const { handleUserBlock, handleUserUnblock, username, email, firstname, lastname, isBlocked } = props
 
     const blockElement = isBlocked
-      ? <Button onClick={() => handleUserUnblock(username)}>Unblock</Button>
-      : <Button onClick={() => handleUserBlock(username)}>Block</Button>
+      ? <Button color="success" onClick={() => handleUserUnblock(username)}>Unblock</Button>
+      : <Button color="danger" onClick={() => handleUserBlock(username)}>Block</Button>
 
     return(
         <tr>
