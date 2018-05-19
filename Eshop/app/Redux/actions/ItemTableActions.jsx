@@ -4,12 +4,19 @@ import ItemTableActionTypes from '../actionTypes/ItemTableActions'
 
 const itemsAddress = '/api/items'
 const itemsAddressPaginate = (page, limit) => {
-    return itemsAddress + '?' + 'page=' + {page} + '&limit=' + {limit}
+    const pageStr = page.toString()
+    const limitStr = limit.toString()
+    return itemsAddress + '?' + 'page=' + pageStr + '&limit=' + limitStr
 }
 
 const loadItems = (page,limit) => (dispatch) => {
     const request = generateRequest('GET', null)
-    fetch(itemsAddress,request)
+    let requestAddress = itemsAddress
+    if (page != null && limit != null){
+        requestAddress = itemsAddressPaginate(page, limit)
+    }
+    console.log(requestAddress)
+    fetch(requestAddress,request)
         .then((response) => {
             if (response.ok){
                 response.json()

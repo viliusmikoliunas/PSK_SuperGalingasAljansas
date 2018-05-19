@@ -27,7 +27,7 @@ namespace Eshop.Controllers
             //temporary lame implementation - need to make repository/DB do this skip take stuff
             var allItems = _itemsRepository.GetAll().ToList();
             var items = allItems
-                .Skip((paginationRequest.Page - 1) * paginationRequest.Page)
+                .Skip((paginationRequest.Page - 1) * paginationRequest.Limit)
                 .Take(paginationRequest.Limit);
 
             var response = new PaginationResponse<Item>

@@ -9,14 +9,20 @@ import Pagination from '../Pagination/Pagination'
 
 
 class ItemTable extends React.Component {
+  constructor(){
+    super()
+    this.state = {
+      pageLimit: 20
+    }
+  }
 
   componentDidMount(){
-    this.props.dispatchLoadItems()
+    this.props.dispatchLoadItems(1, this.state.pageLimit)
   }
 
   render() {
     const htmlItems = [];
-    const {items} = this.props
+    const {items, allItemCount} = this.props
     for (const rowNumber in items ){
       htmlItems.push(<ItemRow key={items[rowNumber].id} {...items[rowNumber]}/>);
     }
@@ -38,9 +44,9 @@ class ItemTable extends React.Component {
           </tbody>
         </Table>
         <Pagination
-          allElementCount={htmlItems.length}
-          perPage={2}
-          coreLink='/item'
+          allElementCount={allItemCount}
+          loadListFunction={this.props.dispatchLoadItems}
+          limit={this.state.pageLimit}
         />
       </div>
     )
@@ -49,7 +55,8 @@ class ItemTable extends React.Component {
 
 export default connect(
     (state) => ({
-        items: state.ItemTableReducer.items
+        items: state.ItemTableReducer.items,
+        allItemCount: state.ItemTableReducer.numberOfAllItems
     }),
     (dispatch) => bindActionCreators({
         dispatchLoadItems: loadItems
