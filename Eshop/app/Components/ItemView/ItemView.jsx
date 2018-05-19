@@ -103,7 +103,7 @@ class ItemView extends React.Component {
                     </tr>
                 </tbody>
                 <tbody className="itemViewTable-actionsBody">
-                    
+                    {addToShoppingCartElement}
                 </tbody>
             </Table>
         )
