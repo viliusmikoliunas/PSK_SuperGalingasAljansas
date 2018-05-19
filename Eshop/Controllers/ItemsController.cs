@@ -21,12 +21,10 @@ namespace Eshop.Controllers
         {
             _itemsRepository = itemsRepository;
         }
-
-        //method name doesn't matter much its all about [http] tags
         [HttpGet]
-        public IEnumerable<Item> GetAll()
+        public IActionResult GetAll()
         {
-            return _itemsRepository.GetAll();
+            return Ok(_itemsRepository.GetAll());
         }
 
         [HttpPost]
@@ -64,6 +62,12 @@ namespace Eshop.Controllers
         {
             return _itemsRepository.GetItem(id);
         }
+
+       /* [HttpGet("{id}")]
+        public IActionResult GetItem(int id)
+        {
+            return Ok(_itemsRepository.GetItem(id));
+        }*/
 
         [HttpPut]
         [Authorize(Roles = UserRoleString.Admin)]

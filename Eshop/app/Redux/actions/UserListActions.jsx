@@ -20,3 +20,33 @@ const loadUsers = () => (dispatch) => {
 }
 
 export default loadUsers
+
+const blockUserAddress = '/api/users/block'
+
+const blockUserBody = (username, toBlock) => ({
+    'Username': username,
+    'Block': toBlock
+})
+
+export const blockUser = (username) => (dispatch) => {
+    changeBlockStatus(username, true, UserListActionTypes.BLOCK_USER)(dispatch)
+}
+
+export const unblockUser = (username) => (dispatch) => {
+    changeBlockStatus(username, false, UserListActionTypes.UNBLOCK_USER)(dispatch)
+}
+
+const changeBlockStatus = (username, toBlock, actionType) => (dispatch) => {
+    const request = generateRequestWithAuth('PUT', blockUserBody(username, toBlock))
+    fetch(blockUserAddress, request)
+        .then((response) => {
+            if (response.ok){
+                response.text().then((responseMsg) => alert(responseMsg))
+                dispatch({
+                    type: actionType,
+                    username: username
+                })
+            }
+            else alert(response.status + " " + response.statusText)
+        })
+}

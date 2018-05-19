@@ -20,10 +20,8 @@ namespace Eshop.Migrations
             IsBlocked = false,
             Id = Guid.NewGuid().ToString("D"),
             ConcurrencyStamp = Guid.NewGuid().ToString("D"),
-            SecurityStamp = Guid.NewGuid().ToString("D"),
+            SecurityStamp = Guid.NewGuid().ToString("D")
         };
-
-        private readonly string discriminator = "IdentityUser";
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,10 +32,12 @@ namespace Eshop.Migrations
             var adminAccSeed =
                 "INSERT INTO [dbo].[AspNetUsers] ([Id], [ConcurrencyStamp], [Email], [NormalizedEmail], " +
                 "[NormalizedUserName], [PasswordHash], [SecurityStamp], [UserName], " +
-                "[Discriminator], [AccessFailedCount], [EmailConfirmed], [LockoutEnabled], [PhoneNumberConfirmed], [TwoFactorEnabled]) " +
+                "[Firstname], [IsBlocked], [Lastname], " +
+                "[AccessFailedCount], [EmailConfirmed], [LockoutEnabled], [PhoneNumberConfirmed], [TwoFactorEnabled]) " +
                 $"VALUES ('{_admin.Id}', '{_admin.ConcurrencyStamp}', '{_admin.Email}', '{_admin.NormalizedEmail}', " +
                 $"'{_admin.NormalizedUserName}', '{_admin.PasswordHash}', '{_admin.SecurityStamp}', '{_admin.UserName}', " +
-                $"'{discriminator}', 0, 0, 0, 0, 0)";
+                $"'{_admin.Firstname}', '{_admin.IsBlocked}', '{_admin.Lastname}', " +
+                $"0, 0, 0, 0, 0)";
 
             var userRolesSeed = "INSERT INTO [dbo].[AspNetUserRoles] ([UserId], [RoleId]) " +
                                 $"VALUES ('{_admin.Id}', '{adminUserRoleId}')";

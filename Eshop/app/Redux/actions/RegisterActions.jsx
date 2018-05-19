@@ -1,4 +1,5 @@
-import LoginActionTypes from '../actionTypes/RegisterActionTypes'
+import LoginActionTypes from '../actionTypes/LoginActionTypes'
+import RegisterActionTypes from '../actionTypes/RegisterActionTypes'
 import {generatePOSTrequest} from '../../FunctionalComponents/httpRequests/generateRequest'
 import history from '../../Redux/history'
 
@@ -12,17 +13,20 @@ const register = (loginValues) => (dispatch) => {
                 response.text().then(
                     (jwtToken) => {
                         localStorage.setItem('jwtToken', jwtToken)
+                        dispatch({
+                            type: RegisterActionTypes.REGISTER_SUCCESS
+                        })
+                        dispatch({
+                            type: LoginActionTypes.LOGIN_SUCCESS
+                        })
                     }
                 )
-                dispatch({
-                    type: LoginActionTypes.REGISTER_SUCCESS
-                })
                 history.push('/')
             }
             else {
                 response.text().then(
                     (responsetext) => dispatch({
-                        type: LoginActionTypes.REGISTER_FAILURE,
+                        type: RegisterActionTypes.REGISTER_FAILURE,
                         error: responsetext
                     })
                 )
@@ -31,7 +35,7 @@ const register = (loginValues) => (dispatch) => {
         })
         .catch((err) => {
             dispatch({
-                type: LoginActionTypes.REGISTER_FAILURE,
+                type: RegisterActionTypes.REGISTER_FAILURE,
                 error: String(err)
             })
         })

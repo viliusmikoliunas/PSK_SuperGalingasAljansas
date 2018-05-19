@@ -10,6 +10,8 @@ namespace Eshop.Data.Entities
         [Required]
         public DateTime Date { get; set; }
         public bool HasBeenPaidFor { get; set; }
+        //public string PaymentId { get; set; } after successful transaction payment api sends back id of payment
+        public bool Confirmed { get; set; }
         [Required]
         public decimal Cost { get; set; }
 
@@ -17,7 +19,7 @@ namespace Eshop.Data.Entities
 
         public ICollection<OrderedItem> OrderedItem { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public UserAccount User { get; set; }
     }
 }

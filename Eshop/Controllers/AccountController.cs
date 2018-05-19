@@ -1,8 +1,10 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Eshop.Data.Entities;
 using Eshop.DataContracts;
 using Eshop.DataContracts.DataTransferObjects.Requests;
+using Eshop.DataContracts.DataTransferObjects.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +41,11 @@ namespace Eshop.Controllers
             if (result.Succeeded)
             {
                 var appUser =  _userManager.Users.SingleOrDefault(r => r.UserName == model.Username);
-                if (appUser.IsBlocked) return Forbid("Your account is blocked for indefinite time");
+                if (appUser.IsBlocked)
+                    return StatusCode((int)HttpStatusCode.Unauthorized, new ErrorResponse
+                    {
+                        Message = "Your account is blocked for indefinite ammount of time"
+                    });
 
                 var userRoles = await _userManager.GetRolesAsync(appUser);
                 var role =  userRoles.Contains(UserRoles.Admin.ToString())
@@ -48,7 +54,10 @@ namespace Eshop.Controllers
                 return Ok(JWTtoken.Generate(_configuration, model.Username, appUser, role));
             }
 
-            return Unauthorized();
+            return StatusCode((int)HttpStatusCode.Unauthorized, new ErrorResponse
+            {
+                Message = "Username and password doesn't match"
+            });
         }
         
         [HttpPost]

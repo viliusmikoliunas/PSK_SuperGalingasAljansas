@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Eshop.Data.Entities;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
-using Eshop.DataContracts.DataTransferObjects;
 
 namespace Eshop.Data.Repositories
 {
@@ -31,15 +29,15 @@ namespace Eshop.Data.Repositories
 
         public bool Delete(int itemId)
         {
-            var item_ = _dbContext.Items.FirstOrDefault(item => item.Id == itemId); 
-            if (item_ == null) return false;
-            _dbContext.Items.Remove(item_);
+            var item = _dbContext.Items.FirstOrDefault(i => i.Id == itemId); 
+            if (item == null) return false;
+            _dbContext.Items.Remove(item);
             _dbContext.SaveChanges();
             return true;
         }      
 
         public Item Update(Item itemToUpdate)
-        {         
+        {   
             _dbContext.Items.Update(itemToUpdate);
             _dbContext.SaveChanges();
             return itemToUpdate;

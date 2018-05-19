@@ -24,10 +24,12 @@ namespace Eshop.Controllers
         
         [HttpGet]
         [Produces("application/json")]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAll()
         {
             List<UserInfoResponse> userInfoList = new List<UserInfoResponse>();
-            userInfoList.AddRange(_userManager.Users.Select(user => new UserInfoResponse
+            var casualUsers = await _userManager.GetUsersInRoleAsync(UserRoleString.User);
+
+            userInfoList.AddRange(casualUsers.Select(user => new UserInfoResponse
             {
                 Email = user.Email,
                 Firstname = user.Firstname,
