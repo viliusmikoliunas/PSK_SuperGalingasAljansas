@@ -1,9 +1,25 @@
 .pagination ul li{
     display: inline;
     cursor: pointer;
+    border-style: solid;
+    border-width: 1px;
+    border-color: blue;
+}
+
+.pagination ul li > a{
+    text-decoration: none;
+}
+
+.pagination li.selected a{
+    background-color: aqua;
+}
+
+.pagination ul :hover{
+    background-color: lightblue;
 }
 
 .pagination li{
     margin-left: 10px;
     margin-right: 10px;
+    padding: 5px;
 }

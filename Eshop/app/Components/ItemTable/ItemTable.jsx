@@ -39,7 +39,7 @@ class ItemTable extends React.Component {
         </Table>
         <Pagination
           allElementCount={htmlItems.length}
-          perPage={20}
+          perPage={2}
           coreLink='/item'
         />
       </div>
