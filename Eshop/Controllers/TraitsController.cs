@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Eshop.Data.Entities;
+using Eshop.DataContracts;
 using Eshop.DataContracts.DataTransferObjects;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Eshop.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Traits")]
+    [Route("api/traits")]
     public class TraitsController : Controller
     {
         private readonly ITraitsRepository _traitsRepository;
@@ -28,7 +29,7 @@ namespace Eshop.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult AddTrait([FromBody] TraitDto traitData)
         {
             if (string.IsNullOrEmpty(traitData.Title))
@@ -43,14 +44,14 @@ namespace Eshop.Controllers
             return Ok("Trait added successfully");
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public Trait GetTrait(int id)
         {
             return _traitsRepository.GetTrait(id);
         }
 
         [HttpPut]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult UpdateTrait([FromBody] TraitDto updatedTrait)
         {
             var traitToUpdate = GetTrait(updatedTrait.Id);
@@ -62,13 +63,17 @@ namespace Eshop.Controllers
             return Ok("Trait updated successfully");
         }
 
-        [HttpPut]
-        [Authorize(Roles = "Admin")]
+        [HttpDelete]
+        [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult DeleteTrait([FromBody] TraitDto deletedTrait)
         {
-            var TraitToDelete = GetTrait(deletedTrait.Id);
-            _traitsRepository.Update(TraitToDelete);
-            return Ok("Trait updated successfully");
+            var traitToDelete = GetTrait(deletedTrait.Id);
+            if (traitToDelete == null) return NotFound("Trait does not exist in the database");
+            else
+            {
+                _traitsRepository.Delete(traitToDelete);
+                return Ok("Trait has been deleted");
+            }
         }
 
     }
