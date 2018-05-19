@@ -30,7 +30,6 @@ class App extends Component{
 					<Route exact path='/register' render={() => <RegisterPage/>}/>
 					<Route path ='/admin' component={adminRoute}/>
 					<Route path ='/user' component={userRoute}/>
-					<Route path ='/checkout' render={() => <CheckoutPage/>}/>
 
 					<Route exact path='/item' render={() => <Redirect to='/' />} />
 					<RouteWithLayout exact path='/item/:id' layout={MainLayout} component={itemRoute} />

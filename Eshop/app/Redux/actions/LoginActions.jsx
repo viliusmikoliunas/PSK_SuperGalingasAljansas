@@ -23,11 +23,11 @@ const login = (loginValues) => (dispatch) => {
                 history.push('/')
             }
             else {
-                response.text().then(
+                response.json().then(
                     responseMessage => 
                         dispatch({
                             type: LoginActionTypes.LOGIN_FAILURE,
-                            error: responseMessage
+                            error: responseMessage.message
                         })
                 )
             }

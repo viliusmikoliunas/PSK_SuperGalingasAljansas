@@ -34,7 +34,7 @@ class Order extends React.Component {
     
         const reviewElement = 
             <div>
-                <Button color="info" onClick={this.toggle}>CheckReview</Button>
+                <Button color="info" onClick={this.toggle}>Check Review</Button>
 
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>{username} review</ModalHeader>
@@ -56,7 +56,7 @@ class Order extends React.Component {
     
         const confirmElement = confirmed
             ? 'This order is confirmed'
-            : <Button color="success" onClick={() => onConfirm(id)}>Confirm order</Button>
+            : <Button color="success" onClick={() => onConfirm(id)}>Confirm Order</Button>
         
         return (
             <tr>
