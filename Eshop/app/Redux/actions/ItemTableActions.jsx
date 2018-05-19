@@ -15,7 +15,6 @@ const loadItems = (page,limit) => (dispatch) => {
     if (page != null && limit != null){
         requestAddress = itemsAddressPaginate(page, limit)
     }
-    console.log(requestAddress)
     fetch(requestAddress,request)
         .then((response) => {
             if (response.ok){
