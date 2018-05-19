@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import loadItems from '../../Redux/actions/ItemTableActions'
 import { Table } from 'reactstrap'
 import ItemRow from './ItemRow/ItemRow'
+import Pagination from '../Pagination/Pagination'
 
 
 class ItemTable extends React.Component {
@@ -36,6 +37,11 @@ class ItemTable extends React.Component {
             {htmlItems}
           </tbody>
         </Table>
+        <Pagination
+          allElementCount={htmlItems.length}
+          perPage={20}
+          coreLink='/item'
+        />
       </div>
     )
   }
