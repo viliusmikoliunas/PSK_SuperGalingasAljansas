@@ -9,12 +9,14 @@ import UserListReducer from './UserListReducer'
 import UserBlockStatusReducer from './UserListReducer'
 import ShoppingCartReducer from './ShoppingCartReducer'
 import ItemViewReducer from './ItemViewReducer'
+import OrderListReducer from './OrderListReducer'
 
 
 const rootReducer = combineReducers({
     ItemTableReducer,
     ItemViewReducer,
     LoginReducer,
+    OrderListReducer,
     RegisterReducer,
     ShoppingCartReducer,
     UserBlockStatusReducer,

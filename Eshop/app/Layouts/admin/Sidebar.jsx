@@ -11,6 +11,7 @@ const Sidebar = (props) => {
     ?
     <div>
       <SidebarLink to='/admin/user-list'>User List</SidebarLink>
+      <SidebarLink to='/admin/orders'>Orders</SidebarLink>
     </div>
     : null
 
@@ -24,7 +25,6 @@ const Sidebar = (props) => {
   return (
     <div id="sidebar">
       <ul>
-        <SidebarLink to='/' matchexactpathforactive={1}>Main Page</SidebarLink>
         {adminRoutes}
         {userRoutes}
       </ul>
