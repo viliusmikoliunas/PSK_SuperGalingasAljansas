@@ -7,17 +7,25 @@ import {addNewItem} from '../../Redux/actions/ShoppingCartActions'
 import QuantityInput from '../QuantityInput/QuantityInput'
 import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart} from '../../Redux/actions/ShoppingCartActions'
 import {getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
- 
+
 import './ItemViewStyles.css'
 
 import collectionToString from '../../FunctionalComponents/formatting/collectionToString'
 
+import FaEdit from 'react-icons/lib/fa/edit'
+
+
+
 class ItemView extends React.Component {
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.onLeave = this.onLeave.bind(this)
         this.state = {
-            shoppingCartQuantity: 1
+            shoppingCartQuantity: 1,
+            fieldEditStates: {
+                title: false
+            },
+            title: this.props.title
         }
     }
 
@@ -54,10 +62,15 @@ class ItemView extends React.Component {
         dispatchAddToCart(item, number)
     }
 
+    handleInputChange(event){
+        this.setState({
+            title: event.target.value
+        })
+    }
+
     render() {
         const {dispatchAddToCart, item, shoppingCartItems} = this.props 
         const {pictureLocation, title, cost, description, categories, traits} = item
-
         const userRole = getUserRoleFromToken()
         const addToShoppingCartElement = userRole === 'Admin'
             ? null
@@ -74,6 +87,22 @@ class ItemView extends React.Component {
                 </td>
             </tr>
 
+        const adminEditIcon = userRole === 'Admin'
+            ? <FaEdit onClick={() => this.setState({
+                fieldEditStates: {
+                    title: !this.state.fieldEditStates.title
+                }
+            })}/>
+            : null
+
+        const titleElement = this.state.fieldEditStates.title
+            ?   <div>
+                    {adminEditIcon} <input defaultValue={title} onChange={this.handleInputChange.bind(this)}/>
+                </div>
+            :   <div>
+                    {adminEditIcon}  {title}
+                </div>
+
         return (
             <Table responsive className="itemViewTable">
                 <tbody className="itemViewTable-infoBody">
@@ -81,7 +110,7 @@ class ItemView extends React.Component {
                         <td rowSpan="5">
                             <img src={pictureLocation}/>
                         </td>
-                        <td>{title}</td>
+                        <td>{titleElement}</td>
                     </tr>
                     <tr>
                         <td>Cost: {cost} €</td>
