@@ -18,14 +18,20 @@ const Sidebar = (props) => {
   const userRoutes = userRole === 'User'
     ?
     <div>
-      <SidebarLink to='/user/shopping-cart'>Shopping Cart</SidebarLink>
     </div>
     : null
+
+  const nonAdminRoutes = userRole !== 'Admin'
+  ? <div>
+      <SidebarLink to='/user/shopping-cart'>Shopping Cart</SidebarLink>
+    </div>
+  : null
 
   return (
     <div id="sidebar">
       <ul>
         {adminRoutes}
+        {nonAdminRoutes}
         {userRoutes}
       </ul>
     </div>

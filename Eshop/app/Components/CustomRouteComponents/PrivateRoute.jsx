@@ -33,7 +33,10 @@ class PrivateRoute extends Component {
                 ? null
                 : 
                 ( canUserAccessThisRoute
-                    ? <RouteWithLayout layout={layout} component={Component} {...props}/>
+                    ? (layout === undefined
+                        ? <Route component={Component} {...props}/> 
+                        : <RouteWithLayout layout={layout} component={Component} {...props}/>
+                    )
                     : <Redirect to={{
                         pathname: redirectPath,
                         state: { from: props.location }

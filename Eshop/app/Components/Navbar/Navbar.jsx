@@ -50,17 +50,18 @@ class Navbar extends Component {
                 </Nav>
             :   <NavItem><Button tag={Link} to='/login'>Login</Button></NavItem>
 
-        const shoppingCartElement = userRole === 'User' 
-        ?   <NavItem>
-                <Link to={'/user/shopping-cart'}>Shopping cart({itemCount})</Link>
-            </NavItem> 
-        : null
 
         let itemCount = 0
         this.props.cartItemList.map(item => {
             itemCount += item.quantity
         })
-        
+
+        const shoppingCartElement = userRole !== 'Admin' 
+        ?   <NavItem>
+                <Link to={'/user/shopping-cart'}>Shopping cart({itemCount})</Link>
+            </NavItem> 
+        : null
+
         return (
             <div>
                 <ReactstrapNavBar color="primary" light expand="md" className="navigationBar header">

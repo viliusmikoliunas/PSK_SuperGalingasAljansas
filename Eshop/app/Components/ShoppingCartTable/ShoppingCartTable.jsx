@@ -59,7 +59,7 @@ class ShoppingCartTable extends React.Component {
         })
 
         const linkToCheckout = this.props.cartItemList.length > 0 && total < 10000
-            ? <Link to={'/checkout'}>Proceed to checkout</Link>
+            ? <Link to={'/user/checkout'}>Proceed to checkout</Link>
             : <div>Proceed to checkout</div>
         
         const errorMsg = total >= 10000
