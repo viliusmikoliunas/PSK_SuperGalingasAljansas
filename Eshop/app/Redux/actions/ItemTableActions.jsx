@@ -15,7 +15,8 @@ const loadItems = (page,limit) => (dispatch) => {
                 response.json()
                     .then((jsonResponse) => dispatch({
                         type: ItemTableActionTypes.LOAD_ITEMS,
-                        items: jsonResponse
+                        items: jsonResponse.items,
+                        numberOfAllItems: jsonResponse.allItemsCount
                     }))
             }
             else console.log(response.status + " " + response.statusText)
