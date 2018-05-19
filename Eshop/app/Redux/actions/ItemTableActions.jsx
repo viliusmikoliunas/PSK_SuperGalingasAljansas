@@ -3,8 +3,11 @@ import ItemTableActionTypes from '../actionTypes/ItemTableActions'
 
 
 const itemsAddress = '/api/items'
+const itemsAddressPaginate = (page, limit) => {
+    return itemsAddress + '?' + 'page=' + {page} + '&limit=' + {limit}
+}
 
-const loadItems = () => (dispatch) => {
+const loadItems = (page,limit) => (dispatch) => {
     const request = generateRequest('GET', null)
     fetch(itemsAddress,request)
         .then((response) => {

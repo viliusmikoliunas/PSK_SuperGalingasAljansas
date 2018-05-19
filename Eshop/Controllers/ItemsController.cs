@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Eshop.Data.Entities;
 using Eshop.DataContracts.DataTransferObjects;
+using Eshop.DataContracts.DataTransferObjects.Requests;
+using Eshop.DataContracts.DataTransferObjects.Responses;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +21,21 @@ namespace Eshop.Controllers
             _itemsRepository = itemsRepository;
         }
 
-        //method name doesn't matter much its all about [http] tags
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] PaginationRequest paginationRequest)
         {
-            return Ok(_itemsRepository.GetAll());
+            //temporary lame implementation - need to make repository/DB do this skip take stuff
+            var allItems = _itemsRepository.GetAll().ToList();
+            var items = allItems
+                .Skip((paginationRequest.Page - 1) * paginationRequest.Page)
+                .Take(paginationRequest.Limit);
+
+            var response = new PaginationResponse<Item>
+            {
+                Items = items,
+                AllItemsCount = allItems.Count
+            };
+            return Ok(response);
         }
 
         [HttpPost]
