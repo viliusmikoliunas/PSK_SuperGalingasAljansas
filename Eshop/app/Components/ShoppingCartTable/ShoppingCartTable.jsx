@@ -59,7 +59,7 @@ class ShoppingCartTable extends React.Component {
         })
 
         const linkToCheckout = this.props.cartItemList.length > 0 && total < 10000
-            ? <Link to={'/user/checkout'}>Proceed to checkout</Link>
+            ? <Button color='info' tag={Link} to='/user/checkout'>Proceed to checkout</Button>
             : <div>Proceed to checkout</div>
         
         const errorMsg = total >= 10000
@@ -88,7 +88,7 @@ class ShoppingCartTable extends React.Component {
                         <td>Total Price</td>
                         <td>{toFixed(total,2)} {errorMsg}</td>
                         <td/>
-                        <td><Button color="danger" onClick={() => dispatchClearCart()}>Clear Cart</Button></td>
+                        <td><Button outline color="danger" onClick={() => dispatchClearCart()}>Clear Cart</Button></td>
                     </tr>
                     <tr>
                         <td colSpan="5">

@@ -70,7 +70,7 @@ class ItemView extends React.Component {
                     />
                 </td>
                 <td>
-                    <Button onClick={() => this.handleAddToCart(this.state.shoppingCartQuantity)}>Add to cart</Button>
+                    <Button color="primary" onClick={() => this.handleAddToCart(this.state.shoppingCartQuantity)}>Add to cart</Button>
                 </td>
             </tr>
 

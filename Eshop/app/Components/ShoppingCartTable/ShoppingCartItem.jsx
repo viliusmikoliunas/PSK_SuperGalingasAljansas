@@ -26,7 +26,7 @@ class ShoppingCartItem extends Component{
                         initialValue={quantity}
                     />
                 </td>
-                <td><Button color="warning" onClick={() => dispatchRemoveItemFromCart(id)}>Remove</Button></td>
+                <td><Button color="danger" onClick={() => dispatchRemoveItemFromCart(id)}>Remove</Button></td>
             </tr>
         )
     }
