@@ -47,7 +47,6 @@ namespace Eshop.Data.Repositories
 
         public Item GetItem(int id)
         {
-            // var selectedItem = _dbContext.Items.FirstOrDefault(item => item.Id == id);
             var selectedItem = _dbContext.Items.Include(item=>item.ItemTraits).Include(item =>item.ItemCategories).FirstOrDefault(item => item.Id == id);
             return selectedItem;
         }
