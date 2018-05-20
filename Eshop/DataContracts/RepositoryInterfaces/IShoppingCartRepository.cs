@@ -6,11 +6,11 @@ using Eshop.Data.Entities;
 
 namespace Eshop.DataContracts.RepositoryInterfaces
 {
-    interface IShoppingCartRepository
+    public interface IShoppingCartRepository
     {
-        ShoppingCart Get(int id);
-        ShoppingCart Add(ShoppingCart shoppingCart);
-        ShoppingCart Update(ShoppingCart shoppingCart);
+        ShoppingCart Get(string acc);
+        void Add(ShoppingCart shoppingCart, int itemId, int itemQuantity);
+        void Update(ShoppingCart shoppingCart);
         void Delete(ShoppingCart shoppingCart);
     }
 }
