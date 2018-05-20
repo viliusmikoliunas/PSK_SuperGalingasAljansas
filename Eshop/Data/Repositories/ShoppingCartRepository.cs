@@ -54,7 +54,7 @@ namespace Eshop.Data.Repositories
 
         public void Update(ShoppingCart shoppingCart)
         {
-            var items = _dbContext.ShoppingCartItems.Where(x => x.ShoppingCartId == shoppingCart.Id);
+            var items = _dbContext.ShoppingCartItems.Where(x => x.ShoppingCartId.Equals(shoppingCart.Id));
             foreach(var item in items)
             {
                 _dbContext.ShoppingCartItems.Remove(item);
