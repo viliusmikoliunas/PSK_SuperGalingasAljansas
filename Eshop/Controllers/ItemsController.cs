@@ -69,23 +69,23 @@ namespace Eshop.Controllers
             else return NotFound("The item does not exist in the database");
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public Item GetItem(int id)
         {
             return _itemsRepository.GetItem(id);
-        }
+        }*/
 
-       /* [HttpGet("{id}")]
+        [HttpGet("{id}")]
         public IActionResult GetItem(int id)
         {
             return Ok(_itemsRepository.GetItem(id));
-        }*/
+        }
 
         [HttpPut]
         [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult UpdateItem([FromBody] UpdatedItemDto updatedItem)
         {
-            var itemToUpdate = GetItem(updatedItem.Id);
+            var itemToUpdate = _itemsRepository.GetItem(updatedItem.Id);
             if (itemToUpdate == null)
             {
                 if (string.IsNullOrEmpty(updatedItem.Title))

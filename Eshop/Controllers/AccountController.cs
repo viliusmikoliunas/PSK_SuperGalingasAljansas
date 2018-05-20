@@ -86,5 +86,32 @@ namespace Eshop.Controllers
 
             return BadRequest(result.Errors.First().Description);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] RegisterRequest model)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var user = new UserAccount
+            {
+                UserName = model.Username,
+                Email = model.Email,
+                IsBlocked = false,
+                Firstname = model.FirstName,
+                Lastname = model.LastName,
+                PhoneNumber = model.PhoneNumber
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, UserRoleString.User);
+                await _signInManager.SignInAsync(user, false);
+                return Ok(JWTtoken.Generate(_configuration, model.Username, user));
+            }
+
+            return BadRequest(result.Errors.First().Description);
+        }
     }
 }
