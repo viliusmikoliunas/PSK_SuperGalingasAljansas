@@ -12,6 +12,15 @@ export default (state = initialState, action) => {
                 ...state,
                 item: action.item
             }
+        case ItemViewActions.CHANGE_FIELD_VALUE:
+            console.log(action)
+            return {
+                ...state,
+                item: {
+                    ...state.item,
+                    [action.field]: action.value
+                }
+            }
         default:
             return state
     }

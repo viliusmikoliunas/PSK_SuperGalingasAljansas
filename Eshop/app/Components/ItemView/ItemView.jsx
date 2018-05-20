@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Table, Button,Input,InputGroup,InputGroupAddon} from 'reactstrap'
-import loadItem from '../../Redux/actions/ItemViewActions'
+import loadItem, {updateItemField} from '../../Redux/actions/ItemViewActions'
 import {addNewItem} from '../../Redux/actions/ShoppingCartActions'
 import QuantityInput from '../QuantityInput/QuantityInput'
 import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart} from '../../Redux/actions/ShoppingCartActions'
@@ -25,7 +25,9 @@ class ItemView extends React.Component {
             fieldEditStates: {
                 title: false
             },
-            title: this.props.title
+            inputFields: {
+                title: this.props.title
+            }
         }
     }
 
@@ -62,10 +64,24 @@ class ItemView extends React.Component {
         dispatchAddToCart(item, number)
     }
 
-    handleInputChange(event){
+    handleTitleChange(event){
         this.setState({
-            title: event.target.value
+            inputFields: {
+                title: event.target.value
+            }
         })
+    }
+
+    handleTitleSubmit(event){
+        this.setState({
+            inputFields: {
+                field: event.target.value
+            },
+            fieldEditStates: {
+                title: false
+            } 
+        })
+        this.props.dispatchUpdateItem('title', event.target.value)
     }
 
     render() {
@@ -97,7 +113,14 @@ class ItemView extends React.Component {
 
         const titleElement = this.state.fieldEditStates.title
             ?   <div>
-                    {adminEditIcon} <input defaultValue={title} onChange={this.handleInputChange.bind(this)}/>
+                    {adminEditIcon} <input 
+                        defaultValue={title} 
+                        onKeyPress={event => {
+                            if (event.key === 'Enter'){
+                                this.handleTitleSubmit(event)
+                            }
+                        }} 
+                        onChange={this.handleTitleChange.bind(this)}/>
                 </div>
             :   <div>
                     {adminEditIcon}  {title}
@@ -150,7 +173,8 @@ export default connect(
         dispatchLoadItem: loadItem,
         dispatchAddToCart: addNewItem,
         dispatchLoadCartFromDb: loadCartFromDb,
-        dispatchLoadCartFromLocalStorage: loadShoppingCartFromLocalStorage
+        dispatchLoadCartFromLocalStorage: loadShoppingCartFromLocalStorage,
+        dispatchUpdateItem: updateItemField
     }
     ,dispatch)
 )(ItemView)

@@ -42,4 +42,12 @@ const downloadItemInfo = (itemId) => (dispatch) => {
         })
 }
 
+export const updateItemField = (field, value) => (dispatch) => {
+    dispatch({
+        type: ItemViewActions.CHANGE_FIELD_VALUE,
+        field: field,
+        value: value
+    })
+}
+
 export default loadItem
