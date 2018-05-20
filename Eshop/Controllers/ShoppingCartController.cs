@@ -37,7 +37,8 @@ namespace Eshop.Controllers
             var itemFromDb = _itemsRepository.GetItem(item.itemId);
             if (itemFromDb == null) return NotFound("Item with given id not found");
 
-            _shoppingCartRepository.Add(_shoppingCartRepository.Get(userName), itemFromDb.Id, item.itemQuantity);
+            var shoppingCart = _shoppingCartRepository.Get(userName);
+            _shoppingCartRepository.Add(shoppingCart, itemFromDb.Id, item.itemQuantity);
 
             return Ok("Item(s) added successfully");
         }
@@ -75,14 +76,14 @@ namespace Eshop.Controllers
 
         [HttpDelete]
         [Authorize(Roles = UserRoleString.User)]
-        public IActionResult Delete([FromBody] DeleteShoppingCartItemDto item)
+        public IActionResult Delete()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var token = JWTtoken.GetTokenInfo(Request, "sub");
-            if (token == null) return NotFound("Could not get token");
+            var username = JWTtoken.GetTokenInfo(Request, "sub");
+            if (username == null) return NotFound("Could not get token");
 
-            _shoppingCartRepository.Delete(_shoppingCartRepository.Get(token));
+            _shoppingCartRepository.Delete(username);
 
             return Ok("Item deleted successfully");
         }

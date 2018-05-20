@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Eshop.Data.Repositories
 {
@@ -19,7 +20,7 @@ namespace Eshop.Data.Repositories
 
         public void Add(ShoppingCart shoppingCart, int itemId, int itemQuantity)
         {
-            var addItem = _dbContext.ShoppingCartItems.FirstOrDefault(cartItem => cartItem.ItemId == itemId);
+            var addItem = _dbContext.ShoppingCartItems.FirstOrDefault(cartItem => cartItem.ItemId == itemId && cartItem.ShoppingCartId.Equals(shoppingCart.Id));
             if (addItem == null)
             {
                 var shoppingCartItem = new ShoppingCartItem
@@ -40,21 +41,33 @@ namespace Eshop.Data.Repositories
 
         public ShoppingCart Get(string accName)
         {
-            var acc = _dbContext.Users.FirstOrDefault(user => user.UserName == accName);
-            var _cart = _dbContext.ShoppingCarts.FirstOrDefault(cart => cart.User == acc);
-            if (_cart != null) return _cart;
+            var acc = _dbContext.Users.FirstOrDefault(user => user.UserName.Equals(accName));
+            var cart = _dbContext.ShoppingCarts.FirstOrDefault(c => c.User.Id.Equals(acc.Id));
+            if (cart != null) return cart;
             else
             {
                 _dbContext.ShoppingCarts.Add(new ShoppingCart {User = acc});
                 _dbContext.SaveChanges();
-                return _dbContext.ShoppingCarts.FirstOrDefault(cart => cart.User == acc);
+                return _dbContext.ShoppingCarts.FirstOrDefault(c => c.User == acc);
             }
         }
 
-        public void Delete(ShoppingCart shoppingCart)
+        public void Delete(string username)
         {
-            _dbContext.ShoppingCarts.Remove(shoppingCart);
-            _dbContext.SaveChanges();
+            //any of checked for null varibales shouldn't be null so no callback is needed
+            var userId = _dbContext.UserAccounts.FirstOrDefault(user => user.UserName.Equals(username))?.Id;
+            if (userId != null)
+            {
+                var shoppingCartToRemove = _dbContext.ShoppingCarts
+                    .Include(c => c.ShoppingCartItems)
+                    .FirstOrDefault(cart => cart.User.Id.Equals(userId));
+                if (shoppingCartToRemove != null)
+                {
+                    _dbContext.ShoppingCarts.Remove(shoppingCartToRemove);
+                    _dbContext.SaveChanges();
+
+                }
+            }
         }
 
         public void Update(ShoppingCart shoppingCart)
