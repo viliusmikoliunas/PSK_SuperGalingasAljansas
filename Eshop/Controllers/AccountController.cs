@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Eshop.Data.Entities;
+﻿using Eshop.Data.Entities;
 using Eshop.DataContracts;
 using Eshop.DataContracts.DataTransferObjects.Requests;
 using Eshop.DataContracts.DataTransferObjects.Responses;
@@ -9,6 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Eshop.Controllers
 {
@@ -86,32 +86,42 @@ namespace Eshop.Controllers
 
             return BadRequest(result.Errors.First().Description);
         }
-
+        
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] RegisterRequest model)
+        [Authorize(Roles = UserRoleString.User)]
+        public async Task<IActionResult> Update([FromBody] AccountUpdateRequest model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var user = new UserAccount
-            {
-                UserName = model.Username,
-                Email = model.Email,
-                IsBlocked = false,
-                Firstname = model.FirstName,
-                Lastname = model.LastName,
-                PhoneNumber = model.PhoneNumber
-            };
+            var user = _userManager.Users.ToList().First(u => u.UserName == model.Username);
 
-            var result = await _userManager.CreateAsync(user, model.Password);
+            if (model.Email != null)
+                user.Email = model.Email;
+            if (model.FirstName != null)
+                user.Firstname = model.FirstName;
+            if (model.LastName != null)
+                user.Lastname = model.LastName;
+            if (model.PhoneNumber != null)
+                user.PhoneNumber = model.PhoneNumber;
 
-            if (result.Succeeded)
+            if (model.Password != null)
             {
-                await _userManager.AddToRoleAsync(user, UserRoleString.User);
-                await _signInManager.SignInAsync(user, false);
-                return Ok(JWTtoken.Generate(_configuration, model.Username, user));
+                var result1 = await _userManager.RemovePasswordAsync(user);
+                if (result1.Succeeded)
+                {
+                    var result2 = await _userManager.AddPasswordAsync(user, model.Password);
+                    if (!result2.Succeeded)
+                        return BadRequest("New password could not be set");
+                }
+                else
+                    return BadRequest("Old password could not be removed");
             }
 
-            return BadRequest(result.Errors.First().Description);
+            var result3 = await _userManager.UpdateAsync(user);
+            if (result3.Succeeded)
+                return Ok("Account was successfully updated");
+
+            return BadRequest(result3.Errors.First().Description);
         }
     }
 }
