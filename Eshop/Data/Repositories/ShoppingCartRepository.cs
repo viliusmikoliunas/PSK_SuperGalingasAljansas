@@ -61,8 +61,12 @@ namespace Eshop.Data.Repositories
                 var shoppingCartToRemove = _dbContext.ShoppingCarts
                     .Include(c => c.ShoppingCartItems)
                     .FirstOrDefault(cart => cart.User.Id.Equals(userId));
+
                 if (shoppingCartToRemove != null)
                 {
+                    //deep delete
+                    _dbContext.ShoppingCartItems.RemoveRange(shoppingCartToRemove.ShoppingCartItems);
+
                     _dbContext.ShoppingCarts.Remove(shoppingCartToRemove);
                     _dbContext.SaveChanges();
 
