@@ -22,8 +22,13 @@ namespace Eshop.Data.Repositories
             var addItem = _dbContext.ShoppingCartItems.FirstOrDefault(cartItem => cartItem.ItemId == itemId);
             if (addItem == null)
             {
-                _dbContext.ShoppingCartItems.Add(new ShoppingCartItem { ShoppingCartId = shoppingCart.Id, ItemId = itemId, Quantity = itemQuantity });
-                _dbContext.SaveChanges();                
+                var shoppingCartItem = new ShoppingCartItem
+                {
+                    ShoppingCartId = shoppingCart.Id,
+                    ItemId = itemId, Quantity = itemQuantity
+                };
+                _dbContext.ShoppingCartItems.Add(shoppingCartItem);
+                _dbContext.SaveChanges();
             }
             else
             {
@@ -54,12 +59,6 @@ namespace Eshop.Data.Repositories
 
         public void Update(ShoppingCart shoppingCart)
         {
-            var items = _dbContext.ShoppingCartItems.Where(x => x.ShoppingCartId.Equals(shoppingCart.Id));
-            foreach(var item in items)
-            {
-                _dbContext.ShoppingCartItems.Remove(item);
-            }
-            
             _dbContext.ShoppingCarts.Update(shoppingCart);
             _dbContext.SaveChanges();
         }

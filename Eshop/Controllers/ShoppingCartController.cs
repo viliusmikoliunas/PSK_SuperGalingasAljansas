@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Eshop.Controllers
 {
@@ -14,12 +15,15 @@ namespace Eshop.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly IShoppingCartRepository _shoppingCartRepository;
+        private readonly IItemsRepository _itemsRepository;
+        private readonly IShoppingCartItemsRepository _shoppingCartItemsRepository;
 
-        public ShoppingCartController(IShoppingCartRepository shoppingCartRepository)
+        public ShoppingCartController(IShoppingCartRepository shoppingCartRepository, IItemsRepository itemsRepository, IShoppingCartItemsRepository shoppingCartItemsRepository)
         {
             _shoppingCartRepository = shoppingCartRepository;
+            _itemsRepository = itemsRepository;
+            _shoppingCartItemsRepository = shoppingCartItemsRepository;
         }
-
 
         [HttpPost]
         [Authorize(Roles = UserRoleString.User)]
@@ -27,10 +31,13 @@ namespace Eshop.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var token = JWTtoken.GetTokenInfo(Request, "sub");
-            if (token == null) return NotFound("Could not get token");
+            var userName = JWTtoken.GetTokenInfo(Request, "sub");
+            if (userName == null) return NotFound("Could not get token");
 
-            _shoppingCartRepository.Add(_shoppingCartRepository.Get(token), item.itemId, item.itemQuantity);
+            var itemFromDb = _itemsRepository.GetItem(item.itemId);
+            if (itemFromDb == null) return NotFound("Item with given id not found");
+
+            _shoppingCartRepository.Add(_shoppingCartRepository.Get(userName), itemFromDb.Id, item.itemQuantity);
 
             return Ok("Item(s) added successfully");
         }
@@ -41,20 +48,26 @@ namespace Eshop.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var token = JWTtoken.GetTokenInfo(Request, "sub");
-            if (token == null) return NotFound("Could not get token");
+            var username = JWTtoken.GetTokenInfo(Request, "sub");
+            if (username == null) return NotFound("Could not get token");
 
-            var userCart = _shoppingCartRepository.Get(token);
-
-            ShoppingCart cart = userCart;
-            List<ShoppingCartItem> cartList = new List<ShoppingCartItem>();
+            ShoppingCart cart = _shoppingCartRepository.Get(username);
             foreach(var item in items)
             {
-                var shoppingItems = new ShoppingCartItem { ItemId = item.itemId, Quantity = item.itemQuantity };
-                cartList.Add(shoppingItems);
-            }
-            cart.ShoppingCartItems = cartList;
+                var itemFromDb = _itemsRepository.GetItem(item.itemId);
+                if (itemFromDb == null) return NotFound("Item with given id not found");
 
+                var existingShoppingCartItem = _shoppingCartItemsRepository.GetByShoppingCart(cart.Id, itemFromDb.Id);
+                if (existingShoppingCartItem != null)
+                {
+                    existingShoppingCartItem.Quantity += item.itemQuantity;
+                }
+                else
+                {
+                    var shoppingItems = new ShoppingCartItem { ItemId = item.itemId, Quantity = item.itemQuantity };
+                    cart.ShoppingCartItems.Add(shoppingItems);
+                }
+            }
             _shoppingCartRepository.Update(cart);
 
             return Ok("Item(s) updated successfully");
