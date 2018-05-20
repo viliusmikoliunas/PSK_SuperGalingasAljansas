@@ -14,6 +14,7 @@ import collectionToString from '../../FunctionalComponents/formatting/collection
 
 import FaEdit from 'react-icons/lib/fa/edit'
 
+import ItemViewField from './ItemViewField'
 
 
 class ItemView extends React.Component {
@@ -25,7 +26,7 @@ class ItemView extends React.Component {
             fieldEditStates: {
                 title: false
             },
-            changesWereMade: false,
+            changesWereMade: true,
             inputFields: {
                 title: this.props.title
             }
@@ -65,33 +66,21 @@ class ItemView extends React.Component {
         dispatchAddToCart(item, number)
     }
 
-    handleTitleChange(event){
-        this.setState({
-            inputFields: {
-                title: event.target.value
-            }
-        })
-    }
-
-    handleTitleSubmit(event){
-        this.setState({
-            inputFields: {
-                title: event.target.value
-            },
-            fieldEditStates: {
-                title: false
-            } ,
-            changesWereMade: true
-        })
-        this.props.dispatchUpdateItemField('title', event.target.value)
-    }
-
     updateItem(){
         const newItem = {
             ...this.props.item,
             title: this.state.inputFields.title 
         }
         this.props.dispatchUpdateItem(newItem)
+    }
+
+    handleFieldValueChange(key, value){
+        this.setState({
+            inputFields: {
+                ...this.state.inputFields,
+                [key]: value
+            }
+        })
     }
 
     render() {
@@ -119,28 +108,12 @@ class ItemView extends React.Component {
                 </td>
             </tr>
 
-        const adminEditIcon = userRole === 'Admin'
-            ? <FaEdit onClick={() => this.setState({
-                fieldEditStates: {
-                    title: !this.state.fieldEditStates.title
-                }
-            })}/>
-            : null
-
-        const titleElement = this.state.fieldEditStates.title
-            ?   <div>
-                    {adminEditIcon} <input 
-                        defaultValue={title} 
-                        onKeyPress={event => {
-                            if (event.key === 'Enter'){
-                                this.handleTitleSubmit(event)
-                            }
-                        }} 
-                        onChange={this.handleTitleChange.bind(this)}/>
-                </div>
-            :   <div>
-                    {adminEditIcon}  {title}
-                </div>
+        const titleElement =
+            <ItemViewField
+                callback={this.handleFieldValueChange.bind(this)}
+                initialValue={title}
+                fieldTitle='title'
+            />
 
         return (
             <Table responsive className="itemViewTable">
@@ -149,7 +122,7 @@ class ItemView extends React.Component {
                         <td rowSpan="5">
                             <img src={pictureLocation}/>
                         </td>
-                        <td>{titleElement}</td>
+                        {titleElement}
                     </tr>
                     <tr>
                         <td>Cost: {cost} €</td>
@@ -164,10 +137,10 @@ class ItemView extends React.Component {
                         </td>
                     </tr>
                     <tr>
-                    <td>                        
-                        <p>Traits:</p>
-                        {collectionToString(traits) || "This item doesn't have any traits"}
-                    </td>
+                        <td>                        
+                            <p>Traits:</p>
+                            {collectionToString(traits) || "This item doesn't have any traits"}
+                        </td>
                     </tr>
                 </tbody>
                 <tbody className="itemViewTable-actionsBody">
