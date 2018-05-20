@@ -86,7 +86,7 @@ namespace Eshop.Controllers
         public IActionResult UpdateItem([FromBody] UpdatedItemDto updatedItem)
         {
             var itemToUpdate = _itemsRepository.GetItem(updatedItem.Id);
-            if (itemToUpdate == null)
+            if (itemToUpdate != null)
             {
                 if (string.IsNullOrEmpty(updatedItem.Title))
                     return BadRequest("Title missing");

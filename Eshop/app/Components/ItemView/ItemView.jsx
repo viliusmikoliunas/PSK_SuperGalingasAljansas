@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Table, Button,Input,InputGroup,InputGroupAddon} from 'reactstrap'
-import loadItem, {updateItemField} from '../../Redux/actions/ItemViewActions'
+import loadItem, {updateItemField, saveUpdatedItem} from '../../Redux/actions/ItemViewActions'
 import {addNewItem} from '../../Redux/actions/ShoppingCartActions'
 import QuantityInput from '../QuantityInput/QuantityInput'
 import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart} from '../../Redux/actions/ShoppingCartActions'
@@ -25,6 +25,7 @@ class ItemView extends React.Component {
             fieldEditStates: {
                 title: false
             },
+            changesWereMade: false,
             inputFields: {
                 title: this.props.title
             }
@@ -75,21 +76,36 @@ class ItemView extends React.Component {
     handleTitleSubmit(event){
         this.setState({
             inputFields: {
-                field: event.target.value
+                title: event.target.value
             },
             fieldEditStates: {
                 title: false
-            } 
+            } ,
+            changesWereMade: true
         })
-        this.props.dispatchUpdateItem('title', event.target.value)
+        this.props.dispatchUpdateItemField('title', event.target.value)
+    }
+
+    updateItem(){
+        const newItem = {
+            ...this.props.item,
+            title: this.state.inputFields.title 
+        }
+        this.props.dispatchUpdateItem(newItem)
     }
 
     render() {
         const {dispatchAddToCart, item, shoppingCartItems} = this.props 
         const {pictureLocation, title, cost, description, categories, traits} = item
         const userRole = getUserRoleFromToken()
-        const addToShoppingCartElement = userRole === 'Admin'
-            ? null
+        const actionElement = userRole === 'Admin'
+            ?   <tr>
+                    <td rowSpan="5">
+                        {this.state.changesWereMade
+                            ? <Button color="warning" onClick={this.updateItem.bind(this)}>Save changes</Button>
+                            : <Button disabled color="warning">Save changes</Button>}
+                    </td>
+                </tr>
             :
             <tr>
                 <td rowSpan="4">
@@ -155,7 +171,7 @@ class ItemView extends React.Component {
                     </tr>
                 </tbody>
                 <tbody className="itemViewTable-actionsBody">
-                    {addToShoppingCartElement}
+                    {actionElement}
                 </tbody>
             </Table>
         )
@@ -174,7 +190,8 @@ export default connect(
         dispatchAddToCart: addNewItem,
         dispatchLoadCartFromDb: loadCartFromDb,
         dispatchLoadCartFromLocalStorage: loadShoppingCartFromLocalStorage,
-        dispatchUpdateItem: updateItemField
+        dispatchUpdateItemField: updateItemField,
+        dispatchUpdateItem: saveUpdatedItem
     }
     ,dispatch)
 )(ItemView)
