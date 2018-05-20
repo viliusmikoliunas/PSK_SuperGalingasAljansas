@@ -10,6 +10,6 @@ namespace Eshop.DataContracts.DataTransferObjects
     {
         public int Stars { get; set; } 
         public string Description { get; set; }
-        public Order Order { get; set; }
+        public int OrderId { get; set; }
     }
 }
