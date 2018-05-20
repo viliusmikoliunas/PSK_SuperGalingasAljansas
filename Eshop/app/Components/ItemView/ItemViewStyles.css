@@ -1,0 +1,8 @@
+.itemViewTable-infoBody {
+    background-color: burlywood;
+}
+
+.itemViewTable-infoBody > tr > td > img {
+    max-width: 300px;
+    max-height: 300px;
+}
