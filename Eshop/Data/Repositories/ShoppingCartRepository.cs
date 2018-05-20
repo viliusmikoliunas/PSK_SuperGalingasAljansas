@@ -17,19 +17,25 @@ namespace Eshop.Data.Repositories
             _dbContext = appDbContext;
         }
 
-        public ShoppingCart Add(ShoppingCart shoppingCart)
+        public void Add(ShoppingCart shoppingCart, int itemId, int itemQuantity)
         {
-            throw new NotImplementedException();
-        }       
+            var addItem = _dbContext.ShoppingCartItems.FirstOrDefault(cartItem => cartItem.ItemId == itemId);
+            if (addItem == null)
+            {
+                _dbContext.ShoppingCartItems.Add(new ShoppingCartItem { ShoppingCartId = shoppingCart.Id, ItemId = itemId, Quantity = itemQuantity });
+                _dbContext.SaveChanges();                
+            }
+            else
+            {
+                addItem.Quantity = addItem.Quantity + itemQuantity;
+                _dbContext.ShoppingCartItems.Update(addItem);
+                _dbContext.SaveChanges();
+            }
+        }           
 
-        public UserAccount GetAcc(string accName)
+        public ShoppingCart Get(string accName)
         {
-            var userAcc = _dbContext.Users.FirstOrDefault(user => user.UserName == accName);
-            return userAcc;
-        }
-
-        public ShoppingCart Get(UserAccount acc)
-        {
+            var acc = _dbContext.Users.FirstOrDefault(user => user.UserName == accName);
             var _cart = _dbContext.ShoppingCarts.FirstOrDefault(cart => cart.User == acc);
             if (_cart != null) return _cart;
             else
@@ -38,6 +44,24 @@ namespace Eshop.Data.Repositories
                 _dbContext.SaveChanges();
                 return _dbContext.ShoppingCarts.FirstOrDefault(cart => cart.User == acc);
             }
+        }
+
+        public void Delete(ShoppingCart shoppingCart)
+        {
+            _dbContext.ShoppingCarts.Remove(shoppingCart);
+            _dbContext.SaveChanges();
+        }
+
+        public void Update(ShoppingCart shoppingCart)
+        {
+            var items = _dbContext.ShoppingCartItems.Where(x => x.ShoppingCartId == shoppingCart.Id);
+            foreach(var item in items)
+            {
+                _dbContext.ShoppingCartItems.Remove(item);
+            }
+            
+            _dbContext.ShoppingCarts.Update(shoppingCart);
+            _dbContext.SaveChanges();
         }
     }
 }

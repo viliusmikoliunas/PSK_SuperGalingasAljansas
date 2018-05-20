@@ -1,13 +1,11 @@
-﻿using Eshop.DataContracts;
+﻿using Eshop.Data.Entities;
+using Eshop.DataContracts;
 using Eshop.DataContracts.DataTransferObjects;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace Eshop.Controllers
 {
@@ -25,27 +23,55 @@ namespace Eshop.Controllers
 
         [HttpPost]
         [Authorize(Roles = UserRoleString.User)]
-        public IActionResult AddItem([FromBody] ShoppingCartDto itemData)
+        public IActionResult AddItem([FromBody] ShoppingCartDto item)
         {
-            StringValues token = "";
-            var userId = Request.Headers.TryGetValue("Authorization", out token);
-            if (userId == false) return NotFound("Couldn't get token");
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var jwtEncodedString = token.ToString().Substring(7);
+            var token = JWTtoken.GetTokenInfo(Request, "sub");
+            if (token == null) return NotFound("Could not get token");
 
-            var token_ = new JwtSecurityToken(jwtEncodedString: jwtEncodedString);
-            var accName = token_.Claims.First(c => c.Type == "sub").Value;
+            _shoppingCartRepository.Add(_shoppingCartRepository.Get(token), item.itemId, item.itemQuantity);
 
-            var userAcc = _shoppingCartRepository.GetAcc(accName);
-            Data.Entities.ShoppingCart cart;     
-                
-            cart = _shoppingCartRepository.Add(_shoppingCartRepository.Get(userAcc));
-            
-            
+            return Ok("Item(s) added successfully");
+        }
 
-            return Ok("Hello there!" + accName +
+        [HttpPut]
+        [Authorize(Roles = UserRoleString.User)]
+        public IActionResult Update([FromBody] List<ShoppingCartDto> items)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-                "General Kenobi");
+            var token = JWTtoken.GetTokenInfo(Request, "sub");
+            if (token == null) return NotFound("Could not get token");
+
+            var userCart = _shoppingCartRepository.Get(token);
+
+            ShoppingCart cart = userCart;
+            List<ShoppingCartItem> cartList = new List<ShoppingCartItem>();
+            foreach(var item in items)
+            {
+                var shoppingItems = new ShoppingCartItem { ItemId = item.itemId, Quantity = item.itemQuantity };
+                cartList.Add(shoppingItems);
+            }
+            cart.ShoppingCartItems = cartList;
+
+            _shoppingCartRepository.Update(cart);
+
+            return Ok("Item(s) updated successfully");
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = UserRoleString.User)]
+        public IActionResult Delete([FromBody] DeleteShoppingCartItemDto item)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var token = JWTtoken.GetTokenInfo(Request, "sub");
+            if (token == null) return NotFound("Could not get token");
+
+            _shoppingCartRepository.Delete(_shoppingCartRepository.Get(token));
+
+            return Ok("Item deleted successfully");
         }
     }
 }

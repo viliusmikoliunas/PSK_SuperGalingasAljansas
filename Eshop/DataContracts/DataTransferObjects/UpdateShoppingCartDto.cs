@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Eshop.DataContracts.DataTransferObjects
 {
-    public class ShoppingCartDto
-    {        
-        public int itemId { get; set; }
-        public int itemQuantity { get; set; }
+    public class UpdateShoppingCartDto
+    {
+        public ShoppingCart newCart { get; set; }
     }
 }
