@@ -85,6 +85,8 @@ namespace Eshop.Controllers
         [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult UpdateItem([FromBody] UpdatedItemDto updatedItem)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             var itemToUpdate = _itemsRepository.GetItem(updatedItem.Id);
             if (itemToUpdate != null)
             {

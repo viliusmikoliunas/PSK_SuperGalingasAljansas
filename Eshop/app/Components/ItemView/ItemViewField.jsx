@@ -14,6 +14,15 @@ class ItemViewField extends Component{
         }
     }
 
+    componentWillReceiveProps(newProps){
+        if(JSON.stringify(this.props.initialValue) !== JSON.stringify(newProps.initialValue))
+        {
+            this.setState({
+                value: newProps.initialValue
+            })
+        }
+    }
+
     toggleEditMode(){
         if (this.state.inEditMode){
             this.handleFieldValueChange()
@@ -53,7 +62,7 @@ class ItemViewField extends Component{
                             />
                         </div>
                     :   <div>
-                            {icon}  {this.props.initialValue}
+                            {icon} {this.props.pretext} {this.props.initialValue}
                         </div>
                 }
             </td>

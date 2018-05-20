@@ -56,14 +56,18 @@ export const saveUpdatedItem = (item) => (dispatch) => {
     fetch(itemAddress, request)
         .then(response => {
             if (response.ok) {
-                alert('item added successfully')
-                dispatch({
-                    type: ItemViewActions.LOAD_ITEM,
-                    item: item
-                })
-                //history.push('/')
+                response.text()
+                    .then(responseJson => {
+                        dispatch({
+                            type: ItemViewActions.LOAD_ITEM,
+                            item: item
+                        })
+                        alert(responseJson)
+                    })
             }
-            else alert('failed to update item')
+            else response.text().then(
+                responseJson => alert(responseJson)
+            )
         })
 }
 

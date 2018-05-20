@@ -7,13 +7,8 @@ import {addNewItem} from '../../Redux/actions/ShoppingCartActions'
 import QuantityInput from '../QuantityInput/QuantityInput'
 import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart} from '../../Redux/actions/ShoppingCartActions'
 import {getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
-
 import './ItemViewStyles.css'
-
 import collectionToString from '../../FunctionalComponents/formatting/collectionToString'
-
-import FaEdit from 'react-icons/lib/fa/edit'
-
 import ItemViewField from './ItemViewField'
 
 
@@ -67,11 +62,7 @@ class ItemView extends React.Component {
     }
 
     updateItem(){
-        const newItem = {
-            ...this.props.item,
-            title: this.state.inputFields.title 
-        }
-        this.props.dispatchUpdateItem(newItem)
+        this.props.dispatchUpdateItem(this.props.item)
     }
 
     handleFieldValueChange(key, value){
@@ -115,6 +106,14 @@ class ItemView extends React.Component {
                 fieldTitle='title'
             />
 
+        const costElement = 
+            <ItemViewField
+                callback={this.handleFieldValueChange.bind(this)}
+                initialValue={cost}
+                fieldTitle='cost'
+                pretext='Cost: '
+            />
+
         return (
             <Table responsive className="itemViewTable">
                 <tbody className="itemViewTable-infoBody">
@@ -125,7 +124,7 @@ class ItemView extends React.Component {
                         {titleElement}
                     </tr>
                     <tr>
-                        <td>Cost: {cost} €</td>
+                        {costElement}
                     </tr>
                     <tr>
                         <td>{description || '"No description was provided for this item"'}</td>
