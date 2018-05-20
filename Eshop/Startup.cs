@@ -86,10 +86,11 @@ namespace Eshop
 
             //Dependency Injection - Repositories
             services.AddScoped<IItemsRepository, ItemsRepository>();
+            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<ICategoriesRepository, CategoriesRepository>();
             services.AddScoped<ITraitsRepository, TraitsRepository>();
             services.AddScoped<IReviewsRepository, ReviewsRepository>();
-            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            services.AddTransient<IShoppingCartItemsRepository, ShoppingCartItemsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

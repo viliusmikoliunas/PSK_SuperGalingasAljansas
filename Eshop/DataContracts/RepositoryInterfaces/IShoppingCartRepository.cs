@@ -11,6 +11,6 @@ namespace Eshop.DataContracts.RepositoryInterfaces
         ShoppingCart Get(string acc);
         void Add(ShoppingCart shoppingCart, int itemId, int itemQuantity);
         void Update(ShoppingCart shoppingCart);
-        void Delete(ShoppingCart shoppingCart);
+        void Delete(string username);
     }
 }
