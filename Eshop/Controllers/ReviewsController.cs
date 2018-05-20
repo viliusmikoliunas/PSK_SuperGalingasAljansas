@@ -23,39 +23,44 @@ namespace Eshop.Controllers
             _reviewsRepository = reviewsRepository;
         }
 
-
-        //kaip padaryt kelis HttpGet
+        
         [HttpGet("all")]
+        [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult GetAll()
         {
             return Ok(_reviewsRepository.GetAll());
         }
 
         [HttpGet("range")]
+        [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult GetRange(int startIndex, int reviewsToTake)
         {
             return Ok(_reviewsRepository.Get(startIndex, reviewsToTake));
         }
 
         [HttpGet("textFilter")]
+        [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult GetRange(int startIndex, int reviewsToTake, bool hasReviewText)
         {
             return Ok(_reviewsRepository.GetFilteredByText(startIndex, reviewsToTake, hasReviewText));
         }
 
         [HttpGet("starsFilter")]
+        [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult GetRange(int startIndex, int reviewsToTake, int stars)
         {
             return Ok(_reviewsRepository.GetFilteredByStars(startIndex, reviewsToTake, stars));
         }
 
         [HttpGet("fullFilter")]
+        [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult GetRange(int startIndex, int reviewsToTake, bool hasReviewText, int stars)
         {
             return Ok(_reviewsRepository.GetFiltered(startIndex, reviewsToTake, hasReviewText, stars));
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoleString.User)]
         public IActionResult AddReview([FromBody] ReviewDto reviewData)
         {
             if (reviewData.Stars < 1 || reviewData.Stars > 5)
@@ -77,6 +82,7 @@ namespace Eshop.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult UpdateReview([FromBody] ReviewDto reviewData)
         {
             //check if review exists
@@ -94,6 +100,7 @@ namespace Eshop.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult DeleteReview([FromBody] ReviewDto reviewData)
         {
             //check if review exists
