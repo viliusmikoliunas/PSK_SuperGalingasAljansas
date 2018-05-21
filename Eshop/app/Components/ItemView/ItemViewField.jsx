@@ -41,6 +41,16 @@ class ItemViewField extends Component{
         this.props.callback(this.props.fieldTitle, this.state.value)
     }
 
+    handleCostFieldChange(event){
+        const match = /^[1-9][0-9]{0,3}.[0-9]{1,2}$/.exec(event.target.value)
+        if (match === null) return
+       
+        if (match[0].length === event.target.value.length){
+            this.setState({value: event.target.value})
+        }
+        
+    }
+
     render() {
         const icon = 
             <FaEdit
@@ -58,7 +68,12 @@ class ItemViewField extends Component{
                                         this.handleFieldValueChange()
                                     }
                                 }}
-                                onChange={(event) => this.setState({value: event.target.value})}
+                                onKeyDown={event => {
+                                    if (event.keyCode === 27){
+                                        this.handleFieldValueChange()
+                                    }
+                                }}
+                                onChange={event => this.setState({value: event.target.value})}
                             />
                         </div>
                     :   <div>

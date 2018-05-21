@@ -10,6 +10,7 @@ import {getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
 import './ItemViewStyles.css'
 import collectionToString from '../../FunctionalComponents/formatting/collectionToString'
 import ItemViewField from './ItemViewField'
+import toFixed from '../../FunctionalComponents/formatting/toFixed'
 
 
 class ItemView extends React.Component {
@@ -18,12 +19,12 @@ class ItemView extends React.Component {
         this.onLeave = this.onLeave.bind(this)
         this.state = {
             shoppingCartQuantity: 1,
-            fieldEditStates: {
-                title: false
-            },
-            changesWereMade: true,
+            changesWereMade: false,
             inputFields: {
-                title: this.props.title
+                title: this.props.title,
+                cost: this.props.cost,
+                description: this.props.description,
+                pictureLocation: this.props.pictureLocation
             }
         }
     }
@@ -70,7 +71,8 @@ class ItemView extends React.Component {
             inputFields: {
                 ...this.state.inputFields,
                 [key]: value
-            }
+            },
+            changesWereMade: true
         })
     }
 
@@ -99,26 +101,51 @@ class ItemView extends React.Component {
                 </td>
             </tr>
 
-        const titleElement =
+        const titleElement = userRole === 'Admin' 
+            ?
             <ItemViewField
                 callback={this.handleFieldValueChange.bind(this)}
                 initialValue={title}
                 fieldTitle='title'
             />
+            : <td>{title}</td>
 
-        const costElement = 
+        const costElement = userRole === 'Admin'
+            ?
             <ItemViewField
                 callback={this.handleFieldValueChange.bind(this)}
                 initialValue={cost}
                 fieldTitle='cost'
                 pretext='Cost: '
             />
+            : <td>Cost: {toFixed(cost, 2)} €</td>
 
+        const descriptionElement = userRole === 'Admin'
+            ?
+            <ItemViewField
+                callback={this.handleFieldValueChange.bind(this)}
+                initialValue={description}
+                fieldTitle='description'
+            />
+            : <td>{description}</td>
+        
+        const pictureLocationElement = userRole === 'Admin'
+            ?
+            <tr>                       
+                <ItemViewField
+                    callback={this.handleFieldValueChange.bind(this)}
+                    initialValue={pictureLocation}
+                    fieldTitle='pictureLocation'
+                    pretext='Picture location link: '
+                />
+            </tr>
+            : null
+        
         return (
             <Table responsive className="itemViewTable">
                 <tbody className="itemViewTable-infoBody">
                     <tr>
-                        <td rowSpan="5">
+                        <td rowSpan={userRole === 'Admin' ? '6' : '5'}>
                             <img src={pictureLocation}/>
                         </td>
                         {titleElement}
@@ -127,7 +154,7 @@ class ItemView extends React.Component {
                         {costElement}
                     </tr>
                     <tr>
-                        <td>{description || '"No description was provided for this item"'}</td>
+                        {descriptionElement || <td>'"No description was provided for this item"'</td>}
                     </tr>
                     <tr>
                         <td>                        
@@ -141,6 +168,7 @@ class ItemView extends React.Component {
                             {collectionToString(traits) || "This item doesn't have any traits"}
                         </td>
                     </tr>
+                    {pictureLocationElement}
                 </tbody>
                 <tbody className="itemViewTable-actionsBody">
                     {actionElement}
