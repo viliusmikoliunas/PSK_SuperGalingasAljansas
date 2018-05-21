@@ -21,6 +21,8 @@ const loadItem = (list, id) => (dispatch) => {
     })
 }
 
+export default loadItem
+
 const itemAddress = '/api/items'
 
 const downloadItemInfo = (itemId) => (dispatch) => {
@@ -71,4 +73,21 @@ export const saveUpdatedItem = (item) => (dispatch) => {
         })
 }
 
-export default loadItem
+export const deleteItem = (itemId) => {
+    const requestAddress = itemAddress + '/' + itemId
+    const request = generateRequestWithAuth('DELETE', null)
+    fetch(requestAddress, request)
+        .then((response) => {
+            if (response.status === 200){
+                alert('item deleted successfully')
+                history.push('/')
+            }
+            else {
+                response.text(responseText => {
+                    alert(responseText)
+                    history.push('/')
+                    return
+                })
+            }
+        })
+}

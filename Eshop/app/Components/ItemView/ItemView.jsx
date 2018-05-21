@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Table, Button,Input,InputGroup,InputGroupAddon} from 'reactstrap'
-import loadItem, {updateItemField, saveUpdatedItem} from '../../Redux/actions/ItemViewActions'
+import loadItem, {updateItemField, saveUpdatedItem, deleteItem} from '../../Redux/actions/ItemViewActions'
 import {addNewItem} from '../../Redux/actions/ShoppingCartActions'
 import QuantityInput from '../QuantityInput/QuantityInput'
 import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart} from '../../Redux/actions/ShoppingCartActions'
@@ -77,29 +77,25 @@ class ItemView extends React.Component {
     }
 
     render() {
-        const {dispatchAddToCart, item, shoppingCartItems} = this.props 
+        const {dispatchAddToCart, item, shoppingCartItems, itemId} = this.props 
         const {pictureLocation, title, cost, description, categories, traits} = item
         const userRole = getUserRoleFromToken()
         const actionElement = userRole === 'Admin'
-            ?   <tr>
-                    <td rowSpan="5">
-                        {this.state.changesWereMade
-                            ? <Button color="warning" onClick={this.updateItem.bind(this)}>Save changes</Button>
-                            : <Button disabled color="warning">Save changes</Button>}
-                    </td>
-                </tr>
+            ?   <div>
+                    {this.state.changesWereMade
+                        ? <Button color="warning" onClick={this.updateItem.bind(this)}>Save changes</Button>
+                        : <Button disabled color="warning">Save changes</Button>}
+                
+                    <Button color="danger" onClick={() => deleteItem(itemId)}>Delete item</Button>
+                </div>
             :
-            <tr>
-                <td rowSpan="4">
-                    <QuantityInput
-                        initialValue={1}
-                        onChange={this.handleQuantityFieldChange.bind(this)}
-                    />
-                </td>
-                <td>
-                    <Button color="primary" onClick={() => this.handleAddToCart(this.state.shoppingCartQuantity)}>Add to cart</Button>
-                </td>
-            </tr>
+            <div>
+                <QuantityInput
+                    initialValue={1}
+                    onChange={this.handleQuantityFieldChange.bind(this)}
+                />
+                <Button color="primary" onClick={() => this.handleAddToCart(this.state.shoppingCartQuantity)}>Add to cart</Button>
+            </div>
 
         const titleElement = userRole === 'Admin' 
             ?
@@ -142,38 +138,38 @@ class ItemView extends React.Component {
             : null
         
         return (
-            <Table responsive className="itemViewTable">
-                <tbody className="itemViewTable-infoBody">
-                    <tr>
-                        <td rowSpan={userRole === 'Admin' ? '6' : '5'}>
-                            <img src={pictureLocation}/>
-                        </td>
-                        {titleElement}
-                    </tr>
-                    <tr>
-                        {costElement}
-                    </tr>
-                    <tr>
-                        {descriptionElement || <td>'"No description was provided for this item"'</td>}
-                    </tr>
-                    <tr>
-                        <td>                        
-                            <p>Categories:</p>
-                            {collectionToString(categories) || "This item doesn't belong to any category"}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>                        
-                            <p>Traits:</p>
-                            {collectionToString(traits) || "This item doesn't have any traits"}
-                        </td>
-                    </tr>
-                    {pictureLocationElement}
-                </tbody>
-                <tbody className="itemViewTable-actionsBody">
-                    {actionElement}
-                </tbody>
-            </Table>
+            <div>
+                <Table responsive className="itemViewTable">
+                    <tbody className="itemViewTable-infoBody">
+                        <tr>
+                            <td rowSpan={userRole === 'Admin' ? '6' : '5'}>
+                                <img src={pictureLocation}/>
+                            </td>
+                            {titleElement}
+                        </tr>
+                        <tr>
+                            {costElement}
+                        </tr>
+                        <tr>
+                            {descriptionElement || <td>'"No description was provided for this item"'</td>}
+                        </tr>
+                        <tr>
+                            <td>                        
+                                <p>Categories:</p>
+                                {collectionToString(categories) || "This item doesn't belong to any category"}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>                        
+                                <p>Traits:</p>
+                                {collectionToString(traits) || "This item doesn't have any traits"}
+                            </td>
+                        </tr>
+                        {pictureLocationElement}
+                    </tbody>
+                </Table>
+                {actionElement}
+            </div>
         )
     }
 }
