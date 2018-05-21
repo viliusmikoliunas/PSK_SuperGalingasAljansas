@@ -6,7 +6,6 @@ import parseUrlParams from '../FunctionalComponents/parsing/parseUrlQueryParamet
 
 
 const itemRoute = ({match}) => {
-    console.log(parseUrlParams())
 
     return (
         <ItemViewLayout itemId={match.params.id}/>

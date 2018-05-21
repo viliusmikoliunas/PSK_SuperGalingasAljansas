@@ -63,10 +63,10 @@ namespace Eshop.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = UserRoleString.Admin)]
-        public IActionResult DeleteItem([FromBody] DeleteItemDto itemDto)
+        public IActionResult DeleteItem(int id)
         {      
-            if (_itemsRepository.Delete(itemDto.Id) == true) return Ok("Item has been deleted");
-            else return NotFound("The item does not exist in the database");
+            if (_itemsRepository.Delete(id)) return Ok("Item has been deleted");
+            return NotFound("The item does not exist in the database");
         }
 
         /*[HttpGet]
@@ -85,8 +85,10 @@ namespace Eshop.Controllers
         [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult UpdateItem([FromBody] UpdatedItemDto updatedItem)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             var itemToUpdate = _itemsRepository.GetItem(updatedItem.Id);
-            if (itemToUpdate == null)
+            if (itemToUpdate != null)
             {
                 if (string.IsNullOrEmpty(updatedItem.Title))
                     return BadRequest("Title missing");
