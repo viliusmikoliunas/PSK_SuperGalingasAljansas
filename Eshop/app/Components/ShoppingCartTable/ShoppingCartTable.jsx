@@ -16,23 +16,23 @@ class ShoppingCartTable extends React.Component {
 
     onLeave(){
         const {loggedIn} = this.props
-        if (loggedIn){
+        /*if (loggedIn){
             saveCartToDb(this.props.cartItemList)
         }
         else {
             localStorage.setItem('shoppingCart', JSON.stringify(this.props.cartItemList))
-        }
+        }*/
     }
 
     componentDidMount(){
         window.addEventListener('beforeunload', this.onLeave)
         const {loggedIn, dispatchLoadCartFromDb, dispatchLoadCartFromLocalStorage} = this.props
-        //if (loggedIn){
-        //    dispatchLoadCartFromDb()
-        //}
-        //else {
-            dispatchLoadCartFromLocalStorage()
-        //}
+        if (loggedIn){
+            dispatchLoadCartFromDb()
+        }
+        else {
+            //dispatchLoadCartFromLocalStorage()
+        }
     }
 
     componentWillUnmount(){

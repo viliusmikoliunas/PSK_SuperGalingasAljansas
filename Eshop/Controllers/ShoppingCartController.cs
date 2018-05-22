@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
 using System.Linq;
+using Eshop.DataContracts.DataTransferObjects.Responses;
 
 namespace Eshop.Controllers
 {
     [Produces("application/json")]
     [Route("api/user/cart")]
+    [Authorize(Roles = UserRoleString.User)]
     public class ShoppingCartController : Controller
     {
         private readonly IShoppingCartRepository _shoppingCartRepository;
@@ -25,8 +27,30 @@ namespace Eshop.Controllers
             _shoppingCartItemsRepository = shoppingCartItemsRepository;
         }
 
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var userName = JWTtoken.GetTokenInfo(Request, "sub");
+            if (userName == null) return NotFound("Wrong credentials");
+
+            var shoppingCartItems = _shoppingCartRepository.Get(userName).ShoppingCartItems;
+            var response = new List<ShoppingCartItemResponse>();
+            foreach (var item in shoppingCartItems)
+            {
+                var newItem = new ShoppingCartItemResponse()
+                {
+                    Id = item.ItemId,
+                    ImagePath = item.Item.PictureLocation,
+                    Price = item.Item.Cost,
+                    Quantity = item.Quantity,
+                    Title = item.Item.Title
+                };
+                response.Add(newItem);
+            }
+            return Ok(response);
+        }
+
         [HttpPost]
-        [Authorize(Roles = UserRoleString.User)]
         public IActionResult AddItem([FromBody] ShoppingCartDto item)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -44,7 +68,6 @@ namespace Eshop.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = UserRoleString.User)]
         public IActionResult Update([FromBody] List<ShoppingCartDto> items)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -83,7 +106,6 @@ namespace Eshop.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = UserRoleString.User)]
         public IActionResult Delete()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);

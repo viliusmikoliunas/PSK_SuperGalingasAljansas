@@ -7,15 +7,18 @@ const shoppingCardAddress = '/api/user/cart'
 const loadCartFromDb = () => (dispatch) => {
     const request = generateRequestWithAuth('GET', null)
     fetch(shoppingCardAddress,request)
-        .then((response) => {
+        .then(response => {
             if (response.ok){
                 response.json()
-                    .then((jsonResponse) => dispatch({
+                    .then(itemList => dispatch({
                         type: ShoppingCartActionTypes.LOAD_SHOPPING_CART,
-                        shoppingCart: jsonResponse
+                        shoppingCart: itemList
                     }))
             }
             else console.log(response.status + " " + response.statusText)
+        })
+        .catch((err) => {
+            console.log("db error")
         })
 }
 
@@ -31,7 +34,7 @@ export const saveCartToDb = (cart) => {
     const request = generateRequestWithAuth('PUT', cartItems)
     fetch(shoppingCardAddress, request)
         .then(response => response.text()
-            .then(console.log(response))
+            .then(responseText => console.log(responseText))
         )
 }
 

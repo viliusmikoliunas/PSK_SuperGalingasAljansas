@@ -44,6 +44,7 @@ namespace Eshop.Data.Repositories
             var acc = _dbContext.Users.FirstOrDefault(user => user.UserName.Equals(accName));
             var cart = _dbContext.ShoppingCarts
                 .Include(crt => crt.ShoppingCartItems)
+                .ThenInclude(cartItem => cartItem.Item)
                 .FirstOrDefault(c => c.User.Id.Equals(acc.Id));
             if (cart != null) return cart;
             else

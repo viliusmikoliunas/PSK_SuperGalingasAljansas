@@ -29,7 +29,7 @@ class Navbar extends Component {
     }
 
     componentDidMount(){
-        this.props.dispatchLoadCartFromLocalStorage()
+        //this.props.dispatchLoadCartFromLocalStorage()
     }
 
     toggle() {
