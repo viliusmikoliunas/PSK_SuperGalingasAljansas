@@ -24,7 +24,7 @@ const loadCartFromDb = () => (dispatch) => {
 
 export default loadCartFromDb
 
-export const saveCartToDb = (cart) => {
+export const saveCartToDb = (cart) => (dispatch) => {
     const cartItems = cart.map(cartItem => {
         return {
             itemId: cartItem.id,
@@ -34,7 +34,13 @@ export const saveCartToDb = (cart) => {
     const request = generateRequestWithAuth('PUT', cartItems)
     fetch(shoppingCardAddress, request)
         .then(response => response.text()
-            .then(responseText => console.log(responseText))
+            .then(responseText => {
+                dispatch({
+                    type: ShoppingCartActionTypes.LOAD_SHOPPING_CART,
+                    shoppingCart: cart
+                })
+                localStorage.removeItem('shoppingCart')
+            })
         )
 }
 

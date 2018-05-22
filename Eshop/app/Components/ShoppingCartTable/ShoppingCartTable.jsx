@@ -15,13 +15,13 @@ class ShoppingCartTable extends React.Component {
     }
 
     onLeave(){
-        const {loggedIn} = this.props
-        /*if (loggedIn){
-            saveCartToDb(this.props.cartItemList)
+        const {loggedIn, dispatchSaveCartToDb, cartItemList} = this.props
+        if (loggedIn){
+            dispatchSaveCartToDb(cartItemList)
         }
         else {
-            localStorage.setItem('shoppingCart', JSON.stringify(this.props.cartItemList))
-        }*/
+            localStorage.setItem('shoppingCart', JSON.stringify(cartItemList))
+        }
     }
 
     componentDidMount(){
@@ -31,7 +31,7 @@ class ShoppingCartTable extends React.Component {
             dispatchLoadCartFromDb()
         }
         else {
-            //dispatchLoadCartFromLocalStorage()
+            dispatchLoadCartFromLocalStorage()
         }
     }
 
@@ -109,7 +109,8 @@ export default connect(
     (dispatch) => bindActionCreators({
         dispatchLoadCartFromDb: loadCartFromDb,
         dispatchLoadCartFromLocalStorage: loadShoppingCartFromLocalStorage,
-        dispatchClearCart: clearCart
+        dispatchClearCart: clearCart,
+        dispatchSaveCartToDb: saveCartToDb
     },
     dispatch)
 )(ShoppingCartTable)
