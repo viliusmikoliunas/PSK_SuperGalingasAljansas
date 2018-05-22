@@ -114,7 +114,7 @@ class ItemView extends React.Component {
                 fieldTitle='cost'
                 pretext='Cost: '
             />
-            : <td>Cost: {toFixed(cost, 2)} €</td>
+            : <td>Cost: {toFixed(cost || 0, 2)} €</td>
 
         const descriptionElement = userRole === 'Admin'
             ?
