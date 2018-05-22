@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux'
 import {Table, Button} from 'reactstrap'
 import ShoppingCartItem from './ShoppingCartItem'
 import toFixed from '../../FunctionalComponents/formatting/toFixed'
-import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart} from '../../Redux/actions/ShoppingCartActions'
+import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart, saveCartToDb} from '../../Redux/actions/ShoppingCartActions'
 
 
 class ShoppingCartTable extends React.Component {
@@ -16,12 +16,12 @@ class ShoppingCartTable extends React.Component {
 
     onLeave(){
         const {loggedIn} = this.props
-        //if (loggedIn){
-            //send cart to DB
-        //}
-        //else {
+        if (loggedIn){
+            saveCartToDb(this.props.cartItemList)
+        }
+        else {
             localStorage.setItem('shoppingCart', JSON.stringify(this.props.cartItemList))
-        //}
+        }
     }
 
     componentDidMount(){

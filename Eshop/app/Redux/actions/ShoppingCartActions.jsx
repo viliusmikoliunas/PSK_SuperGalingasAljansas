@@ -21,6 +21,20 @@ const loadCartFromDb = () => (dispatch) => {
 
 export default loadCartFromDb
 
+export const saveCartToDb = (cart) => {
+    const cartItems = cart.map(cartItem => {
+        return {
+            itemId: cartItem.id,
+            itemQuantity: cartItem.quantity
+        }
+    })
+    const request = generateRequestWithAuth('PUT', cartItems)
+    fetch(shoppingCardAddress, request)
+        .then(response => response.text()
+            .then(console.log(response))
+        )
+}
+
 export const loadShoppingCartFromLocalStorage = () => (dispatch) => {
     const cartString = localStorage.getItem('shoppingCart')
     let cart = JSON.parse(cartString)

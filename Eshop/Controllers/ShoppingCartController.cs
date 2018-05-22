@@ -61,12 +61,20 @@ namespace Eshop.Controllers
                 var existingShoppingCartItem = _shoppingCartItemsRepository.GetByShoppingCart(cart.Id, itemFromDb.Id);
                 if (existingShoppingCartItem != null)
                 {
-                    existingShoppingCartItem.Quantity += item.itemQuantity;
+                    existingShoppingCartItem.Quantity = item.itemQuantity;
                 }
                 else
                 {
-                    var shoppingItems = new ShoppingCartItem { ItemId = item.itemId, Quantity = item.itemQuantity };
-                    cart.ShoppingCartItems.Add(shoppingItems);
+                    var newShoopingCartItem = new ShoppingCartItem { ItemId = item.itemId, Quantity = item.itemQuantity };
+                    if (cart.ShoppingCartItems == null)
+                    {
+                        var newItemList = new List<ShoppingCartItem>
+                        {
+                            newShoopingCartItem
+                        };
+                        cart.ShoppingCartItems = newItemList;
+                    }
+                    else cart.ShoppingCartItems.Add(newShoopingCartItem);
                 }
             }
             _shoppingCartRepository.Update(cart);

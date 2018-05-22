@@ -42,7 +42,9 @@ namespace Eshop.Data.Repositories
         public ShoppingCart Get(string accName)
         {
             var acc = _dbContext.Users.FirstOrDefault(user => user.UserName.Equals(accName));
-            var cart = _dbContext.ShoppingCarts.FirstOrDefault(c => c.User.Id.Equals(acc.Id));
+            var cart = _dbContext.ShoppingCarts
+                .Include(crt => crt.ShoppingCartItems)
+                .FirstOrDefault(c => c.User.Id.Equals(acc.Id));
             if (cart != null) return cart;
             else
             {
