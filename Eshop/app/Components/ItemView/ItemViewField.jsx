@@ -42,7 +42,7 @@ class ItemViewField extends Component{
     }
 
     handleCostFieldChange(event){
-        const match = /^[1-9][0-9]{0,3}.[0-9]{1,2}$/.exec(event.target.value)
+        const match = /^[1-9][0-9]{0,3}(\.[0-9][0-9]?)?$/.exec(event.target.value)
         if (match === null) return
        
         if (match[0].length === event.target.value.length){
