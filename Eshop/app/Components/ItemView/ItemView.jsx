@@ -2,22 +2,30 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Table, Button,Input,InputGroup,InputGroupAddon} from 'reactstrap'
-import loadItem from '../../Redux/actions/ItemViewActions'
+import loadItem, {updateItemField, saveUpdatedItem, deleteItem} from '../../Redux/actions/ItemViewActions'
 import {addNewItem} from '../../Redux/actions/ShoppingCartActions'
-import QuantityInput from '../QuantityInput'
+import QuantityInput from '../QuantityInput/QuantityInput'
 import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart} from '../../Redux/actions/ShoppingCartActions'
 import {getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
- 
 import './ItemViewStyles.css'
-
 import collectionToString from '../../FunctionalComponents/formatting/collectionToString'
+import ItemViewField from './ItemViewField'
+import toFixed from '../../FunctionalComponents/formatting/toFixed'
+
 
 class ItemView extends React.Component {
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.onLeave = this.onLeave.bind(this)
         this.state = {
-            shoppingCartQuantity: 1
+            shoppingCartQuantity: 1,
+            changesWereMade: false,
+            inputFields: {
+                title: this.props.title,
+                cost: this.props.cost,
+                description: this.props.description,
+                pictureLocation: this.props.pictureLocation
+            }
         }
     }
 
@@ -54,58 +62,114 @@ class ItemView extends React.Component {
         dispatchAddToCart(item, number)
     }
 
+    updateItem(){
+        this.props.dispatchUpdateItem(this.props.item)
+    }
+
+    handleFieldValueChange(key, value){
+        this.setState({
+            inputFields: {
+                ...this.state.inputFields,
+                [key]: value
+            },
+            changesWereMade: true
+        })
+    }
+
     render() {
-        const {dispatchAddToCart, item, shoppingCartItems} = this.props 
+        const {dispatchAddToCart, item, shoppingCartItems, itemId} = this.props 
         const {pictureLocation, title, cost, description, categories, traits} = item
-
         const userRole = getUserRoleFromToken()
-        const addToShoppingCartElement = userRole === 'Admin'
-            ? null
+        const actionElement = userRole === 'Admin'
+            ?   <div>
+                    {this.state.changesWereMade
+                        ? <Button color="warning" onClick={this.updateItem.bind(this)}>Save changes</Button>
+                        : <Button disabled color="warning">Save changes</Button>}
+                
+                    <Button color="danger" onClick={() => deleteItem(itemId)}>Delete item</Button>
+                </div>
             :
-            <tr>
-                <td rowSpan="4">
-                    <QuantityInput
-                        initialValue={1}
-                        onChange={this.handleQuantityFieldChange.bind(this)}
-                    />
-                </td>
-                <td>
-                    <Button color="primary" onClick={() => this.handleAddToCart(this.state.shoppingCartQuantity)}>Add to cart</Button>
-                </td>
-            </tr>
+            <div>
+                <QuantityInput
+                    initialValue={1}
+                    onChange={this.handleQuantityFieldChange.bind(this)}
+                />
+                <Button color="primary" onClick={() => this.handleAddToCart(this.state.shoppingCartQuantity)}>Add to cart</Button>
+            </div>
 
+        const titleElement = userRole === 'Admin' 
+            ?
+            <ItemViewField
+                callback={this.handleFieldValueChange.bind(this)}
+                initialValue={title}
+                fieldTitle='title'
+            />
+            : <td>{title}</td>
+
+        const costElement = userRole === 'Admin'
+            ?
+            <ItemViewField
+                callback={this.handleFieldValueChange.bind(this)}
+                initialValue={cost}
+                fieldTitle='cost'
+                pretext='Cost: '
+            />
+            : <td>Cost: {toFixed(cost, 2)} €</td>
+
+        const descriptionElement = userRole === 'Admin'
+            ?
+            <ItemViewField
+                callback={this.handleFieldValueChange.bind(this)}
+                initialValue={description}
+                fieldTitle='description'
+            />
+            : <td>{description}</td>
+        
+        const pictureLocationElement = userRole === 'Admin'
+            ?
+            <tr>                       
+                <ItemViewField
+                    callback={this.handleFieldValueChange.bind(this)}
+                    initialValue={pictureLocation}
+                    fieldTitle='pictureLocation'
+                    pretext='Picture location link: '
+                />
+            </tr>
+            : null
+        
         return (
-            <Table responsive className="itemViewTable">
-                <tbody className="itemViewTable-infoBody">
-                    <tr>
-                        <td rowSpan="5">
-                            <img src={pictureLocation}/>
-                        </td>
-                        <td>{title}</td>
-                    </tr>
-                    <tr>
-                        <td>Cost: {cost} €</td>
-                    </tr>
-                    <tr>
-                        <td>{description || '"No description was provided for this item"'}</td>
-                    </tr>
-                    <tr>
-                        <td>                        
-                            <p>Categories:</p>
-                            {collectionToString(categories) || "This item doesn't belong to any category"}
-                        </td>
-                    </tr>
-                    <tr>
-                    <td>                        
-                        <p>Traits:</p>
-                        {collectionToString(traits) || "This item doesn't have any traits"}
-                    </td>
-                    </tr>
-                </tbody>
-                <tbody className="itemViewTable-actionsBody">
-                    {addToShoppingCartElement}
-                </tbody>
-            </Table>
+            <div>
+                <Table responsive className="itemViewTable">
+                    <tbody className="itemViewTable-infoBody">
+                        <tr>
+                            <td rowSpan={userRole === 'Admin' ? '6' : '5'}>
+                                <img src={pictureLocation}/>
+                            </td>
+                            {titleElement}
+                        </tr>
+                        <tr>
+                            {costElement}
+                        </tr>
+                        <tr>
+                            {descriptionElement || <td>'"No description was provided for this item"'</td>}
+                        </tr>
+                        <tr>
+                            <td>                        
+                                <p>Categories:</p>
+                                {collectionToString(categories) || "This item doesn't belong to any category"}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>                        
+                                <p>Traits:</p>
+                                {collectionToString(traits) || "This item doesn't have any traits"}
+                            </td>
+                        </tr>
+                        {pictureLocationElement}
+                    </tbody>
+                </Table>
+                {actionElement}
+            </div>
         )
     }
 }
@@ -121,7 +185,9 @@ export default connect(
         dispatchLoadItem: loadItem,
         dispatchAddToCart: addNewItem,
         dispatchLoadCartFromDb: loadCartFromDb,
-        dispatchLoadCartFromLocalStorage: loadShoppingCartFromLocalStorage
+        dispatchLoadCartFromLocalStorage: loadShoppingCartFromLocalStorage,
+        dispatchUpdateItemField: updateItemField,
+        dispatchUpdateItem: saveUpdatedItem
     }
     ,dispatch)
 )(ItemView)

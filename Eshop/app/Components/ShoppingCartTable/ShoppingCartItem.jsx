@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux'
 import {Link} from 'react-router-dom'
 import {Button,InputGroup,InputGroupAddon,Input} from 'reactstrap'
 import {updateQuantity, removeFromCart} from '../../Redux/actions/ShoppingCartActions'
-import QuantityInput from '../QuantityInput'
+import QuantityInput from '../QuantityInput/QuantityInput'
 
 class ShoppingCartItem extends Component{
 

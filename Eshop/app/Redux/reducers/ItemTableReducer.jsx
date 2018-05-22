@@ -3,7 +3,8 @@ import ItemTableActions from '../actionTypes/ItemTableActions'
 
 
 const initialState = {
-    items: []
+    items: [],
+    numberOfAllItems: 0
 }
 
 export default (state = initialState, action) => {
@@ -11,7 +12,8 @@ export default (state = initialState, action) => {
         case ItemTableActions.LOAD_ITEMS:
             return {
                 ...state,
-                items: action.items
+                items: action.items,
+                numberOfAllItems: action.numberOfAllItems
             }
         default:
             return state

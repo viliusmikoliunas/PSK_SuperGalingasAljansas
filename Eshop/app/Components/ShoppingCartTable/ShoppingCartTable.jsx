@@ -60,7 +60,7 @@ class ShoppingCartTable extends React.Component {
 
         const linkToCheckout = this.props.cartItemList.length > 0 && total < 10000
             ? <Button color='info' tag={Link} to='/user/checkout'>Proceed to checkout</Button>
-            : <div>Proceed to checkout</div>
+            : <Button disabled color='info' tag={Link} to='/user/checkout'>Proceed to checkout</Button>
         
         const errorMsg = total >= 10000
             ? <div className="ammountErrorMessage">

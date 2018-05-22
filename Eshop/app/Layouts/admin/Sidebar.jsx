@@ -12,6 +12,7 @@ const Sidebar = (props) => {
     <div>
       <SidebarLink to='/admin/user-list'>User List</SidebarLink>
       <SidebarLink to='/admin/orders'>Orders</SidebarLink>
+      <SidebarLink to='/admin/create-item'>Create Item</SidebarLink>
     </div>
     : null
 
