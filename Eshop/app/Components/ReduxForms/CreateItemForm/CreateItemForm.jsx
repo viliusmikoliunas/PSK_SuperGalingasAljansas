@@ -5,13 +5,14 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 import {Button} from 'reactstrap'
 import validate from './validateFormFields'
 import renderTextField from '../ReduxFormFields/renderTextField'
-import ItemView from '../../ItemView/ItemView';
+import ItemView from '../../ItemView/ItemView'
+import {createNewItem} from '../../../Redux/actions/ItemViewActions'
 
 
 let CreateItemForm = props => {
   const { error, handleSubmit, submitting} = props
   return (
-    <form onSubmit={handleSubmit((data) => console.log(data))} className="form-registerUser">
+    <form onSubmit={handleSubmit((data) => createNewItem(data))} className="form-registerUser">
         <Field
             name="title"
             type="string"
@@ -31,7 +32,7 @@ let CreateItemForm = props => {
             label="Item description"
         />
         <Field
-            name="pictureLocation"
+            name="pictureLink"
             type="string"
             component={renderTextField}
             label="Item picture link"

@@ -73,6 +73,23 @@ export const saveUpdatedItem = (item) => (dispatch) => {
         })
 }
 
+export const createNewItem = (item) => {
+    const itemToCreate = {
+        ...item,
+        cost: parseFloat(item.cost)
+    }
+    const request = generateRequestWithAuth('POST', item)
+    fetch(itemAddress, request)
+        .then(response => {
+            if (response.ok){
+                alert('item created successfully')
+                history.push('/admin')
+            }
+            else response.text()
+                .then(responseText => alert(responseText))
+        })
+}
+
 export const deleteItem = (itemId) => {
     const requestAddress = itemAddress + '/' + itemId
     const request = generateRequestWithAuth('DELETE', null)

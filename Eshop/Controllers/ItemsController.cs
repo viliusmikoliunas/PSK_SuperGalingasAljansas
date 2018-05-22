@@ -54,7 +54,8 @@ namespace Eshop.Controllers
             {
                 Cost = itemData.Cost,
                 Title = itemData.Title,
-                Description = itemData.Description
+                Description = itemData.Description,
+                PictureLocation = itemData.PictureLink
             };
             _itemsRepository.Add(newItem);
 
