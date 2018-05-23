@@ -5,7 +5,7 @@ import {Table, Button,Input,InputGroup,InputGroupAddon} from 'reactstrap'
 import loadItem, {updateItemField, saveUpdatedItem, deleteItem} from '../../Redux/actions/ItemViewActions'
 import {addNewItem} from '../../Redux/actions/ShoppingCartActions'
 import QuantityInput from '../QuantityInput/QuantityInput'
-import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart} from '../../Redux/actions/ShoppingCartActions'
+import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart, addSingleItemToShoppingCartInDb} from '../../Redux/actions/ShoppingCartActions'
 import {getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
 import './ItemViewStyles.css'
 import collectionToString from '../../FunctionalComponents/formatting/collectionToString'
@@ -18,6 +18,7 @@ class ItemView extends React.Component {
         super(props)
         this.onLeave = this.onLeave.bind(this)
         this.state = {
+            totalQuantity: 0,
             shoppingCartQuantity: 1,
             changesWereMade: false,
             inputFields: {
@@ -30,20 +31,29 @@ class ItemView extends React.Component {
     }
 
     onLeave(){
-        const {loggedIn} = this.props
-        //if (loggedIn){
-            //send cart to DB
-        //}
-        //else {
-            localStorage.setItem('shoppingCart', JSON.stringify(this.props.shoppingCartItems))
-        //}
+        const {loggedIn, dispatchAddSingleItemToCart, dispatchAddToCart, item, itemId} = this.props
+        if (this.state.totalQuantity > 0){
+            if (loggedIn){
+                dispatchAddSingleItemToCart(item, this.state.totalQuantity, itemId)
+            }
+            else {
+                dispatchAddToCart(item, this.state.totalQuantity)
+                localStorage.setItem('shoppingCart', JSON.stringify(this.props.shoppingCartItems))
+            }
+        }
     }
 
     componentDidMount() {
         window.addEventListener('beforeunload', this.onLeave)
-        const {itemList, dispatchLoadItem, itemId, dispatchLoadCartFromLocalStorage} = this.props
+        const {itemList, dispatchLoadItem, itemId,loggedIn, dispatchLoadCartFromDb, dispatchLoadCartFromLocalStorage} = this.props
         dispatchLoadItem(itemList, itemId)
-        dispatchLoadCartFromLocalStorage()
+        
+        if (loggedIn){
+            dispatchLoadCartFromDb()
+        }
+        else {
+            dispatchLoadCartFromLocalStorage()
+        }
     }
 
     componentWillUnmount(){
@@ -57,9 +67,12 @@ class ItemView extends React.Component {
         })
     }
 
-    handleAddToCart(number){
-        const {dispatchAddToCart, item} = this.props
-        dispatchAddToCart(item, number)
+    handleAddToCart(){
+        const number = this.state.shoppingCartQuantity
+        this.setState({
+            totalQuantity: this.state.totalQuantity + number
+        })
+        alert("Item added to shopping cart")
     }
 
     updateItem(){
@@ -94,7 +107,7 @@ class ItemView extends React.Component {
                     initialValue={1}
                     onChange={this.handleQuantityFieldChange.bind(this)}
                 />
-                <Button color="primary" onClick={() => this.handleAddToCart(this.state.shoppingCartQuantity)}>Add to cart</Button>
+                <Button color="primary" onClick={() => this.handleAddToCart()}>Add to cart</Button>
             </div>
 
         const titleElement = userRole === 'Admin' 
@@ -187,7 +200,8 @@ export default connect(
         dispatchLoadCartFromDb: loadCartFromDb,
         dispatchLoadCartFromLocalStorage: loadShoppingCartFromLocalStorage,
         dispatchUpdateItemField: updateItemField,
-        dispatchUpdateItem: saveUpdatedItem
+        dispatchUpdateItem: saveUpdatedItem,
+        dispatchAddSingleItemToCart: addSingleItemToShoppingCartInDb
     }
     ,dispatch)
 )(ItemView)

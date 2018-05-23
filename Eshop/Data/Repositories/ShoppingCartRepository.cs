@@ -1,9 +1,6 @@
 ﻿using Eshop.Data.Entities;
 using Eshop.DataContracts.RepositoryInterfaces;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace Eshop.Data.Repositories
@@ -42,14 +39,21 @@ namespace Eshop.Data.Repositories
         public ShoppingCart Get(string accName)
         {
             var acc = _dbContext.Users.FirstOrDefault(user => user.UserName.Equals(accName));
-            var cart = _dbContext.ShoppingCarts.FirstOrDefault(c => c.User.Id.Equals(acc.Id));
+            var cart = _dbContext.ShoppingCarts
+                .Include(crt => crt.ShoppingCartItems)
+                .ThenInclude(cartItem => cartItem.Item)
+                .Include(crt => crt.User)
+                .FirstOrDefault(c => c.User.Id.Equals(acc.Id));
             if (cart != null) return cart;
-            else
+
+            var newCart = new ShoppingCart();
+            acc.ShoppingCart = newCart;
+            try
             {
-                _dbContext.ShoppingCarts.Add(new ShoppingCart {User = acc});
                 _dbContext.SaveChanges();
-                return _dbContext.ShoppingCarts.FirstOrDefault(c => c.User == acc);
             }
+            catch (DbUpdateException) { }
+            return newCart;
         }
 
         public void Delete(string username)
