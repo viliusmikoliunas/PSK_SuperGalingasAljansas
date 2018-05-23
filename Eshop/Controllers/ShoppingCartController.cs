@@ -27,6 +27,16 @@ namespace Eshop.Controllers
             _shoppingCartItemsRepository = shoppingCartItemsRepository;
         }
 
+        [HttpGet("exists")]
+        public IActionResult CheckIfUserHasShoppingCart()
+        {
+            var userName = JWTtoken.GetTokenInfo(Request, "sub");
+            if (userName == null) return NotFound("Wrong credentials");
+
+            var shoppingCart = _shoppingCartRepository.Get(userName);
+            return Ok(shoppingCart.ShoppingCartItems.Any());
+        }
+
         [HttpGet]
         public IActionResult Get()
         {
