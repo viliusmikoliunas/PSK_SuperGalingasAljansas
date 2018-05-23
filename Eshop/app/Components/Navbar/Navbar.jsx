@@ -29,14 +29,12 @@ class Navbar extends Component {
     }
 
     componentDidMount(){
-        const {loggedIn, dispatchLoadCartFromDb, dispatchLoadCartFromLocalStorage, cartItemList} = this.props
-        if (cartItemList == null){
-            if (loggedIn){
-                dispatchLoadCartFromDb()
-            }
-            else {
-                dispatchLoadCartFromLocalStorage()
-            }
+        const {loggedIn, dispatchLoadCartFromDb, dispatchLoadCartFromLocalStorage} = this.props
+        if (loggedIn){
+            dispatchLoadCartFromDb()
+        }
+        else {
+            dispatchLoadCartFromLocalStorage()
         }
     }
 
@@ -47,7 +45,7 @@ class Navbar extends Component {
     }
     render() {
         const userRole = getUserRoleFromToken()
-        const userElement = this.props.isLoggedIn && localStorage['jwtToken'] != null
+        const userElement = this.props.loggedIn && localStorage['jwtToken'] != null
             ?   <Nav>
                     <NavItem>
                         <Link to={'/' + userRole.toLowerCase()}>Welcome {getUsernameFromToken()}</Link>

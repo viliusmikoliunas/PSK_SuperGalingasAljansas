@@ -10,10 +10,13 @@ const loadCartFromDb = () => (dispatch) => {
         .then(response => {
             if (response.ok){
                 response.json()
-                    .then(itemList => dispatch({
-                        type: ShoppingCartActionTypes.LOAD_SHOPPING_CART,
-                        shoppingCart: itemList
-                    }))
+                    .then(itemList => {
+                        dispatch({
+                            type: ShoppingCartActionTypes.LOAD_SHOPPING_CART,
+                            shoppingCart: itemList
+                        })
+                        console.log(itemList)
+                    })
             }
             else console.log(response.status + " " + response.statusText)
         })
@@ -57,8 +60,8 @@ export const loadShoppingCartFromLocalStorage = () => (dispatch) => {
     })
 }
 
-export const addNewItem = (item, quantity) => (dispatch) => {
-    const newShoppingCartItem = {
+const formatShoppingCartItem = (item,quantity) => {
+    return {
         id: item.id,
         quantity: quantity,
         title: item.title,
@@ -66,11 +69,35 @@ export const addNewItem = (item, quantity) => (dispatch) => {
         imagePath: item.pictureLocation,
         key: item.id
     }
+}
+
+export const addNewItem = (item, quantity) => (dispatch) => {
+    const newShoppingCartItem = formatShoppingCartItem(item, quantity)
     dispatch({
         type: ShoppingCartActionTypes.ADD_ITEM,
         item: newShoppingCartItem
     })
     alert("Item added to cart")
+}
+
+export const addSingleItemToShoppingCartInDb = (item, quantity, itemId) => (dispatch) => {
+    const newShoppingCartItem = {
+        itemId: itemId,
+        itemQuantity: quantity
+    }
+    const request = generateRequestWithAuth('POST', newShoppingCartItem)
+    fetch(shoppingCardAddress, request)
+        .then(response => {
+            if (response.ok){
+                dispatch({
+                    type: ShoppingCartActionTypes.ADD_ITEM,
+                    item: formatShoppingCartItem(item, quantity)
+                })
+            }
+            else {
+                
+            }
+        })
 }
 
 export const incrementQuantity = (shoppingCartItemId) => (dispatch) => {

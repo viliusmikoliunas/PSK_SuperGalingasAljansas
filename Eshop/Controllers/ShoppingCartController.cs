@@ -33,9 +33,16 @@ namespace Eshop.Controllers
             var userName = JWTtoken.GetTokenInfo(Request, "sub");
             if (userName == null) return NotFound("Wrong credentials");
 
-            var shoppingCartItems = _shoppingCartRepository.Get(userName).ShoppingCartItems;
+            var shoppingCart = _shoppingCartRepository.Get(userName);
+            if (shoppingCart == null)
+                return NoContent();
+            if (shoppingCart.ShoppingCartItems == null)
+                return NoContent();
+            if (shoppingCart.ShoppingCartItems.Count == 0)
+                return NoContent();
+
             var response = new List<ShoppingCartItemResponse>();
-            foreach (var item in shoppingCartItems)
+            foreach (var item in shoppingCart.ShoppingCartItems)
             {
                 var newItem = new ShoppingCartItemResponse()
                 {
@@ -54,6 +61,8 @@ namespace Eshop.Controllers
         public IActionResult AddItem([FromBody] ShoppingCartDto item)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            if (item.itemQuantity == 0) return NoContent();
 
             var userName = JWTtoken.GetTokenInfo(Request, "sub");
             if (userName == null) return NotFound("Could not get token");
@@ -76,31 +85,29 @@ namespace Eshop.Controllers
             if (username == null) return NotFound("Could not get token");
 
             ShoppingCart cart = _shoppingCartRepository.Get(username);
-            foreach(var item in items)
+            List<ShoppingCartItem> shoppingCartItems = new List<ShoppingCartItem>();
+            if (items.Count == 0)
             {
-                var itemFromDb = _itemsRepository.GetItem(item.itemId);
-                if (itemFromDb == null) return NotFound("Item with given id not found");
-
-                var existingShoppingCartItem = _shoppingCartItemsRepository.GetByShoppingCart(cart.Id, itemFromDb.Id);
-                if (existingShoppingCartItem != null)
-                {
-                    existingShoppingCartItem.Quantity = item.itemQuantity;
-                }
-                else
-                {
-                    var newShoopingCartItem = new ShoppingCartItem { ItemId = item.itemId, Quantity = item.itemQuantity };
-                    if (cart.ShoppingCartItems == null)
-                    {
-                        var newItemList = new List<ShoppingCartItem>
-                        {
-                            newShoopingCartItem
-                        };
-                        cart.ShoppingCartItems = newItemList;
-                    }
-                    else cart.ShoppingCartItems.Add(newShoopingCartItem);
-                }
+                _shoppingCartRepository.Delete(username);
             }
-            _shoppingCartRepository.Update(cart);
+            else
+            {
+                foreach (var item in items)
+                {
+                    var itemFromDb = _itemsRepository.GetItem(item.itemId);
+                    if (itemFromDb == null) return NotFound("Item with given id not found");
+
+                    var newItem = new ShoppingCartItem
+                    {
+                        ItemId = item.itemId,
+                        Quantity = item.itemQuantity
+                    };
+                    shoppingCartItems.Add(newItem);
+                }
+                cart.ShoppingCartItems = shoppingCartItems;
+                _shoppingCartRepository.Update(cart);
+                _shoppingCartItemsRepository.DeleteOrphans();
+            }
 
             return Ok("Item(s) updated successfully");
         }
