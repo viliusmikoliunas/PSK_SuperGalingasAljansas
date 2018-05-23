@@ -70,12 +70,6 @@ namespace Eshop.Controllers
             return NotFound("The item does not exist in the database");
         }
 
-        /*[HttpGet]
-        public Item GetItem(int id)
-        {
-            return _itemsRepository.GetItem(id);
-        }*/
-
         [HttpGet("{id}")]
         public IActionResult GetItem(int id)
         {
