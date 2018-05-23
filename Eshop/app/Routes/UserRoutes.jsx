@@ -5,6 +5,7 @@ import PrivateRoute from '../Components/CustomRouteComponents/PrivateRoute'
 import RouteWithLayout from '../Components/CustomRouteComponents/RouteWithLayout'
 import shoppingCartTable from '../Components/ShoppingCartTable/ShoppingCartTable'
 import CheckoutPage from '../Layouts/CheckoutLayout'
+import EditUserInfoForm from '../Layouts/EditUserInfoLayout'
 
 
 const UserRoleRoute = ({...rest}) => 
@@ -15,6 +16,7 @@ const userRoute = ({match}) => {
         <Switch>
             <PrivateRoute exact path ={`${match.path}/checkout`} roles={["User"]} component={CheckoutPage}/>
             <RouteWithLayout exact path={`${match.path}/shopping-cart`} layout={AdminLayout} component={shoppingCartTable} />
+            <RouteWithLayout exact path={`${match.path}/edit-info`} layout={AdminLayout} component={EditUserInfoForm} />
             <Route exact path={`${match.path}/`} render={() => <Redirect to={`${match.path}/shopping-cart`}/>}/>
         </Switch>
     )

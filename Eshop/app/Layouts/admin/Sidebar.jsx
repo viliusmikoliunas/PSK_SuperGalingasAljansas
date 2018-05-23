@@ -19,6 +19,7 @@ const Sidebar = (props) => {
   const userRoutes = userRole === 'User'
     ?
     <div>
+      <SidebarLink to='/user/edit-info'>Edit Info</SidebarLink>
     </div>
     : null
 

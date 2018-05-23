@@ -4,23 +4,17 @@ import { bindActionCreators } from 'redux'
 import {Redirect, Link} from 'react-router-dom'
 
 import CheckoutForm from '../Components/ReduxForms/CheckoutForm/CheckoutForm'
-import {loadShoppingCartFromLocalStorage} from '../Redux/actions/ShoppingCartActions'
+import loadCartFromDb from '../Redux/actions/ShoppingCartActions'
 
 
 class CheckoutLayout extends Component {
 
     componentDidMount(){
-        this.props.dispatchLoadCart()
+        //this.props.dispatchLoadCart()
     }
 
     render() {
-        let checkoutComponent = <Redirect to={'/'}/>
-        if (this.props.cart != null){
-            if (this.props.cart.length > 0){
-                checkoutComponent = <CheckoutForm/>
-            }
-        }
-
+        const checkoutComponent = <CheckoutForm/>
         return (
             <div>
                 {checkoutComponent}
@@ -31,10 +25,10 @@ class CheckoutLayout extends Component {
 
 export default connect(
     (state) => ({
-        cart: state.ShoppingCartReducer.shoppingCart
+        //cart: state.ShoppingCartReducer.shoppingCart
     }),
     (dispatch) => bindActionCreators({
-        dispatchLoadCart: loadShoppingCartFromLocalStorage
+        //dispatchLoadCart: loadCartFromDb
     }
     ,dispatch)
 )(CheckoutLayout)
