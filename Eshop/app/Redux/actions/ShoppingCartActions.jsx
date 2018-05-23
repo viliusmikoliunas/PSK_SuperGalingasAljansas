@@ -43,15 +43,13 @@ export const saveCartToDb = (cart) => (dispatch) => {
     })
     const request = generateRequestWithAuth('PUT', cartItems)
     fetch(shoppingCardAddress, request)
-        .then(response => response.text()
-            .then(responseText => {
-                dispatch({
-                    type: ShoppingCartActionTypes.LOAD_SHOPPING_CART,
-                    shoppingCart: cart
-                })
-                localStorage.removeItem('shoppingCart')
+        .then(response => {
+            dispatch({
+                type: ShoppingCartActionTypes.LOAD_SHOPPING_CART,
+                shoppingCart: cart
             })
-        )
+            localStorage.removeItem('shoppingCart')
+        })
 }
 
 export const loadShoppingCartFromLocalStorage = () => (dispatch) => {

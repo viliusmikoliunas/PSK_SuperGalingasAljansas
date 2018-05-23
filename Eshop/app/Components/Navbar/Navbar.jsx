@@ -61,7 +61,6 @@ class Navbar extends Component {
         this.props.cartItemList.map(item => {
             itemCount += item.quantity
         })
-
         if (userRole === 'Admin')
             localStorage.removeItem('shoppingCart')
 

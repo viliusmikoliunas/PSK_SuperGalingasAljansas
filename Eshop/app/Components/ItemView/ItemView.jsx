@@ -69,8 +69,7 @@ class ItemView extends React.Component {
         this.setState({
             totalQuantity: this.state.totalQuantity + number
         })
-        const {dispatchAddToCart, item} = this.props
-        dispatchAddToCart(item, number)
+        alert("Item added to shopping cart")
     }
 
     updateItem(){
