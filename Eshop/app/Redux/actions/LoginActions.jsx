@@ -1,4 +1,5 @@
 import LoginActionTypes from '../actionTypes/LoginActionTypes'
+import ShoppingCartActionTypes from '../actionTypes/ShoppingCartActionTypes'
 import generateRequest from '../../FunctionalComponents/httpRequests/generateRequest'
 import history from '../../Redux/history'
 
@@ -44,8 +45,12 @@ export default login
 
 export const logout = () => (dispatch) => {
     localStorage.removeItem('jwtToken')
+    localStorage.removeItem('shoppingCart')
     dispatch({
         type: LoginActionTypes.LOGOUT
+    })
+    dispatch({
+        type: ShoppingCartActionTypes.CLEAR_ALL_ITEMS
     })
     history.push('/')
     alert("You have logged out")

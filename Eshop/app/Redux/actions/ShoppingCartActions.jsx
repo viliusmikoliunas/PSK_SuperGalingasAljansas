@@ -82,7 +82,6 @@ export const addNewItem = (item, quantity) => (dispatch) => {
         type: ShoppingCartActionTypes.ADD_ITEM,
         item: newShoppingCartItem
     })
-    alert("Item added to cart")
 }
 
 export const addSingleItemToShoppingCartInDb = (item, quantity, itemId) => (dispatch) => {

@@ -31,12 +31,15 @@ class ItemView extends React.Component {
     }
 
     onLeave(){
-        const {loggedIn, dispatchAddSingleItemToCart, item, itemId} = this.props
-        if (loggedIn && this.state.totalQuantity > 0){
-            dispatchAddSingleItemToCart(item, this.state.totalQuantity, itemId)
-        }
-        else {
-            localStorage.setItem('shoppingCart', JSON.stringify(this.props.shoppingCartItems))
+        const {loggedIn, dispatchAddSingleItemToCart, dispatchAddToCart, item, itemId} = this.props
+        if (this.state.totalQuantity > 0){
+            if (loggedIn){
+                dispatchAddSingleItemToCart(item, this.state.totalQuantity, itemId)
+            }
+            else {
+                dispatchAddToCart(item, this.state.totalQuantity)
+                localStorage.setItem('shoppingCart', JSON.stringify(this.props.shoppingCartItems))
+            }
         }
     }
 
