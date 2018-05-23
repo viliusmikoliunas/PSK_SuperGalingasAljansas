@@ -30,6 +30,7 @@ export default (state = initialState, action) => {
         }
 
         case ShoppingCartActionTypes.ADD_ITEM:{
+            console.log('add item reducer fired')
             const itemWithId = state.shoppingCart.find(item => item.id === action.item.id)
             if (itemWithId != null){
                 action.item.quantity += itemWithId.quantity

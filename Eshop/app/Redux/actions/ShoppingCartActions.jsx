@@ -9,14 +9,21 @@ const loadCartFromDb = () => (dispatch) => {
     fetch(shoppingCardAddress,request)
         .then(response => {
             if (response.ok){
-                response.json()
+                if (response.status === 204){
+                    dispatch({
+                        type: ShoppingCartActionTypes.LOAD_SHOPPING_CART,
+                        shoppingCart: []
+                    })
+                }
+                else{
+                    response.json()
                     .then(itemList => {
                         dispatch({
                             type: ShoppingCartActionTypes.LOAD_SHOPPING_CART,
                             shoppingCart: itemList
                         })
-                        console.log(itemList)
                     })
+                }
             }
             else console.log(response.status + " " + response.statusText)
         })

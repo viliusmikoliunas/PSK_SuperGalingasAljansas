@@ -64,7 +64,8 @@ class ItemView extends React.Component {
         })
     }
 
-    handleAddToCart(number){
+    handleAddToCart(){
+        const number = this.state.shoppingCartQuantity
         this.setState({
             totalQuantity: this.state.totalQuantity + number
         })
@@ -104,7 +105,7 @@ class ItemView extends React.Component {
                     initialValue={1}
                     onChange={this.handleQuantityFieldChange.bind(this)}
                 />
-                <Button color="primary" onClick={() => this.handleAddToCart(this.state.shoppingCartQuantity)}>Add to cart</Button>
+                <Button color="primary" onClick={() => this.handleAddToCart()}>Add to cart</Button>
             </div>
 
         const titleElement = userRole === 'Admin' 
