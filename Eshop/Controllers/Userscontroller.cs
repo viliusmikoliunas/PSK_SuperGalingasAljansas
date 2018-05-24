@@ -22,7 +22,7 @@ namespace Eshop.Controllers
         }
 
         [HttpGet("me")]
-        [Authorize(Roles = UserRoleString.User)]
+        [Authorize]
         [Produces("application/json")]
         public async Task<IActionResult> GetMe()
         {
