@@ -23,7 +23,7 @@ const loadForm = () => (dispatch) => {
 export default loadForm
 
 export const updateUserInfo = (newInfo) => (dispatch) => {
-    const requestAddress = '/api/account/updateinfo'
+    const requestAddress = '/api/account/update_info'
     const request = generateRequestWithAuth('PUT', newInfo)
     fetch(requestAddress, request)
         .then(response => {
@@ -36,7 +36,33 @@ export const updateUserInfo = (newInfo) => (dispatch) => {
                         type: 'ERROR_EDIT_USER_INFO_FORM',
                         error: responseText
                     })
+                    alert(responseText)
                 })
         }
     )
+    .catch((err) => {
+        dispatch({
+            type: 'ERROR_EDIT_USER_INFO_FORM',
+            error: String(err)
+        })
+    })
+}
+
+export const changePassword = (valueObj) => (dispatch) => {
+    const requestBody = {
+        currentPassword: valueObj.currentPassword,
+        newPassword: valueObj.newPassword
+    }
+    const requestAddress = '/api/account/change_password'
+    const request = generateRequestWithAuth('PUT', requestBody)
+    fetch(requestAddress, request)
+        .then(response => {
+            if (response.status === 200){
+                alert('Password changed successfully')
+            }
+            else response.text()
+                .then(responseText => {
+                    alert(responseText)
+                })
+        })
 }

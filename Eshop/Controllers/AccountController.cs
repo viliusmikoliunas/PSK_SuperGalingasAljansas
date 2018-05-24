@@ -13,7 +13,6 @@ using Microsoft.Extensions.Configuration;
 namespace Eshop.Controllers
 {
     [Route("api/[controller]/[action]")]
-    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly SignInManager<UserAccount> _signInManager;
@@ -32,6 +31,7 @@ namespace Eshop.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginRequest model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -61,6 +61,7 @@ namespace Eshop.Controllers
         }
         
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterRequest model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -88,7 +89,8 @@ namespace Eshop.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateInfo([FromBody] UpdateUserInfoRequest model)
+        [Authorize]
+        public async Task<IActionResult> Update_Info([FromBody] UpdateUserInfoRequest model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -108,6 +110,22 @@ namespace Eshop.Controllers
             if (result.Succeeded) return Ok("User updated successfully");
             return NotFound();
         }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> Change_Password([FromBody] ChangePasswordRequest request)
+        {
+            if (string.IsNullOrEmpty(request.CurrentPassword) || string.IsNullOrEmpty(request.NewPassword))
+                return BadRequest("Please fill all the fields");
+
+            var username = JWTtoken.GetUsernameFromToken(Request);
+            if (username == null) return NotFound();
+
+            var user = await _userManager.FindByNameAsync(username);
+            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+
+            if (result.Succeeded) return Ok("Password changed successfully");
+            return BadRequest(result.Errors.First().Description);
+        }
     }
 }
-
