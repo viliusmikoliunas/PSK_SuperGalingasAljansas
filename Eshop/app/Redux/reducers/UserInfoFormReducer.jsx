@@ -7,7 +7,14 @@ export default (state = initialState, action) => {
 
         case 'LOAD_EDIT_USER_INFO_FORM':
             return {
+                ...state,
                 userInfo: action.userInfo
+            }
+        
+        case 'ERROR_EDIT_USER_INFO_FORM':
+            return{
+                ...state,
+                error: action.error
             }
 
         default:

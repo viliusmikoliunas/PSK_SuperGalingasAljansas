@@ -95,6 +95,9 @@ namespace Eshop.Controllers
             var username = JWTtoken.GetUsernameFromToken(Request);
             if (username == null) return NotFound();
 
+            var emailIsUsed = _userManager.Users.Any(user => user.Email.Equals(model.Email));
+            if (emailIsUsed) return BadRequest($"Email {model.Email} is already taken");
+
             var userAccount = await _userManager.FindByNameAsync(username);
             userAccount.Email = model.Email;
             userAccount.Firstname = model.FirstName;
@@ -107,3 +110,4 @@ namespace Eshop.Controllers
         }
     }
 }
+

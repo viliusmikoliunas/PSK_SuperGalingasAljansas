@@ -5,14 +5,13 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 
 //import validate from './validations'
 import renderTextField from '../ReduxFormFields/renderTextField'
-import loadForm from '../../../Redux/actions/EditUserInfoFormActions'
+import {updateUserInfo} from '../../../Redux/actions/EditUserInfoFormActions'
 
 
 let EditUserInfoForm = (props) => {
-	const { error, handleSubmit, submitting, pristine} = props
-	console.log(props.initialValues)
+	const { error, handleSubmit, submitting, pristine, dispatchUpdateUserInfo} = props
       return (
-        <form onSubmit={handleSubmit(() => (null))} className="form-editUser">
+        <form onSubmit={handleSubmit((data) => dispatchUpdateUserInfo(data))} className="form-editUser">
             <Field
                 name="email"
                 type="email"
@@ -57,11 +56,14 @@ EditUserInfoForm =  reduxForm({
 })(EditUserInfoForm)
 
 EditUserInfoForm = connect(
-  (state) => ({
-	error: state.RegisterReducer.error,
-	initialValues: state.UserInfoFormReducer.userInfo
-  }),
-  null
+	(state) => ({
+		error: state.RegisterReducer.error,
+		initialValues: state.UserInfoFormReducer.userInfo
+	}),
+	dispatch => bindActionCreators({
+		dispatchUpdateUserInfo: updateUserInfo
+  	}
+	,dispatch)
 )(EditUserInfoForm)
 
 export default EditUserInfoForm
