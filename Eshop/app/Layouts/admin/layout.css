@@ -13,7 +13,7 @@
 
 .sidebar {
     background-color: #0A1F34;
-    width: 180px;
+    width: 200px;
     height: calc(100vh - 60px);
     float: left;
 }
@@ -21,7 +21,7 @@
 .content {
     background-color: #F6F6F6;
     float: right;
-    width: calc(100% - 180px);
+    width: calc(100% - 200px);
     height: calc(100vh - 60px);
     overflow-y: auto;
     padding: 10px;

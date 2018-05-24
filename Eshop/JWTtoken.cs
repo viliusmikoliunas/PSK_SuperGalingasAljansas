@@ -54,5 +54,10 @@ namespace Eshop
 
             return accName;
         }
+
+        public static string GetUsernameFromToken(HttpRequest request)
+        {
+            return GetTokenInfo(request, "sub");
+        }
     }
 }

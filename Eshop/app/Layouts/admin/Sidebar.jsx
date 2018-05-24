@@ -13,12 +13,16 @@ const Sidebar = (props) => {
       <SidebarLink to='/admin/user-list'>User List</SidebarLink>
       <SidebarLink to='/admin/orders'>Orders</SidebarLink>
       <SidebarLink to='/admin/create-item'>Create Item</SidebarLink>
+      <SidebarLink to='/admin/edit-info'>Edit Info</SidebarLink>
+      <SidebarLink to='/admin/change-password'>Change Password</SidebarLink>
     </div>
     : null
 
   const userRoutes = userRole === 'User'
     ?
     <div>
+      <SidebarLink to='/user/edit-info'>Edit Info</SidebarLink>
+      <SidebarLink to='/user/change-password'>Change Password</SidebarLink>
     </div>
     : null
 
