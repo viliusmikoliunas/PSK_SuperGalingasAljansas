@@ -88,30 +88,22 @@ namespace Eshop.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] RegisterRequest model)
+        public async Task<IActionResult> UpdateInfo([FromBody] UpdateUserInfoRequest model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var user = new UserAccount
-            {
-                UserName = model.Username,
-                Email = model.Email,
-                IsBlocked = false,
-                Firstname = model.FirstName,
-                Lastname = model.LastName,
-                PhoneNumber = model.PhoneNumber
-            };
+            var username = JWTtoken.GetUsernameFromToken(Request);
+            if (username == null) return NotFound();
 
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var userAccount = await _userManager.FindByNameAsync(username);
+            userAccount.Email = model.Email;
+            userAccount.Firstname = model.FirstName;
+            userAccount.Lastname = model.LastName;
+            userAccount.PhoneNumber = model.PhoneNumber;
+            var result = await _userManager.UpdateAsync(userAccount);
 
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(user, UserRoleString.User);
-                await _signInManager.SignInAsync(user, false);
-                return Ok(JWTtoken.Generate(_configuration, model.Username, user));
-            }
-
-            return BadRequest(result.Errors.First().Description);
+            if (result.Succeeded) return Ok("User updated successfully");
+            return NotFound();
         }
     }
 }

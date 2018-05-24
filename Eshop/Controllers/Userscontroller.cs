@@ -69,7 +69,7 @@ namespace Eshop.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var user = _userManager.Users.FirstOrDefault(u => u.UserName.Equals(blockRequest.Username)); 
+            var user = await _userManager.FindByNameAsync(blockRequest.Username);
             if (user != null)
             {
                 var isAdmin = await _userManager.IsInRoleAsync(user, UserRoleString.Admin);
