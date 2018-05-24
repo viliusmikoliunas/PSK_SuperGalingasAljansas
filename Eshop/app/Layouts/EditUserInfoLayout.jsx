@@ -9,28 +9,22 @@ import loadForm from '../Redux/actions/EditUserInfoFormActions'
 class EditUserInfoLayout extends Component {
 
     componentDidMount(){
-        this.props.dispatchLoadForm()
+        this.props.dispatchLoadFormData()
     }
-
+    
     render() {
-        const {formData} = this.props
         return (
             <div>
-                <EditUserInfoForm
-                    initialValues={formData}
-                />
-                
+                <EditUserInfoForm/>
             </div>
         )
     }
 }
 
 export default connect(
-    (state) => ({
-        formData: state.UserInfoFormReducer.userInfo
-    }),
-    (dispatch) => bindActionCreators({
-        dispatchLoadForm: loadForm
+    null,
+    dispatch => bindActionCreators({
+      dispatchLoadFormData: loadForm
     }
     ,dispatch)
 )(EditUserInfoLayout)
