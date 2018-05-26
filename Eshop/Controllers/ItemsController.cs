@@ -24,7 +24,7 @@ namespace Eshop.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(_itemsRepository.GetAll());
+            return Ok(_itemsRepository.GetAllDto());
         }
 
         [HttpPost]
@@ -42,7 +42,10 @@ namespace Eshop.Controllers
             {
                 Cost = itemData.Cost,
                 Title = itemData.Title,
-                Description = itemData.Description
+                Description = itemData.Description,
+                PictureLocation = itemData.PictureLocation,
+                ItemCategories = itemData.ItemCategories,
+                ItemTraits = itemData.ItemTraits
             };
             _itemsRepository.Add(newItem);
 
@@ -57,24 +60,18 @@ namespace Eshop.Controllers
             else return NotFound("The item does not exist in the database");
         }
 
-        [HttpGet]
-        public Item GetItem(int id)
-        {
-            return _itemsRepository.GetItem(id);
-        }
-
-       /* [HttpGet("{id}")]
+        [HttpGet("id")]
         public IActionResult GetItem(int id)
         {
-            return Ok(_itemsRepository.GetItem(id));
-        }*/
+            return Ok(_itemsRepository.GetItemDto(id));
+        }
 
         [HttpPut]
         [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult UpdateItem([FromBody] UpdatedItemDto updatedItem)
         {
-            var itemToUpdate = GetItem(updatedItem.Id);
-            if (itemToUpdate == null)
+            var itemToUpdate = _itemsRepository.GetItem(updatedItem.Id);
+            if (itemToUpdate != null)
             {
                 if (string.IsNullOrEmpty(updatedItem.Title))
                     return BadRequest("Title missing");

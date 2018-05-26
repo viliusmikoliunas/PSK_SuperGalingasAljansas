@@ -15,9 +15,7 @@ namespace Eshop.Data.Entities
         public string Description { get; set; }
         public string PictureLocation { get; set; }
 
-
         public ICollection<ItemCategory> ItemCategories { get; set; }
-
         public ICollection<ItemTrait> ItemTraits { get; set; }
 
         [JsonIgnore]

@@ -1,11 +1,110 @@
-﻿using System;
+﻿using Eshop.Data.Entities;
+using Eshop.DataContracts.DataTransferObjects;
+using Eshop.DataContracts.RepositoryInterfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Eshop.Data.Repositories
 {
-    public class OrdersRepository
+    public class OrdersRepository : IOrdersRepository
     {
+        private readonly AppDbContext _dbContext;
+
+        public OrdersRepository(AppDbContext appDbContext)
+        {
+            _dbContext = appDbContext;
+        }
+
+        public IEnumerable<OrderDto> GetByStatus(bool areOrdersConfirmed)
+        {
+            var ordersList = from o in _dbContext.Orders
+                            where  o.Confirmed == areOrdersConfirmed
+                            select new OrderDto
+                            {
+                                Id = o.Id,
+                                UserId = o.UserId,
+                                Date = o.Date,
+                                Cost = o.Cost,
+                                Confirmed = o.Confirmed,
+                                Review = new ReviewDto { Stars = o.Review.Stars, Description = o.Review.Description },
+                                Items = (from u in o.OrderedItem select new OrderedItemDto { Title = u.Item.Title, Quantity = u.Quantity }).ToList()
+                            };
+            return ordersList;
+            // return (_dbContext.Orders.Include(order => order.OrderedItem).Include("OrderedItem.Item").Include(order => order.Review).Where(i => i.Confirmed == areOrdersConfirmed)).ToList();
+        }
+
+        public IEnumerable<OrderDto> GetByUserId(string userId)
+        {
+            var orderList = from o in _dbContext.Orders
+                            where o.UserId == userId
+                            select new OrderDto
+                            {
+                                Id = o.Id,
+                                UserId = o.UserId,
+                                Date = o.Date,
+                                Cost = o.Cost,
+                                Confirmed = o.Confirmed,
+                                Review = new ReviewDto { Stars = o.Review.Stars, Description = o.Review.Description },
+                                Items = (from u in o.OrderedItem select new OrderedItemDto { Title = u.Item.Title, Quantity = u.Quantity }).ToList()
+                            };
+            return orderList;
+           // return (_dbContext.Orders.Include(order => order.OrderedItem).Include("OrderedItem.Item").Include(order => order.Review).Where(i => i.UserId == userId)).ToList();
+        }
+
+        public IEnumerable<OrderDto> GetAll()
+        {
+            var orderList = from o in _dbContext.Orders
+                            select new OrderDto
+                            {
+                                Id = o.Id,
+                                UserId = o.UserId,
+                                Date = o.Date,
+                                Cost = o.Cost,
+                                Confirmed = o.Confirmed,
+                                Review = new ReviewDto { Stars = o.Review.Stars, Description = o.Review.Description }, 
+                                Items = (from u in o.OrderedItem select new OrderedItemDto  { Title = u.Item.Title, Quantity = u.Quantity }).ToList()              
+                            };
+              return  orderList;
+            //  return (_dbContext.Orders.Include(order => order.OrderedItem).Include("OrderedItem.Item").Include(order => order.Review).ToList()).OrderByDescending(x=>x.Date).ToList();
+
+        }
+
+        public Order Update(Order orderToUpdate)
+        {
+            _dbContext.Orders.Update(orderToUpdate);
+            _dbContext.SaveChanges();
+            return orderToUpdate;
+        }
+
+
+        public Order GetOrder(int id)
+        {
+            var selectedOrder = _dbContext.Orders.Include(order => order.OrderedItem).Include("OrderedItem.Item").Include(order => order.Review).FirstOrDefault(order => order.Id == id);
+            return selectedOrder;
+        }
+
+        public IEnumerable<OrderDto> GetUserPurchaseHistory(string userId)
+        {
+            var ordersList = from o in _dbContext.Orders
+                             where (o.UserId == userId ) && (o.Confirmed == true)
+                             select new OrderDto
+                             {
+                                 Id = o.Id,
+                                 UserId = o.UserId,
+                                 Date = o.Date,
+                                 Cost = o.Cost,
+                                 Confirmed = o.Confirmed,
+                                 Review = new ReviewDto { Stars = o.Review.Stars, Description = o.Review.Description },
+                                 Items = (from u in o.OrderedItem select new OrderedItemDto { Title = u.Item.Title, Quantity = u.Quantity }).ToList()
+                             };
+            return ordersList;
+
+           /* var list = _dbContext.Orders.Include(order => order.OrderedItem).ThenInclude(item=>item.Item).ThenInclude(cat=>cat.ItemCategories).ThenInclude(c=>c.Category).Include(order => order.OrderedItem).ThenInclude(item => item.Item).ThenInclude(trait => trait.ItemTraits).ThenInclude(t => t.Trait).Where(order => order.UserId == userId).ToList();
+            return list.OrderByDescending(x => x.Date).ToList();*/
+            
+        }
     }
 }
