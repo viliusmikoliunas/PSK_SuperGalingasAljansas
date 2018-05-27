@@ -36,7 +36,7 @@ class ItemTable extends React.Component {
               <th>Title</th>
               <th>Cost</th>
               <th>Category</th>
-              <th>Traits</th>
+              <th>Properties</th>
             </tr>
           </thead>
           <tbody>

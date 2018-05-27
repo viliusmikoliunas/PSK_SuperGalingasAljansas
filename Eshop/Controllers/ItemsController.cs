@@ -75,7 +75,7 @@ namespace Eshop.Controllers
         [HttpGet("{id}")]
         public IActionResult GetItem(int id)
         {
-            return Ok(_itemsRepository.GetItemDto(id));
+            return Ok(_itemsRepository.GetItemDto(id).FirstOrDefault());
         }
 
         [HttpPut]
@@ -91,7 +91,7 @@ namespace Eshop.Controllers
                     return BadRequest("Title missing");
                 if (updatedItem.Cost == 0)
                     return BadRequest("Unacceptable item cost");
-
+                /*
                 if (updatedItem.ItemTraits != null)
                 {
                     var itemTraits = itemToUpdate.ItemTraits.ToList();
@@ -99,8 +99,8 @@ namespace Eshop.Controllers
                     var newTraits = updatedItem.ItemTraits.Where(x => !itemTraits.Select(y => y.TraitId).Contains(x.TraitId)).ToList();
                     itemTraits.AddRange(newTraits);
                     itemToUpdate.ItemTraits = itemTraits;
-                }
-
+                }*/
+                /*
                 if (updatedItem.ItemCategories != null)
                 {
                     var itemCategories = itemToUpdate.ItemCategories.ToList();
@@ -109,7 +109,7 @@ namespace Eshop.Controllers
                     itemCategories.AddRange(newCategories);
                     itemToUpdate.ItemCategories = itemCategories;
                 }
-
+                */
                 if (itemToUpdate.Cost != updatedItem.Cost) itemToUpdate.Cost = updatedItem.Cost;
                 if (itemToUpdate.Description != updatedItem.Description) itemToUpdate.Description = updatedItem.Description;
                 if (itemToUpdate.PictureLocation != updatedItem.PictureLocation) itemToUpdate.PictureLocation = updatedItem.PictureLocation;

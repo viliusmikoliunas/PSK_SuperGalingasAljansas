@@ -5,7 +5,7 @@ import history from '../history'
 
 
 const loadItem = (list, id) => (dispatch) => {
-    if(list == null){
+    if(list == null || list.length == 0){
         downloadItemInfo(id)(dispatch)
         return 
     }
