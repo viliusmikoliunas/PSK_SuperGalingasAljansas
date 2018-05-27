@@ -37,20 +37,20 @@ class Order extends React.Component {
                 <Button color="info" onClick={this.toggle}>Check Review</Button>
 
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                <ModalHeader toggle={this.toggle}>{username} review</ModalHeader>
-                <ModalBody>
-                    <ReactStars
-                        count={5}
-                        value={review.Stars}
-                        edit={false}
-                        size={24}
-                        color2={'#ffd700'} 
-                    /><br/>
-                    {review.Description}
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="secondary" onClick={this.toggle}>Close</Button>
-                </ModalFooter>
+                    <ModalHeader toggle={this.toggle}>{username} review</ModalHeader>
+                    <ModalBody>
+                        <ReactStars
+                            count={5}
+                            value={review.Stars}
+                            edit={false}
+                            size={24}
+                            color2={'#ffd700'} 
+                        /><br/>
+                        {review.Description}
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="secondary" onClick={this.toggle}>Close</Button>
+                    </ModalFooter>
                 </Modal>
             </div>
     

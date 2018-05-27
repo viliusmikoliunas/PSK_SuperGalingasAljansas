@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Eshop.Data.Entities;
 using Eshop.DataContracts;
 using Eshop.DataContracts.DataTransferObjects;
+using Eshop.DataContracts.DataTransferObjects.Requests;
+using Eshop.DataContracts.DataTransferObjects.Responses;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,10 +21,23 @@ namespace Eshop.Controllers
         {
             _itemsRepository = itemsRepository;
         }
+
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] PaginationRequest paginationRequest)
         {
-            return Ok(_itemsRepository.GetAllDto());
+            var allItems = _itemsRepository.GetAllDto().ToList();
+            //temporary lame implementation - need to make repository/DB do this skip take stuff
+            var allItems = _itemsRepository.GetAllDto().ToList();
+            var items = allItems
+                .Skip((paginationRequest.Page - 1) * paginationRequest.Limit)
+                .Take(paginationRequest.Limit);
+
+            var response = new PaginationResponse<Item>
+            {
+                Items = items,
+                AllItemsCount = allItems.Count
+            };
+            return Ok(response);
         }
 
         [HttpPost]
@@ -44,8 +57,8 @@ namespace Eshop.Controllers
                 Title = itemData.Title,
                 Description = itemData.Description,
                 PictureLocation = itemData.PictureLocation,
-                ItemCategories = itemData.ItemCategories,
-                ItemTraits = itemData.ItemTraits
+                //ItemCategories = itemData.ItemCategories,
+                //ItemTraits = itemData.ItemTraits
             };
             _itemsRepository.Add(newItem);
 
@@ -54,13 +67,13 @@ namespace Eshop.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = UserRoleString.Admin)]
-        public IActionResult DeleteItem([FromBody] DeleteItemDto itemDto)
+        public IActionResult DeleteItem(int id)
         {      
-            if (_itemsRepository.Delete(itemDto.Id) == true) return Ok("Item has been deleted");
-            else return NotFound("The item does not exist in the database");
+            if (_itemsRepository.Delete(id)) return Ok("Item has been deleted");
+            return NotFound("The item does not exist in the database");
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public IActionResult GetItem(int id)
         {
             return Ok(_itemsRepository.GetItemDto(id));
@@ -70,6 +83,8 @@ namespace Eshop.Controllers
         [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult UpdateItem([FromBody] UpdatedItemDto updatedItem)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             var itemToUpdate = _itemsRepository.GetItem(updatedItem.Id);
             if (itemToUpdate != null)
             {

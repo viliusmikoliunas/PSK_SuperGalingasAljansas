@@ -88,7 +88,7 @@ namespace Eshop.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<bool>("HasBeenPaidFor");
+                    b.Property<string>("PaymentId");
 
                     b.Property<string>("UserId");
 
@@ -157,15 +157,13 @@ namespace Eshop.Migrations
 
                     b.Property<int>("Quantity");
 
-                    b.Property<int>("ShoppingCartId");
-
-                    b.Property<string>("ShoppingCartId1");
+                    b.Property<string>("ShoppingCartId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ItemId");
 
-                    b.HasIndex("ShoppingCartId1");
+                    b.HasIndex("ShoppingCartId");
 
                     b.ToTable("ShoppingCartItems");
                 });
@@ -417,7 +415,7 @@ namespace Eshop.Migrations
 
                     b.HasOne("Eshop.Data.Entities.ShoppingCart", "ShoppingCart")
                         .WithMany("ShoppingCartItems")
-                        .HasForeignKey("ShoppingCartId1");
+                        .HasForeignKey("ShoppingCartId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

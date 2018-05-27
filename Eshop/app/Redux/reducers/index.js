@@ -10,6 +10,7 @@ import UserBlockStatusReducer from './UserListReducer'
 import ShoppingCartReducer from './ShoppingCartReducer'
 import ItemViewReducer from './ItemViewReducer'
 import OrderListReducer from './OrderListReducer'
+import UserInfoFormReducer from './UserInfoFormReducer'
 
 
 const rootReducer = combineReducers({
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     RegisterReducer,
     ShoppingCartReducer,
     UserBlockStatusReducer,
+    UserInfoFormReducer,
     UserListReducer,
     routing: routerReducer,
     form: formReducer

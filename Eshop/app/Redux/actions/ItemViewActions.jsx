@@ -1,5 +1,6 @@
 import ItemViewActions from '../actionTypes/ItemViewActionTypes'
 import generateRequest from '../../FunctionalComponents/httpRequests/generateRequest'
+import generateRequestWithAuth from '../../FunctionalComponents/httpRequests/generateRequestWithAuth'
 import history from '../history'
 
 
@@ -19,6 +20,8 @@ const loadItem = (list, id) => (dispatch) => {
         item: item
     })
 }
+
+export default loadItem
 
 const itemAddress = '/api/items'
 
@@ -42,4 +45,66 @@ const downloadItemInfo = (itemId) => (dispatch) => {
         })
 }
 
-export default loadItem
+export const updateItemField = (field, value) => (dispatch) => {
+    dispatch({
+        type: ItemViewActions.CHANGE_FIELD_VALUE,
+        field: field,
+        value: value
+    })
+}
+
+export const saveUpdatedItem = (item) => (dispatch) => {
+    const request = generateRequestWithAuth('PUT', item)
+    fetch(itemAddress, request)
+        .then(response => {
+            if (response.ok) {
+                response.text()
+                    .then(responseJson => {
+                        dispatch({
+                            type: ItemViewActions.LOAD_ITEM,
+                            item: item
+                        })
+                        alert(responseJson)
+                    })
+            }
+            else response.text().then(
+                responseJson => alert(responseJson)
+            )
+        })
+}
+
+export const createNewItem = (item) => {
+    const itemToCreate = {
+        ...item,
+        cost: parseFloat(item.cost)
+    }
+    const request = generateRequestWithAuth('POST', item)
+    fetch(itemAddress, request)
+        .then(response => {
+            if (response.ok){
+                alert('item created successfully')
+                history.push('/admin')
+            }
+            else response.text()
+                .then(responseText => alert(responseText))
+        })
+}
+
+export const deleteItem = (itemId) => {
+    const requestAddress = itemAddress + '/' + itemId
+    const request = generateRequestWithAuth('DELETE', null)
+    fetch(requestAddress, request)
+        .then((response) => {
+            if (response.status === 200){
+                alert('item deleted successfully')
+                history.push('/')
+            }
+            else {
+                response.text(responseText => {
+                    alert(responseText)
+                    history.push('/')
+                    return
+                })
+            }
+        })
+}

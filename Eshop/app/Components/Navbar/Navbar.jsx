@@ -14,7 +14,7 @@ import {
 import {Link} from 'react-router-dom'
 import {getUsernameFromToken, getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
 import {logout} from '../../Redux/actions/LoginActions'
-import {loadShoppingCartFromLocalStorage} from '../../Redux/actions/ShoppingCartActions'
+import loadCartFromDb, {loadShoppingCartFromLocalStorage} from '../../Redux/actions/ShoppingCartActions'
 import './NavbarStyles.css'
 
 
@@ -29,7 +29,13 @@ class Navbar extends Component {
     }
 
     componentDidMount(){
-        this.props.dispatchLoadCartFromLocalStorage()
+        const {loggedIn, dispatchLoadCartFromDb, dispatchLoadCartFromLocalStorage} = this.props
+        if (loggedIn){
+            dispatchLoadCartFromDb()
+        }
+        else {
+            dispatchLoadCartFromLocalStorage()
+        }
     }
 
     toggle() {
@@ -39,7 +45,7 @@ class Navbar extends Component {
     }
     render() {
         const userRole = getUserRoleFromToken()
-        const userElement = this.props.isLoggedIn && localStorage['jwtToken'] != null
+        const userElement = this.props.loggedIn && localStorage['jwtToken'] != null
             ?   <Nav>
                     <NavItem>
                         <Link to={'/' + userRole.toLowerCase()}>Welcome {getUsernameFromToken()}</Link>
@@ -55,7 +61,6 @@ class Navbar extends Component {
         this.props.cartItemList.map(item => {
             itemCount += item.quantity
         })
-
         if (userRole === 'Admin')
             localStorage.removeItem('shoppingCart')
 
@@ -84,11 +89,11 @@ class Navbar extends Component {
 
 export default connect(
     (state) => ({
-        isLoggedIn: state.LoginReducer.loggedIn,
+        loggedIn: state.LoginReducer.loggedIn,
         cartItemList: state.ShoppingCartReducer.shoppingCart
     }),
     (dispatch) => bindActionCreators({
-        //dispatchLoadCartFromDb: loadCartFromDb,
+        dispatchLoadCartFromDb: loadCartFromDb,
         dispatchLoadCartFromLocalStorage: loadShoppingCartFromLocalStorage,
         dispatchLogout: logout
     }
