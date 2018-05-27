@@ -56,7 +56,11 @@ namespace Eshop.Data.Repositories
 
         public IEnumerable<OrderDto> GetAll()
         {
-            var orderList = from o in _dbContext.Orders
+            var orders = _dbContext.Orders
+                .Include(order => order.Review)
+                .Include(order => order.OrderedItem)
+                .ThenInclude(orderedItem => orderedItem.Item);
+            var orderList = from o in orders
                             select new OrderDto
                             {
                                 Id = o.Id,
@@ -64,12 +68,11 @@ namespace Eshop.Data.Repositories
                                 Date = o.Date,
                                 Cost = o.Cost,
                                 Confirmed = o.Confirmed,
-                                Review = new ReviewDto { Stars = o.Review.Stars, Description = o.Review.Description }, 
+                                //review is optional so null check is required
+                                Review = o.Review != null ? new ReviewDto { Stars = o.Review.Stars, Description = o.Review.Description } : null, 
                                 Items = (from u in o.OrderedItem select new OrderedItemDto  { Title = u.Item.Title, Quantity = u.Quantity }).ToList()              
                             };
-              return  orderList;
-            //  return (_dbContext.Orders.Include(order => order.OrderedItem).Include("OrderedItem.Item").Include(order => order.Review).ToList()).OrderByDescending(x=>x.Date).ToList();
-
+            return orderList.ToList();
         }
 
         public Order Update(Order orderToUpdate)
