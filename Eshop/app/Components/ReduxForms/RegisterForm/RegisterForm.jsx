@@ -49,7 +49,7 @@ let RegisterForm = props => {
             label="Last name"
         />
         <Field
-            name="phone"
+            name="phoneNumber"
             type="tel"
             component={renderTextField}
             label="Telephone number"

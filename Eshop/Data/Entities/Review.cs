@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Eshop.Data.Entities
@@ -12,7 +13,7 @@ namespace Eshop.Data.Entities
         [Range(1,5)]
         public int Stars { get; set; }
         public string Description { get; set; }
-
+        [JsonIgnore]
         public Order Order { get; set; }
     }
 }

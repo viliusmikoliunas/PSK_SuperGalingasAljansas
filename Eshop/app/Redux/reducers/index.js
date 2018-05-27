@@ -8,14 +8,20 @@ import RegisterReducer from './RegisterReducer'
 import UserListReducer from './UserListReducer'
 import UserBlockStatusReducer from './UserListReducer'
 import ShoppingCartReducer from './ShoppingCartReducer'
+import ItemViewReducer from './ItemViewReducer'
+import OrderListReducer from './OrderListReducer'
+import UserInfoFormReducer from './UserInfoFormReducer'
 
 
 const rootReducer = combineReducers({
     ItemTableReducer,
+    ItemViewReducer,
     LoginReducer,
+    OrderListReducer,
     RegisterReducer,
     ShoppingCartReducer,
     UserBlockStatusReducer,
+    UserInfoFormReducer,
     UserListReducer,
     routing: routerReducer,
     form: formReducer

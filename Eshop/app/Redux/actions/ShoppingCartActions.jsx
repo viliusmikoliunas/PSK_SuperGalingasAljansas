@@ -1,52 +1,109 @@
 import ShoppingCartActionTypes from '../actionTypes/ShoppingCartActionTypes'
 import generateRequestWithAuth from '../../FunctionalComponents/httpRequests/generateRequestWithAuth'
-
+import {getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
 
 const shoppingCardAddress = '/api/user/cart'
 
 const loadCartFromDb = () => (dispatch) => {
+    if (getUserRoleFromToken() === 'Admin') return
     const request = generateRequestWithAuth('GET', null)
     fetch(shoppingCardAddress,request)
-        .then((response) => {
+        .then(response => {
             if (response.ok){
-                response.json()
-                    .then((jsonResponse) => dispatch({
+                if (response.status === 204){
+                    dispatch({
                         type: ShoppingCartActionTypes.LOAD_SHOPPING_CART,
-                        shoppingCart: jsonResponse
-                    }))
+                        shoppingCart: []
+                    })
+                }
+                else{
+                    response.json()
+                    .then(itemList => {
+                        dispatch({
+                            type: ShoppingCartActionTypes.LOAD_SHOPPING_CART,
+                            shoppingCart: itemList
+                        })
+                    })
+                }
             }
-            else console.log(response.status + " " + response.statusText)
+        })
+        .catch((err) => {
+            console.log("db error")
         })
 }
 
 export default loadCartFromDb
 
+export const saveCartToDb = (cart) => (dispatch) => {
+    const cartItems = cart.map(cartItem => {
+        return {
+            itemId: cartItem.id,
+            itemQuantity: cartItem.quantity
+        }
+    })
+    const request = generateRequestWithAuth('PUT', cartItems)
+    fetch(shoppingCardAddress, request)
+        .then(response => {
+            dispatch({
+                type: ShoppingCartActionTypes.LOAD_SHOPPING_CART,
+                shoppingCart: cart
+            })
+            localStorage.removeItem('shoppingCart')
+        })
+}
+
 export const loadShoppingCartFromLocalStorage = () => (dispatch) => {
+    if (getUserRoleFromToken() === 'Admin') return
+
     const cartString = localStorage.getItem('shoppingCart')
     let cart = JSON.parse(cartString)
-    if (cart.length < 1){
-        cart = [
-            {
-                imagePath: 'https://www.ikea.com/PIAimages/0238241_PE377689_S5.JPG',
-                title: 'Placeholder',
-                price: 10.56,
-                quantity: 2,
-                id: 1
-            },
-            {
-                imagePath: 'https://www.ikea.com/PIAimages/0238241_PE377689_S5.JPG',
-                title: 'Placeholder',
-                price: 5.61,
-                quantity: 3,
-                id: 2
-            }
-        ]
+    if (cart == null){
+        cart = []
     }
 
     dispatch({
         type: ShoppingCartActionTypes.LOAD_SHOPPING_CART,
         shoppingCart: cart
     })
+}
+
+const formatShoppingCartItem = (item,quantity) => {
+    return {
+        id: item.id,
+        quantity: quantity,
+        title: item.title,
+        price: item.cost,
+        imagePath: item.pictureLocation,
+        key: item.id
+    }
+}
+
+export const addNewItem = (item, quantity) => (dispatch) => {
+    const newShoppingCartItem = formatShoppingCartItem(item, quantity)
+    dispatch({
+        type: ShoppingCartActionTypes.ADD_ITEM,
+        item: newShoppingCartItem
+    })
+}
+
+export const addSingleItemToShoppingCartInDb = (item, quantity, itemId) => (dispatch) => {
+    const newShoppingCartItem = {
+        itemId: itemId,
+        itemQuantity: quantity
+    }
+    const request = generateRequestWithAuth('POST', newShoppingCartItem)
+    fetch(shoppingCardAddress, request)
+        .then(response => {
+            if (response.ok){
+                dispatch({
+                    type: ShoppingCartActionTypes.ADD_ITEM,
+                    item: formatShoppingCartItem(item, quantity)
+                })
+            }
+            else {
+                
+            }
+        })
 }
 
 export const incrementQuantity = (shoppingCartItemId) => (dispatch) => {
