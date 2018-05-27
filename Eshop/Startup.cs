@@ -89,6 +89,7 @@ namespace Eshop
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<ICategoriesRepository, CategoriesRepository>();
             services.AddScoped<ITraitsRepository, TraitsRepository>();
+            services.AddScoped<IOrdersRepository, OrdersRepository>();
             services.AddScoped<IReviewsRepository, ReviewsRepository>();
             services.AddScoped<IShoppingCartItemsRepository, ShoppingCartItemsRepository>();
         }

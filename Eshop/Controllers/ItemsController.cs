@@ -26,12 +26,12 @@ namespace Eshop.Controllers
         public IActionResult GetAll([FromQuery] PaginationRequest paginationRequest)
         {
             //temporary lame implementation - need to make repository/DB do this skip take stuff
-            var allItems = _itemsRepository.GetAll().ToList();
+            var allItems = _itemsRepository.GetAllDto().ToList();
             var items = allItems
                 .Skip((paginationRequest.Page - 1) * paginationRequest.Limit)
                 .Take(paginationRequest.Limit);
 
-            var response = new PaginationResponse<Item>
+            var response = new PaginationResponse<GetItemDto>
             {
                 Items = items,
                 AllItemsCount = allItems.Count
@@ -55,7 +55,9 @@ namespace Eshop.Controllers
                 Cost = itemData.Cost,
                 Title = itemData.Title,
                 Description = itemData.Description,
-                PictureLocation = itemData.PictureLink
+                PictureLocation = itemData.PictureLocation,
+                //ItemCategories = itemData.ItemCategories,
+                //ItemTraits = itemData.ItemTraits
             };
             _itemsRepository.Add(newItem);
 
@@ -73,7 +75,7 @@ namespace Eshop.Controllers
         [HttpGet("{id}")]
         public IActionResult GetItem(int id)
         {
-            return Ok(_itemsRepository.GetItem(id));
+            return Ok(_itemsRepository.GetItemDto(id));
         }
 
         [HttpPut]

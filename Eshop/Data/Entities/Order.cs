@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -16,9 +17,11 @@ namespace Eshop.Data.Entities
 
         public Review Review { get; set; }
 
+
         public ICollection<OrderedItem> OrderedItem { get; set; }
 
         public string UserId { get; set; }
+        [JsonIgnore]
         public UserAccount User { get; set; }
     }
 }
