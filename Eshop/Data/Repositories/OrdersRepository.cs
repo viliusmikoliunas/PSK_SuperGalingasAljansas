@@ -91,23 +91,25 @@ namespace Eshop.Data.Repositories
 
         public IEnumerable<OrderDto> GetUserPurchaseHistory(string userId)
         {
-            var ordersList = from o in _dbContext.Orders
-                             where (o.UserId == userId ) && (o.Confirmed == true)
-                             select new OrderDto
-                             {
-                                 Id = o.Id,
-                                 UserId = o.UserId,
-                                 Date = o.Date,
-                                 Cost = o.Cost,
-                                 Confirmed = o.Confirmed,
-                                 Review = new ReviewDto { Stars = o.Review.Stars, Description = o.Review.Description },
-                                 Items = (from u in o.OrderedItem select new OrderedItemDto { Title = u.Item.Title, Quantity = u.Quantity }).ToList()
-                             };
-            return ordersList;
+            var orders = _dbContext.Orders
+                .Include(order => order.Review)
+                .Include(order => order.OrderedItem)
+                .ThenInclude(orderedItem => orderedItem.Item);
 
-           /* var list = _dbContext.Orders.Include(order => order.OrderedItem).ThenInclude(item=>item.Item).ThenInclude(cat=>cat.ItemCategories).ThenInclude(c=>c.Category).Include(order => order.OrderedItem).ThenInclude(item => item.Item).ThenInclude(trait => trait.ItemTraits).ThenInclude(t => t.Trait).Where(order => order.UserId == userId).ToList();
-            return list.OrderByDescending(x => x.Date).ToList();*/
-            
+            var orderList = from o in orders
+                            where o.UserId == userId// && o.Confirmed
+                            select new OrderDto
+                            {
+                                Id = o.Id,
+                                UserId = o.UserId,
+                                Date = o.Date,
+                                Cost = o.Cost,
+                                Confirmed = o.Confirmed,
+                                //review is optional so null check is required
+                                Review = o.Review != null ? new ReviewDto { Stars = o.Review.Stars, Description = o.Review.Description } : null,
+                                Items = (from u in o.OrderedItem select new OrderedItemDto { Title = u.Item.Title, Quantity = u.Quantity }).ToList()
+                            };
+            return orderList.ToList();
         }
     }
 }

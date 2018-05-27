@@ -25,14 +25,13 @@ namespace Eshop.Controllers
         [HttpGet]
         public IActionResult GetAll([FromQuery] PaginationRequest paginationRequest)
         {
-            var allItems = _itemsRepository.GetAllDto().ToList();
             //temporary lame implementation - need to make repository/DB do this skip take stuff
             var allItems = _itemsRepository.GetAllDto().ToList();
             var items = allItems
                 .Skip((paginationRequest.Page - 1) * paginationRequest.Limit)
                 .Take(paginationRequest.Limit);
 
-            var response = new PaginationResponse<Item>
+            var response = new PaginationResponse<GetItemDto>
             {
                 Items = items,
                 AllItemsCount = allItems.Count
