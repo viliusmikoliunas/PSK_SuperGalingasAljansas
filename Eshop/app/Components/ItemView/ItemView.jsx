@@ -91,7 +91,7 @@ class ItemView extends React.Component {
 
     render() {
         const {dispatchAddToCart, item, shoppingCartItems, itemId} = this.props 
-        const {pictureLocation, title, cost, description, categories, traits} = item
+        const {pictureLocation, title, cost, description, itemCategories, itemTraits} = item
         const userRole = getUserRoleFromToken()
         const actionElement = userRole === 'Admin'
             ?   <div>
@@ -169,13 +169,13 @@ class ItemView extends React.Component {
                         <tr>
                             <td>                        
                                 <p>Categories:</p>
-                                {collectionToString(categories) || "This item doesn't belong to any category"}
+                                {collectionToString(itemCategories) || "This item doesn't belong to any category"}
                             </td>
                         </tr>
                         <tr>
                             <td>                        
-                                <p>Traits:</p>
-                                {collectionToString(traits) || "This item doesn't have any traits"}
+                                <p>Properties:</p>
+                                {collectionToString(itemTraits) || "This item doesn't have any properties"}
                             </td>
                         </tr>
                         {pictureLocationElement}

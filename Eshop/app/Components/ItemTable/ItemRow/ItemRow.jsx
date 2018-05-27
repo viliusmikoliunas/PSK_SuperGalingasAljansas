@@ -7,18 +7,18 @@ export default class ItemRow extends React.Component {
 
     render(){
         const {id, title, cost, pictureLocation, itemCategories, itemTraits} = this.props
-
-        const categoryString = itemCategories != null
+        let key = 0
+        const categoryString = itemCategories.length > 0
             ? itemCategories.map(category => {
-                return (category + "\r\n")
+                return <p key={key++}>{category.title}</p>
             })
             : "<No categories>"
         
-        const traitString = itemTraits != null
+        const traitString = itemTraits.length > 0
             ? itemTraits.map(trait => {
-                return (trait + "\r\n")
+                return <p key={key++}>{trait.title}</p>
             })
-            : "<No traits>"
+            : "<No properties>"
 
         return(
             <tr className="itemRow" onClick={() => history.push(/item/ + id )}>
