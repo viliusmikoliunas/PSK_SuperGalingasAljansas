@@ -111,5 +111,98 @@ namespace Eshop.Data.Repositories
                             };
             return orderList.ToList();
         }
+
+        public bool PaymentEqualsShoppingCartSum(UserAccount user, decimal ammount)
+        {
+            var userId = user.Id;
+            
+            var shoppingCart = _dbContext.ShoppingCarts.First(s => s.User.Id.Equals(userId));
+            var shoppingCartId = shoppingCart.Id;
+
+            var shoppingCartItems = _dbContext.ShoppingCartItems.Where(i => i.ShoppingCartId.Equals(shoppingCartId));
+            int itemId;
+            decimal sum = 0;
+            foreach (var shoppingCartItem in shoppingCartItems)
+            {
+                itemId = shoppingCartItem.ItemId;
+                var quantity = shoppingCartItem.Quantity;
+
+                var item = _dbContext.Items.First(i => i.Id == itemId);
+                var cost = item.Cost;
+
+                sum += (quantity * cost);
+            }
+
+            if (sum == ammount)
+                return true;
+            return false;
+        }
+
+        public Order Add(Order order)
+        {
+            _dbContext.Orders.Add(order);
+            _dbContext.SaveChanges();
+            return order;
+        }
+
+        public ICollection<OrderedItem> GetOrderShoppingCartItems(UserAccount user, int orderId)
+        {
+            // is shoppimng crt'o gaunam item id ir quantity
+            var order = GetOrder(orderId);
+            var shoppingCart = _dbContext.ShoppingCarts.First(s => s.User.Id == user.Id);
+            var shoppingCartItems = _dbContext.ShoppingCartItems.Where(i => i.ShoppingCartId == shoppingCart.Id);
+            ICollection<OrderedItem> orderedItems = new List<OrderedItem>();
+            foreach (var shoppingCartItem in shoppingCartItems)
+            {
+                var item = _dbContext.Items.First(i => i.Id == shoppingCartItem.ItemId);
+                OrderedItem orderedItem = new OrderedItem
+                {
+                    Item = item,
+                    ItemId = item.Id,
+                    Order = order,
+                    OrderId = orderId,
+                    Quantity = shoppingCartItem.Quantity
+                };
+                orderedItems.Append(orderedItem);
+            }
+            return orderedItems;
+        }
+
+        public UserAccount GetOrderingUser(string username)
+        {
+            var user = _dbContext.Users.First(u => u.UserName == username);
+            return user;
+        }
+
+        public ShoppingCart ClearUserShoppingCart(UserAccount user)
+        {
+            //gauti shopping cart pagal user id
+            var shoppingCart = _dbContext.ShoppingCarts.First(s => s.User.Id == user.Id);
+            //pasiimti shopping cart id
+            var shoppingCartId = shoppingCart.Id;
+            
+            //is lenteles shopping cart items istrinti visus yrasus kur ura shopping cart id
+            //gauti shopping cart items lista
+            var shoppingCartItems = _dbContext.ShoppingCartItems.Where(s => s.ShoppingCartId == shoppingCartId);
+           
+            //reikia tiesiog istrinti atfiltruota lista is bendro listo
+            foreach (var shoppingCartItem in shoppingCartItems)
+            {
+                _dbContext.ShoppingCartItems.Remove(shoppingCartItem);
+            }
+            _dbContext.SaveChanges();
+
+            return shoppingCart;
+        }
+
+        public ICollection<OrderedItem> AddOrderedItems(ICollection<OrderedItem> orderedItems)
+        {
+            foreach (var orderedItem in orderedItems)
+            {
+                _dbContext.OrderedItems.Add(orderedItem);
+            }
+            _dbContext.SaveChanges();
+            return orderedItems;
+        }
     }
 }

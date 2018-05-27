@@ -15,5 +15,11 @@ namespace Eshop.DataContracts.RepositoryInterfaces
         Order Update(Order order);
         Order GetOrder(int id);
         IEnumerable<OrderDto> GetUserPurchaseHistory(string userId);
+        Boolean PaymentEqualsShoppingCartSum(UserAccount user, decimal amount);
+        Order Add(Order order);
+        ICollection<OrderedItem> GetOrderShoppingCartItems(UserAccount username, int orderId);
+        UserAccount GetOrderingUser(string username);
+        ShoppingCart ClearUserShoppingCart(UserAccount user);
+        ICollection<OrderedItem> AddOrderedItems(ICollection<OrderedItem> orderedItems);
     }
 }
