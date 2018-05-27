@@ -68,19 +68,28 @@ namespace Eshop.Controllers
             return Ok(_ordersRepository.GetOrder(id));
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         [Authorize(Roles = UserRoleString.Admin)]
-        public IActionResult ConfirmOrder( ConfirmedOrderDto confirmedOrder)  
+        public IActionResult ConfirmOrder([FromBody] ConfirmedOrderDto confirmedOrder)  
         {
             var orderToConfirm = _ordersRepository.GetOrder(confirmedOrder.Id);
             if (orderToConfirm != null)
             {
-                if (orderToConfirm.Confirmed != confirmedOrder.Confirmed) orderToConfirm.Confirmed = confirmedOrder.Confirmed;
+                if (orderToConfirm.Confirmed == confirmedOrder.Confirmed)
+                {
+                    return Ok($"Order {orderToConfirm.Id} confirmation status is already {orderToConfirm.Confirmed}");
+                }
+
+                orderToConfirm.Confirmed = confirmedOrder.Confirmed;
                 _ordersRepository.Update(orderToConfirm);
-                return Ok("Order confirmed");
+                if (confirmedOrder.Confirmed)
+                {
+                    return Ok($"Order {orderToConfirm.Id} confirmed");
+                }
+                return Ok($"Order {orderToConfirm.Id} unconfirmed");
             }
-            else
-                return NotFound("Order does not exist in the database");
+
+            return NotFound($"Order {confirmedOrder.Id} does not exist in the database");
         }
     }
 
