@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Eshop.Data.Entities;
+using Eshop.DataContracts.DataTransferObjects;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +18,7 @@ namespace Eshop.Data.Repositories
 
         public IEnumerable<Item> GetAll()
         {
-            return _dbContext.Items.ToList();
+            return _dbContext.Items.Include(item => item.ItemTraits).Include("ItemTraits.Trait").Include(item => item.ItemCategories).Include("ItemCategories.Category").ToList();
         }
 
         public Item Add(Item newItem)
@@ -45,10 +46,42 @@ namespace Eshop.Data.Repositories
 
         public Item GetItem(int id)
         {
-            var selectedItem = _dbContext.Items
-                .Include(item=>item.ItemTraits)
-                .Include(item =>item.ItemCategories)
-                .FirstOrDefault(item => item.Id == id);
+            var selectedItem = _dbContext.Items.Include(item=>item.ItemTraits).Include("ItemTraits.Trait").Include(item =>item.ItemCategories).Include("ItemCategories.Category").FirstOrDefault(item => item.Id == id);
+            return selectedItem;
+        }
+
+
+
+        public IEnumerable<GetItemDto> GetAllDto()
+        {
+            var itemsList = from i in _dbContext.Items
+                            select new GetItemDto
+                            {
+                                Id = i.Id,
+                                Title = i.Title,
+                                Cost = i.Cost,
+                                Description = i.Description,
+                                PictureLocation = i.PictureLocation,
+                                ItemCategories = (from ic in i.ItemCategories select new CategoryDto { Id = ic.Category.Id, Title = ic.Category.Title }).ToList(),
+                                ItemTraits = (from it in i.ItemTraits select new TraitDto { Id = it.Trait.Id, Title = it.Trait.Title }).ToList(),
+                            };
+            return itemsList;
+        }
+
+        public IQueryable<GetItemDto> GetItemDto(int id)
+        {
+            var selectedItem = from i in _dbContext.Items
+                               where i.Id == id
+                            select new GetItemDto
+                            {
+                                Id = i.Id,
+                                Title = i.Title,
+                                Cost = i.Cost,
+                                Description = i.Description,
+                                PictureLocation = i.PictureLocation,
+                                ItemCategories = (from ic in i.ItemCategories select new CategoryDto { Id = ic.Category.Id, Title = ic.Category.Title }).ToList(),
+                                ItemTraits = (from it in i.ItemTraits select new TraitDto { Id = it.Trait.Id, Title = it.Trait.Title }).ToList(),
+                            };
             return selectedItem;
         }
     }

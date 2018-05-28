@@ -27,6 +27,20 @@ export default (state = initialState, action) => {
                 })
             }
         }
+        case (UserListActionTypes.UNBLOCK_USER):{
+            return {
+                ...state,
+                userList: state.userList.map(user => {
+                    if (user.username === action.username){
+                        return {
+                            ...user,
+                            isBlocked: false
+                        }
+                    }
+                    return user
+                })
+            }
+        }
         default:
             return state
     }

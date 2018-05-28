@@ -8,7 +8,7 @@
         public int ItemId { get; set; }
         public Item Item { get; set; }
 
-        public int ShoppingCartId { get; set; }
+        public string ShoppingCartId { get; set; }
         public ShoppingCart ShoppingCart { get; set; }
     }
 }

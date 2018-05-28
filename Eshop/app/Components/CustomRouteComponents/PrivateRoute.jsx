@@ -26,18 +26,21 @@ class PrivateRoute extends Component {
         //else means user doesn't have permission to access resource, thus he is redirected to back to main page
         const redirectPath = currentRole == null
             ? '/login' : '/'
-        
+
         return (
             <Route {...rest} render={(props) => (
                 this.props.loggingIn
                 ? null
                 : 
                 ( canUserAccessThisRoute
-                    ? <RouteWithLayout layout={layout} component={Component} {...props}/>
-                    : <Redirect to={{
+                    ?   (layout === undefined
+                            ? <Route component={Component} {...props}/> 
+                            : <RouteWithLayout layout={layout} component={Component} {...props}/>
+                        )
+                    :   <Redirect to={{
                         pathname: redirectPath,
-                        state: { from: props.location }
-                    }}/>
+                        state: { from: props.location }}}
+                        />
                 )
             )} />
         )
