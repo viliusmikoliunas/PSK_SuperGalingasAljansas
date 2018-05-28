@@ -10,10 +10,12 @@ const loadOrders = () => (dispatch) => {
         .then(response => {
             if (response.ok){
                 response.json()
-                    .then(jsonResponse => dispatch({
-                        type: OrderListActionTypes.LOAD_ORDERS,
-                        orders: jsonResponse
-                    }))
+                    .then(jsonResponse => {
+                        dispatch({
+                            type: OrderListActionTypes.LOAD_ORDERS,
+                            orders: jsonResponse
+                        })
+                    })
             }
             else response.text()
                 .then(responseText => alert(responseText))

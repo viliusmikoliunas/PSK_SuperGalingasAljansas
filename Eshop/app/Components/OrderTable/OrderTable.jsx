@@ -26,8 +26,8 @@ class OrderTable extends React.Component {
                     username={order.username}
                     date={order.date}
                     items={order.items}
-                    ammount={order.cost}
-                    paymentDate={null}
+                    cost={order.cost}
+                    paymentDate={order.paymentDate}
                     review={order.review}
                     confirmed={order.confirmed}
                     onConfirm={this.handleOrderConfirmation.bind(this)}
@@ -42,7 +42,7 @@ class OrderTable extends React.Component {
                         <th>Username</th>
                         <th>Date</th>
                         <th>Items</th>
-                        <th>Ammount</th>
+                        <th>Cost(€)</th>
                         <th>Payment Date</th>
                         <th>Review</th>
                         <th>Confirm</th>       

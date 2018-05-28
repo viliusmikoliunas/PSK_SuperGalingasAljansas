@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
 import ReactStars from 'react-stars'
+import toFixed from '../../FunctionalComponents/formatting/toFixed'
 
 
 class Order extends React.Component {
@@ -21,13 +22,13 @@ class Order extends React.Component {
     }
 
     render(){
-        const {id, username, date, items, ammount, paymentDate, review, confirmed, onConfirm} = this.props
+        const {id, username, date, items, cost, paymentDate, review, confirmed, onConfirm} = this.props
         let key = 0
         const itemListElement = 
         <div>
             {items.map(item => {
                 return (
-                    <p key={key++}>{item.Title + '(' + item.Quantity + ')'}</p>
+                    <p key={key++}>{item.title + ' (' + item.quantity + ')'}</p>
                 )
             })}
         </div>
@@ -43,31 +44,36 @@ class Order extends React.Component {
                     <ModalBody>
                         <ReactStars
                             count={5}
-                            value={review.Stars}
+                            value={review.stars}
                             edit={false}
                             size={24}
                             color2={'#ffd700'} 
                         /><br/>
-                        {review.Description}
+                        {review.description}
                     </ModalBody>
                     <ModalFooter>
                         <Button color="secondary" onClick={this.toggle}>Close</Button>
                     </ModalFooter>
                 </Modal>
             </div>
-            : <div>User left no review</div>
+            : 'User left no review'
     
         const confirmElement = confirmed
             ? 'This order is confirmed'
             : <Button color="success" onClick={() => onConfirm(id)}>Confirm Order</Button>
         
+        
+        const paymentElement = paymentDate != null
+            ? <div>{paymentDate.replace('T', ' ')}</div>
+            : 'Not paid yet'
+        
         return (
             <tr>
                 <td>{username}</td>
-                <td>{date}</td>
+                <td>{date.replace('T', ' ')}</td>
                 <td>{itemListElement}</td>
-                <td>{ammount}</td>
-                <td>{paymentDate}</td>
+                <td>{cost.toFixed(2)}</td>
+                <td>{paymentElement}</td>
                 <td>{reviewElement}</td>
                 <td>{confirmElement}</td>
             </tr>

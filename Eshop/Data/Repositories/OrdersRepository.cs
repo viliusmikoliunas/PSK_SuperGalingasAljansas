@@ -25,12 +25,13 @@ namespace Eshop.Data.Repositories
                             select new OrderDto
                             {
                                 Id = o.Id,
-                                UserId = o.UserId,
+                                Username = _dbContext.Users.FirstOrDefault(user => user.Id.Equals(o.UserId)).UserName,
                                 Date = o.Date,
                                 Cost = o.Cost,
                                 Confirmed = o.Confirmed,
                                 Review = new ReviewDto { Stars = o.Review.Stars, Description = o.Review.Description },
-                                Items = (from u in o.OrderedItem select new OrderedItemDto { Title = u.Item.Title, Quantity = u.Quantity }).ToList()
+                                Items = (from u in o.OrderedItem select new OrderedItemDto { Title = u.Item.Title, Quantity = u.Quantity }).ToList(),
+                                PaymentDate = o.PaymentDate
                             };
             return ordersList;
             // return (_dbContext.Orders.Include(order => order.OrderedItem).Include("OrderedItem.Item").Include(order => order.Review).Where(i => i.Confirmed == areOrdersConfirmed)).ToList();
@@ -43,12 +44,13 @@ namespace Eshop.Data.Repositories
                             select new OrderDto
                             {
                                 Id = o.Id,
-                                UserId = o.UserId,
+                                Username = _dbContext.Users.FirstOrDefault(user => user.Id.Equals(o.UserId)).UserName,
                                 Date = o.Date,
                                 Cost = o.Cost,
                                 Confirmed = o.Confirmed,
                                 Review = new ReviewDto { Stars = o.Review.Stars, Description = o.Review.Description },
-                                Items = (from u in o.OrderedItem select new OrderedItemDto { Title = u.Item.Title, Quantity = u.Quantity }).ToList()
+                                Items = (from u in o.OrderedItem select new OrderedItemDto { Title = u.Item.Title, Quantity = u.Quantity }).ToList(),
+                                PaymentDate = o.PaymentDate
                             };
             return orderList;
            // return (_dbContext.Orders.Include(order => order.OrderedItem).Include("OrderedItem.Item").Include(order => order.Review).Where(i => i.UserId == userId)).ToList();
@@ -64,14 +66,14 @@ namespace Eshop.Data.Repositories
                             select new OrderDto
                             {
                                 Id = o.Id,
-                                UserId = o.UserId,
+                                Username = _dbContext.Users.FirstOrDefault(user => user.Id.Equals(o.UserId)).UserName,
                                 Date = o.Date,
                                 Cost = o.Cost,
                                 Confirmed = o.Confirmed,
                                 //review is optional so null check is required
                                 Review = o.Review != null ? new ReviewDto { Stars = o.Review.Stars, Description = o.Review.Description } : null, 
-                                Items = (from u in o.OrderedItem select new OrderedItemDto  { Title = u.Item.Title, Quantity = u.Quantity }).ToList()
-                                
+                                Items = (from u in o.OrderedItem select new OrderedItemDto  { Title = u.Item.Title, Quantity = u.Quantity }).ToList(),
+                                PaymentDate = o.PaymentDate
                             };
             return orderList.ToList();
         }
@@ -102,13 +104,14 @@ namespace Eshop.Data.Repositories
                             select new OrderDto
                             {
                                 Id = o.Id,
-                                UserId = o.UserId,
+                                Username = _dbContext.Users.FirstOrDefault(user => user.Id.Equals(o.UserId)).UserName,
                                 Date = o.Date,
                                 Cost = o.Cost,
                                 Confirmed = o.Confirmed,
                                 //review is optional so null check is required
                                 Review = o.Review != null ? new ReviewDto { Stars = o.Review.Stars, Description = o.Review.Description } : null,
-                                Items = (from u in o.OrderedItem select new OrderedItemDto { Title = u.Item.Title, Quantity = u.Quantity }).ToList()
+                                Items = (from u in o.OrderedItem select new OrderedItemDto { Title = u.Item.Title, Quantity = u.Quantity }).ToList(),
+                                PaymentDate = o.PaymentDate
                             };
             return orderList.ToList();
         }

@@ -11,8 +11,9 @@ namespace Eshop.DataContracts.DataTransferObjects
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public ICollection<OrderedItemDto> Items { get; set; }
-        public string UserId { get; set; }
+        public string Username { get; set; }
         public decimal Cost { get; set; }
+        public DateTime? PaymentDate { get; set; }
         public ReviewDto Review { get; set; }
         public bool Confirmed { get; set; }
     }
