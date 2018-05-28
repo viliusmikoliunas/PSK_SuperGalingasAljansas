@@ -1,6 +1,6 @@
 ﻿.mainPageSidebar {
     width: 12%;
-    min-width: 175px;
+    width: 175px;
     border-width: 1px;
     border-style: solid;
     min-height: 100%;
@@ -11,7 +11,7 @@
 .MainField {
     margin: 20px;
     min-width: 500px;
-    width: 80%;
+    width: calc(100% - 175px - 60px);
     float: right;
 }
 img {

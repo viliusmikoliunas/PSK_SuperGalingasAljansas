@@ -7,12 +7,12 @@ import login from '../../../Redux/actions/LoginActions'
 
 import validate from './validateFormFields'
 import renderTextField from '../ReduxFormFields/renderTextField'
-
+import '../ReduxFormStyles.css'
 
 let LoginForm = props => {
   const { error, handleSubmit, submitting, dispatchLogin} = props
   return (
-    <div>
+    <div className="div-loginForm">
       <form onSubmit={handleSubmit(dispatchLogin)} className="form-login">
           <Field
               name="username"
