@@ -7,8 +7,16 @@ using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
+using Eshop.DataContracts.DataTransferObjects.Responses;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Newtonsoft.Json.Linq;
 
 namespace Eshop.Controllers
 {
@@ -104,9 +112,47 @@ namespace Eshop.Controllers
             newOrder = _ordersRepository.Update(newOrder);
 
             //*****make payment*****
-            //newOrder.Confirmed = true;
-            //newOrder.PaymentId = paymentId;
-            //newOrder = _ordersRepository.Update(newOrder);
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://mock-payment-processor.appspot.com/v1/payment");
+            httpWebRequest.Credentials = new System.Net.NetworkCredential("technologines", "platformos");
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                //harcodinta. greiciausiai reiketu pakeisti
+                string json = "{" +
+                              "\"amount\": 999," +
+                              "\"number\": \"4111111111111111\"," +
+                              "\"holder\": \"Vardenis Pavardenis\", " +
+                              "\"exp_year\": 2018," +
+                              "\"exp_month\": 9, " +
+                              "\"cvv\": \"123\" " +
+                              "}";
+
+                streamWriter.Write(json);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            PaymentResponse paymentResponseInfo = new PaymentResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                var paymentResponseJson = JObject.Parse(result);
+                paymentResponseInfo.Amount = (int)paymentResponseJson["amount"];
+                paymentResponseInfo.Created_At = (DateTime)paymentResponseJson["created_at"];
+                paymentResponseInfo.Id = (string)paymentResponseJson["id"];
+                paymentResponseInfo.Holder = (string)paymentResponseJson["holder"];
+                paymentResponseInfo.Exp_Year = (int)paymentResponseJson["exp_year"];
+                paymentResponseInfo.Exp_Month = (int)paymentResponseJson["exp_month"];
+                paymentResponseInfo.Cvv = (string)paymentResponseJson["cvv"];
+            }
+            //*****payment made******
+            
+            newOrder.Confirmed = true; //nezinau ar ji tiesiog padaryt conformed ar kokia cia logika turetu buti
+            newOrder.PaymentId = paymentResponseInfo.Id;
+            newOrder = _ordersRepository.Update(newOrder);
 
             if (newOrder.Confirmed)
             {
