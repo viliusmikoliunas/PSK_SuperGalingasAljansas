@@ -70,7 +70,8 @@ namespace Eshop.Data.Repositories
                                 Confirmed = o.Confirmed,
                                 //review is optional so null check is required
                                 Review = o.Review != null ? new ReviewDto { Stars = o.Review.Stars, Description = o.Review.Description } : null, 
-                                Items = (from u in o.OrderedItem select new OrderedItemDto  { Title = u.Item.Title, Quantity = u.Quantity }).ToList()              
+                                Items = (from u in o.OrderedItem select new OrderedItemDto  { Title = u.Item.Title, Quantity = u.Quantity }).ToList()
+                                
                             };
             return orderList.ToList();
         }

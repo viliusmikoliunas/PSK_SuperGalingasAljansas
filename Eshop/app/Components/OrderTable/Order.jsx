@@ -33,6 +33,8 @@ class Order extends React.Component {
         </div>
     
         const reviewElement = 
+            review != null 
+            ?
             <div>
                 <Button color="info" onClick={this.toggle}>Check Review</Button>
 
@@ -53,6 +55,7 @@ class Order extends React.Component {
                     </ModalFooter>
                 </Modal>
             </div>
+            : <div>User left no review</div>
     
         const confirmElement = confirmed
             ? 'This order is confirmed'

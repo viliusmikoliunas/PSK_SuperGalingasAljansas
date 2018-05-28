@@ -21,15 +21,15 @@ class OrderTable extends React.Component {
         const orderList = orders.map(order => {
             return (
                 <Order
-                    key={order.Id}
-                    id={order.Id}
-                    username={order.Username}
-                    date={order.Date}
-                    items={order.Items}
-                    ammount={order.Ammount}
-                    paymentDate={order.PaymentDate}
-                    review={order.Review}
-                    confirmed={order.Confirmed}
+                    key={order.id}
+                    id={order.id}
+                    username={order.username}
+                    date={order.date}
+                    items={order.items}
+                    ammount={order.cost}
+                    paymentDate={null}
+                    review={order.review}
+                    confirmed={order.confirmed}
                     onConfirm={this.handleOrderConfirmation.bind(this)}
                 />
             )
