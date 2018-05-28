@@ -30,12 +30,17 @@ export const confirmOrder = (orderId) => (dispatch) => {
         id: orderId,
         confirmed: true
     }
-
     const request = generateRequestWithAuth('PUT', reqBody)
 
-    //finish after api is made
-    dispatch({
-        type: OrderListActionTypes.CONFIRM_ORDER,
-        orderId: orderId
-    })
+    fetch(address, request)
+        .then(response => {
+            if (response.ok){
+                alert('Order confirmed successfully')
+                dispatch({
+                    type: OrderListActionTypes.CONFIRM_ORDER,
+                    orderId: orderId
+                })
+            }
+            else response.text().then(respText => alert(respText))
+        })
 }
