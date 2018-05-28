@@ -13,7 +13,7 @@ let LoginForm = props => {
   const { error, handleSubmit, submitting, dispatchLogin} = props
   return (
     <div className="div-loginForm">
-      <form onSubmit={handleSubmit(dispatchLogin)} className="form-login">
+      <form onSubmit={handleSubmit(dispatchLogin)} className="form-redux">
           <Field
               name="username"
               type="string"

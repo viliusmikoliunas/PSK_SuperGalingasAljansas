@@ -6,12 +6,12 @@ import register from '../../../Redux/actions/RegisterActions'
 
 import validate from './validateFormFields'
 import renderTextField from '../ReduxFormFields/renderTextField'
-
+import '../ReduxFormStyles.css'
 
 let RegisterForm = props => {
   const { error, handleSubmit, submitting, dispatchRegister} = props
   return (
-    <form onSubmit={handleSubmit(dispatchRegister)} className="form-registerUser">
+    <form onSubmit={handleSubmit(dispatchRegister)} className="form-redux">
         <Field
             name="username"
             type="string"

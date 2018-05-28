@@ -1,4 +1,4 @@
-.form-login{
+.form-redux{
     font: 95% Arial, Helvetica, sans-serif;
     max-width: 400px;
     margin: 10px auto;
@@ -7,14 +7,16 @@
     text-align: center;
 }
 
-.form-login > strong{
+.form-redux > strong{
     color: red;
 }
 
-.form-login input[name="username"],
-.form-login input[name="password"],
-.form-login textarea,
-.form-login select
+.form-redux input[type="string"],
+.form-redux input[type="password"],
+.form-redux input[type="tel"],
+.form-redux input[type="email"],
+.form-redux textarea,
+.form-redux select
 {
     transition: all 0.30s ease;
     outline: none;
@@ -29,17 +31,19 @@
     color: #555;
     font: 95% Arial, Helvetica, sans-serif;
 }
-.form-login input[name="username"]:focus,
-.form-login input[name="password"]:focus,
-.form-login textarea:focus,
-.form-login select:focus
+.form-redux input[type="string"]:focus,
+.form-redux input[type="password"]:focus,
+.form-redux input[type="tel"]:focus,
+.form-redux input[type="email"]:focus,
+.form-redux textarea:focus,
+.form-redux select:focus
 {
     box-shadow: 0 0 5px #43D1AF;
     padding: 3%;
     border: 1px solid #43D1AF;
 }
 
-.form-login button[type="submit"]{
+.form-redux button[type="submit"]{
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -53,19 +57,19 @@
     color: #fff;
     margin-top: 10px;
 }
-.form-login button[type="submit"]:hover{
+.form-redux button[type="submit"]:hover{
     background: #2EBC99;
 }
 
-.form-login > div{
+.form-redux > div{
     text-align: left;
 }
 
-.form-login > div > div{
+.form-redux > div > div{
     text-align: center;
 }
 
-.form-login > div > div > span{
+.form-redux > div > div > span{
     color: red;
     margin: auto;
     padding: 5px;
