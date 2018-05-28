@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 
 namespace Eshop.Controllers
 {
-    [Route("/api/orders")]
+    [Route("api/orders")]
     [Produces("application/json")]
     public class OrdersController : Controller
     {
