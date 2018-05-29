@@ -32,7 +32,11 @@ class Order extends React.Component {
                 )
             })}
         </div>
-    
+        const formattedDate = 
+            date
+                .replace('T', ' ')
+                .substring(0, date.indexOf('.'))
+
         const reviewElement = 
             review != null 
             ?
@@ -64,13 +68,15 @@ class Order extends React.Component {
         
         
         const paymentElement = paymentDate != null
-            ? <div>{paymentDate.replace('T', ' ')}</div>
+            ? <div>{paymentDate
+                .replace('T', ' ')
+                .substring(0, paymentDate.indexOf('.'))}</div>
             : 'Not paid yet'
         
         return (
             <tr>
                 <td>{username}</td>
-                <td>{date.replace('T', ' ')}</td>
+                <td>{formattedDate}</td>
                 <td>{itemListElement}</td>
                 <td>{cost.toFixed(2)}</td>
                 <td>{paymentElement}</td>
