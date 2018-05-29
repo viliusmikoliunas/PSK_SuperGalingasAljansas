@@ -15,9 +15,12 @@ const checkout = (checkoutData) => (dispatch) => {
                 dispatch({
                     type: ShoppingCartActionTypes.CLEAR_ALL_ITEMS
                 })
+                dispatch({
+                    type: 'PAYMENT_SUCCESSFUL'
+                })
                 //temp
                 localStorage.removeItem('shoppingCart')
-                history.push('/')
+                
             }
             else response.text().then(
                 (responseText) => alert(responseText)
