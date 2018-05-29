@@ -6,7 +6,7 @@ namespace Eshop.DataContracts.DataTransferObjects.Requests
     {
         //https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions/mvc-music-store/mvc-music-store-part-6
         [Range(1,999999)]
-        public int Ammount { get; set; }
+        public int Amount { get; set; }
 
         [MinLength(16)]
         [MaxLength(16)]
