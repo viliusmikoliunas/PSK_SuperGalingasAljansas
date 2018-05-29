@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Button,InputGroup,InputGroupAddon,Input} from 'reactstrap'
+import './QuantityInputStyles.css'
 
 
 class QuantityInput extends Component{
