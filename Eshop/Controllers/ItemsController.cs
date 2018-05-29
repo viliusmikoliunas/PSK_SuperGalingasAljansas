@@ -67,7 +67,7 @@ namespace Eshop.Controllers
         [HttpDelete("{id}")]
         [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult DeleteItem(int id)
-        {      
+        {                 
             if (_itemsRepository.Delete(id)) return Ok("Item has been deleted");
             return NotFound("The item does not exist in the database");
         }

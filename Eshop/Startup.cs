@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Datalust.SerilogMiddlewareExample.Diagnostics;
 using Eshop.Data;
 using Eshop.Data.Entities;
 using Eshop.Data.Repositories;
@@ -14,14 +15,24 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using Serilog.Events;
 
 namespace Eshop
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("System", LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File("C:/Eshop/Logs/Log_.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
             Configuration = configuration;
         }
 
@@ -30,6 +41,10 @@ namespace Eshop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging(loggingBuilder =>
+          loggingBuilder.AddSerilog(dispose: true));
+
+
             services.AddMvc();
 
             //Add DB context
@@ -95,10 +110,24 @@ namespace Eshop
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddSerilog();
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+
+            app.UseMiddleware<SerilogMiddleware>();          
+
             // Apply any pending migrations. Create database if it does not exist
-            
+
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();

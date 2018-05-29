@@ -59,5 +59,10 @@ namespace Eshop
         {
             return GetTokenInfo(request, "sub");
         }
+
+        public static string GetUserRoleFromToken(HttpRequest request)
+        {
+            return GetTokenInfo(request, "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+        }
     }
 }
