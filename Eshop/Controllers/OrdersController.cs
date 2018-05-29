@@ -45,40 +45,27 @@ namespace Eshop.Controllers
             if (paymentInfo.Holder.Length < 2 || paymentInfo.Holder.Length > 32)
                 return BadRequest("Card holder name is invalid");
             if (paymentInfo.Exp_Year < 1970)
-                return BadRequest("Card expiration year is not acceptable");
+                return BadRequest("Card expiration year is invalid");
             if (paymentInfo.Exp_Month < 1 || paymentInfo.Exp_Month > 12)
                 return BadRequest("Card expiration month is invalid");
             if (!ValidCvv(paymentInfo.Cvv))
                 return BadRequest("Card cvv security code is invalid");
 
-            //check if card is not expired - not our job
-            //if (!ValidExpirationDate(paymentInfo.Exp_Year, paymentInfo.Exp_Month))
-            //    return BadRequest("Credit card is expired");
 
-            //check if ammount matches shopping cart total
+            //get user for further information
             var username = JWTtoken.GetUsernameFromToken(Request);
             var user = _ordersRepository.GetOrderingUser(username);
+
+            //check if payment ammount matches shopping cart total amount
             decimal ammount = (decimal)paymentInfo.Amount / 100;
             if (!_ordersRepository.PaymentEqualsShoppingCartSum(user, ammount))
                 return BadRequest("Payment ammount does not match the shopping cart total ammount");
 
-            //save order to database 
-            Order newOrder = new Order
-            {
-                Cost = ammount,
-                Date = DateTime.Now,
-                User = user,
-                UserId = user.Id
-            };
+            //Get current user items in the shopping cart
+            var items = _ordersRepository.GetShoppingCartItems(user);
 
-            newOrder = _ordersRepository.Add(newOrder);
-            var orderedItems = _ordersRepository.GetOrderShoppingCartItems(user, newOrder.Id);
-            //should also remove said items from shopping cart items table 
-            //or don't add newOrder to db until purchase is successful
-            _ordersRepository.AddOrderedItems(orderedItems);
-            newOrder.OrderedItem = orderedItems;
-            newOrder = _ordersRepository.Update(newOrder);
 
+            //make payment
             //*****make payment*****
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://mock-payment-processor.appspot.com/v1/payment");
             httpWebRequest.Credentials = new NetworkCredential("technologines", "platformos");
@@ -87,7 +74,6 @@ namespace Eshop.Controllers
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
-                //harcodinta. greiciausiai reiketu pakeisti
                 string json = Newtonsoft.Json.JsonConvert.SerializeObject(paymentInfo);
 
                 streamWriter.Write(json);
@@ -101,23 +87,37 @@ namespace Eshop.Controllers
             {
                 var result = streamReader.ReadToEnd();
                 var paymentResponseJson = JObject.Parse(result);
-                //paymentResponseInfo.Amount = (int)paymentResponseJson["amount"];
                 paymentResponseInfo.Created_At = (DateTime)paymentResponseJson["created_at"];
                 paymentResponseInfo.Id = (string)paymentResponseJson["id"];
-                //paymentResponseInfo.Holder = (string)paymentResponseJson["holder"];
-                //paymentResponseInfo.Exp_Year = (int)paymentResponseJson["exp_year"];
-                //paymentResponseInfo.Exp_Month = (int)paymentResponseJson["exp_month"];
-                //paymentResponseInfo.Cvv = (string)paymentResponseJson["cvv"];
             }
             //*****payment made******
-            
-            //confirmed atskirai adminui skirta, o ne pirkimo metu
-            //newOrder.Confirmed = true; //nezinau ar ji tiesiog padaryt conformed ar kokia cia logika turetu buti
-            newOrder.PaymentId = paymentResponseInfo.Id;
-            newOrder.PaymentDate = paymentResponseInfo.Created_At;
-            newOrder = _ordersRepository.Update(newOrder);
 
-            if (newOrder.Confirmed)
+
+            //create new order with those items list
+            Order newOrder = new Order
+            {
+                Cost = ammount,
+                Date = DateTime.Now,
+                UserId = user.Id,
+                OrderedItem = items,
+                PaymentId = paymentResponseInfo.Id,
+                PaymentDate = DateTime.Now
+            };
+
+            //save order to the database
+            newOrder = _ordersRepository.Add(newOrder);
+
+            //add new orders id to the ordered items
+            foreach (var orderedItem in items)
+            {
+                orderedItem.OrderId = newOrder.Id;
+            }
+            
+            //clear shopping cart
+            _ordersRepository.ClearUserShoppingCart(user);
+            
+
+            if (newOrder.PaymentId != null)
             {
                 _ordersRepository.ClearUserShoppingCart(user);
                 return Ok("Purchase successful");
