@@ -12,9 +12,9 @@ import {
     Button
     } from 'reactstrap'
 import {Link} from 'react-router-dom'
-import parseJwt from '../../FunctionalComponents/jwt/parseJwt'
+import {getUsernameFromToken, getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
 import {logout} from '../../Redux/actions/LoginActions'
-import {loadShoppingCartFromLocalStorage} from '../../Redux/actions/ShoppingCartActions'
+import loadCartFromDb, {loadShoppingCartFromLocalStorage} from '../../Redux/actions/ShoppingCartActions'
 import './NavbarStyles.css'
 
 
@@ -29,7 +29,13 @@ class Navbar extends Component {
     }
 
     componentDidMount(){
-        this.props.dispatchLoadCartFromLocalStorage()
+        const {loggedIn, dispatchLoadCartFromDb, dispatchLoadCartFromLocalStorage} = this.props
+        if (loggedIn){
+            dispatchLoadCartFromDb()
+        }
+        else {
+            dispatchLoadCartFromLocalStorage()
+        }
     }
 
     toggle() {
@@ -38,28 +44,40 @@ class Navbar extends Component {
         });
     }
     render() {
-        const userElement = this.props.isLoggedIn && localStorage['jwtToken'] != null
+        const userRole = getUserRoleFromToken()
+        const userElement = this.props.loggedIn && localStorage['jwtToken'] != null
             ?   <Nav>
-                    <NavItem>Welcome {(parseJwt(localStorage['jwtToken']))['sub']}</NavItem>
-                    <NavItem><Button onClick={() => this.props.dispatchLogout()}>Logout</Button></NavItem>
+                    <NavItem>
+                        <Link to={'/' + userRole.toLowerCase()}>Welcome {getUsernameFromToken()}</Link>
+                    </NavItem>
+                    <NavItem>
+                        <Button color="warning" onClick={() => this.props.dispatchLogout()}>Logout</Button>
+                    </NavItem>
                 </Nav>
-            :   <NavItem><Button tag={Link} to='/login'>Login</Button></NavItem>
+            :   <NavItem><Button color="warning" tag={Link} to='/login'>Login</Button></NavItem>
+
 
         let itemCount = 0
         this.props.cartItemList.map(item => {
             itemCount += item.quantity
         })
-        
+        if (userRole === 'Admin')
+            localStorage.removeItem('shoppingCart')
+
+        const shoppingCartElement = userRole !== 'Admin' 
+        ?   <NavItem>
+                <Link to={'/user/shopping-cart'}>Shopping cart({itemCount})</Link>
+            </NavItem> 
+        : null
+
         return (
             <div>
-                <ReactstrapNavBar color="primary" light expand="md" className="navigationBar">
+                <ReactstrapNavBar color="primary" light expand="md" className="navigationBar header">
                     <NavbarBrand tag={Link} to='/'>Super Galingas Shop'as</NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
-                            <NavItem>
-                                <Link to={'/user/shopping-cart'}>Shopping cart({itemCount})</Link>
-                            </NavItem>
+                            {shoppingCartElement}
                             {userElement}
                         </Nav>
                     </Collapse>
@@ -71,11 +89,11 @@ class Navbar extends Component {
 
 export default connect(
     (state) => ({
-        isLoggedIn: state.LoginReducer.loggedIn,
+        loggedIn: state.LoginReducer.loggedIn,
         cartItemList: state.ShoppingCartReducer.shoppingCart
     }),
     (dispatch) => bindActionCreators({
-        //dispatchLoadCartFromDb: loadCartFromDb,
+        dispatchLoadCartFromDb: loadCartFromDb,
         dispatchLoadCartFromLocalStorage: loadShoppingCartFromLocalStorage,
         dispatchLogout: logout
     }

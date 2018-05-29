@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux'
 import {Table, Button} from 'reactstrap'
 import ShoppingCartItem from './ShoppingCartItem'
 import toFixed from '../../FunctionalComponents/formatting/toFixed'
-import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart} from '../../Redux/actions/ShoppingCartActions'
+import loadCartFromDb, {loadShoppingCartFromLocalStorage, clearCart, saveCartToDb} from '../../Redux/actions/ShoppingCartActions'
 
 
 class ShoppingCartTable extends React.Component {
@@ -15,24 +15,24 @@ class ShoppingCartTable extends React.Component {
     }
 
     onLeave(){
-        const {loggedIn} = this.props
-        //if (loggedIn){
-            //send cart to DB
-        //}
-        //else {
-            localStorage.setItem('shoppingCart', JSON.stringify(this.props.cartItemList))
-        //}
+        const {loggedIn, dispatchSaveCartToDb, cartItemList} = this.props
+        if (loggedIn){
+            dispatchSaveCartToDb(cartItemList)
+        }
+        else {
+            localStorage.setItem('shoppingCart', JSON.stringify(cartItemList))
+        }
     }
 
     componentDidMount(){
         window.addEventListener('beforeunload', this.onLeave)
         const {loggedIn, dispatchLoadCartFromDb, dispatchLoadCartFromLocalStorage} = this.props
-        //if (loggedIn){
-        //    dispatchLoadCartFromDb()
-        //}
-        //else {
+        if (loggedIn){
+            dispatchLoadCartFromDb()
+        }
+        else {
             dispatchLoadCartFromLocalStorage()
-        //}
+        }
     }
 
     componentWillUnmount(){
@@ -58,9 +58,16 @@ class ShoppingCartTable extends React.Component {
             )
         })
 
-        const linkToCheckout = this.props.cartItemList.length > 0
-            ? <Link to={'/checkout'}>Proceed to checkout</Link>
-            : <div>Proceed to checkout</div>
+        const linkToCheckout = this.props.cartItemList.length > 0 && total < 10000
+            ? <Button color='info' tag={Link} to='/user/checkout'>Proceed to checkout</Button>
+            : <Button disabled color='info' tag={Link} to='/user/checkout'>Proceed to checkout</Button>
+        
+        const errorMsg = total >= 10000
+            ? <div className="ammountErrorMessage">
+                Price exceeds the limit of 9999.99 €<br/>
+                Please remove some items from the cart
+            </div>
+            : null
 
         return (
             <Table responsive>
@@ -80,9 +87,9 @@ class ShoppingCartTable extends React.Component {
                     <tr>
                         <td/>
                         <td>Total Price</td>
-                        <td>{toFixed(total,2)}</td>
+                        <td>{toFixed(total,2)} {errorMsg}</td>
                         <td/>
-                        <td><Button onClick={() => dispatchClearCart()}>Clear Cart</Button></td>
+                        <td><Button outline color="danger" onClick={() => dispatchClearCart()}>Clear Cart</Button></td>
                     </tr>
                     <tr>
                         <td colSpan="5">
@@ -103,7 +110,8 @@ export default connect(
     (dispatch) => bindActionCreators({
         dispatchLoadCartFromDb: loadCartFromDb,
         dispatchLoadCartFromLocalStorage: loadShoppingCartFromLocalStorage,
-        dispatchClearCart: clearCart
+        dispatchClearCart: clearCart,
+        dispatchSaveCartToDb: saveCartToDb
     },
     dispatch)
 )(ShoppingCartTable)
