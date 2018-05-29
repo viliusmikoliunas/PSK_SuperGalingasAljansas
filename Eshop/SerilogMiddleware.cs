@@ -1,14 +1,12 @@
-﻿using Eshop;
-using Microsoft.AspNetCore.Http;
-using Serilog;
-using Serilog.Events;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Serilog;
+using Serilog.Events;
 
-namespace Datalust.SerilogMiddlewareExample.Diagnostics
+namespace Eshop
 {
     class SerilogMiddleware
     {
@@ -21,8 +19,7 @@ namespace Datalust.SerilogMiddlewareExample.Diagnostics
 
         public SerilogMiddleware(RequestDelegate next)
         {
-            if (next == null) throw new ArgumentNullException(nameof(next));
-            _next = next;
+            _next = next ?? throw new ArgumentNullException(nameof(next));
         }
 
         public async Task Invoke(HttpContext httpContext)

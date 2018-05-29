@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Datalust.SerilogMiddlewareExample.Diagnostics;
 using Eshop.Data;
 using Eshop.Data.Entities;
 using Eshop.Data.Repositories;
@@ -112,18 +111,6 @@ namespace Eshop
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddSerilog();
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-
             app.UseMiddleware<SerilogMiddleware>();          
 
             // Apply any pending migrations. Create database if it does not exist
@@ -133,7 +120,9 @@ namespace Eshop
                 var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
                 context.Database.Migrate();
             }
-            
+
+            loggerFactory.AddSerilog();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -143,7 +132,15 @@ namespace Eshop
                         HotModuleReplacement = true,
                         ReactHotModuleReplacement = true
                     });
+
+                app.UseBrowserLink();
             }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            //new stuff
+            app.UseStatusCodePages();
 
             app.UseStaticFiles();
 
