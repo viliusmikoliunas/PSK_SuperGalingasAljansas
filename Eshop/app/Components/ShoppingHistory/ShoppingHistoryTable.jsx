@@ -3,11 +3,13 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {Table, Modal} from 'reactstrap'
 import ShoppingHistoryCard from './ShoppingHistoryCard'
+import loadShoppingHistory from '../../Redux/actions/ShoppingHistoryActions'
+
 
 class ShoppingHistoryTable extends React.Component {
 
     componentDidMount() {
-        //this.props.dispatchLoadOrders()
+        this.props.dispatchLoadHistory()
     }
 
     handleOrderConfirmation(orderId){
@@ -15,6 +17,21 @@ class ShoppingHistoryTable extends React.Component {
     }
 
     render() {
+        const {historyList} = this.props
+        const historyElements = historyList.map(element => {
+            return (
+                <ShoppingHistoryCard
+                    cost = {element.cost}
+                    date = {element.date}
+                    key = {element.date}
+                    items = {element.items}
+                />
+            )
+        })
+
+
+
+        console.log(historyList)
         return (
             <Table responsive>
                 <thead>
@@ -25,9 +42,7 @@ class ShoppingHistoryTable extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    <ShoppingHistoryCard/>
-                    <ShoppingHistoryCard/>
-                    <ShoppingHistoryCard/>
+                    {historyElements}
                 </tbody>
             </Table>
         )
@@ -36,10 +51,10 @@ class ShoppingHistoryTable extends React.Component {
 
 export default connect(
     (state) => ({
-        //orders: state.OrderListReducer.orders
+        historyList: state.ShoppingHistoryReducer.historyList
     }),
     (dispatch) => bindActionCreators({
-        //dispatchLoadOrders: loadOrders,
+        dispatchLoadHistory: loadShoppingHistory
         //dispatchConfirmOrder: confirmOrder
     }
     ,dispatch)

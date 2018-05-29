@@ -8,21 +8,27 @@ import toFixed from '../../FunctionalComponents/formatting/toFixed'
 class ShoppingHistoryCard extends React.Component {
 
     render(){
-        /*
+        const {cost, date, items} = this.props
+
+        const formattedDate = 
+            date
+                .replace('T', ' ')
+                .substring(0, date.indexOf('.'))
+
         const itemListElement = 
         <div>
             {items.map(item => {
                 return (
-                    <p key={key++}>{item.title + ' (' + item.quantity + ')'}</p>
+                    <p key={item.title}>{item.title + ' (' + item.quantity + ')'}</p>
                 )
             })}
-        </div>*/
+        </div>
 
         return (
             <tr>
-                <td>Data</td>
-                <td>Prekes</td>
-                <td>Kaina</td>
+                <td>{formattedDate}</td>
+                <td>{itemListElement}</td>
+                <td>{cost.toFixed(2)}</td>
             </tr>
         )
     }
