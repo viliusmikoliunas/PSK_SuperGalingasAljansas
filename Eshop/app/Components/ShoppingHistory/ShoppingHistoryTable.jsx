@@ -12,10 +12,6 @@ class ShoppingHistoryTable extends React.Component {
         this.props.dispatchLoadHistory()
     }
 
-    handleOrderConfirmation(orderId){
-        //this.props.dispatchConfirmOrder(orderId)
-    }
-
     render() {
         const {historyList} = this.props
         const historyElements = historyList.map(element => {
@@ -55,7 +51,6 @@ export default connect(
     }),
     (dispatch) => bindActionCreators({
         dispatchLoadHistory: loadShoppingHistory
-        //dispatchConfirmOrder: confirmOrder
     }
     ,dispatch)
 )(ShoppingHistoryTable)
