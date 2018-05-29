@@ -13,7 +13,7 @@ namespace Datalust.SerilogMiddlewareExample.Diagnostics
     class SerilogMiddleware
     {
         const string MessageTemplate =
-            "{UserName} {UserRole} HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
+            "{UserName} {UserRole} {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
 
         static readonly ILogger Log = Serilog.Log.ForContext<SerilogMiddleware>();
 
