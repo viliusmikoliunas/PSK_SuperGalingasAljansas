@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 namespace Eshop.Data.Repositories
 {
@@ -114,6 +115,123 @@ namespace Eshop.Data.Repositories
                                 PaymentDate = o.PaymentDate
                             };
             return orderList.ToList();
+        }
+
+        public bool PaymentEqualsShoppingCartSum(UserAccount user, decimal ammount)
+        {
+            int centsAmount = (int)(ammount * 100);
+            var userId = user.Id;
+            
+            var shoppingCart = _dbContext.ShoppingCarts.First(s => s.User.Id.Equals(userId));
+            var shoppingCartId = shoppingCart.Id;
+
+            var shoppingCartItems = _dbContext.ShoppingCartItems.Where(i => i.ShoppingCartId.Equals(shoppingCartId));
+            int itemId;
+            int sum = 0;
+            foreach (var shoppingCartItem in shoppingCartItems)
+            {
+                itemId = shoppingCartItem.ItemId;
+                var quantity = shoppingCartItem.Quantity;
+
+                var item = _dbContext.Items.First(i => i.Id == itemId);
+                var cost = item.Cost;
+                int centsCost = (int) (cost * 100);
+
+                sum += (quantity * centsCost);
+            }
+
+            if (sum == centsAmount)
+                return true;
+            return false;
+        }
+
+        public Order Add(Order order)
+        {
+            _dbContext.Orders.Add(order);
+            _dbContext.SaveChanges();
+            return order;
+        }
+
+       /* public ICollection<OrderedItem> GetOrderShoppingCartItems(UserAccount user, int orderId)
+        {
+            // is shoppimng crt'o gaunam item id ir quantity
+            var order = GetOrder(orderId);
+            var shoppingCart = _dbContext.ShoppingCarts.First(s => s.User.Id == user.Id);
+            var shoppingCartItems = _dbContext.ShoppingCartItems.Where(i => i.ShoppingCartId == shoppingCart.Id);
+            ICollection<OrderedItem> orderedItems = new List<OrderedItem>();
+            foreach (var shoppingCartItem in shoppingCartItems)
+            {
+                var item = _dbContext.Items.First(i => i.Id == shoppingCartItem.ItemId);
+                OrderedItem orderedItem = new OrderedItem
+                {
+                    Item = item,
+                    ItemId = item.Id,
+                    Order = order,
+                    OrderId = orderId,
+                    Quantity = shoppingCartItem.Quantity
+                };
+                orderedItems.Append(orderedItem);
+            }
+            return orderedItems;
+        }*/
+
+        public UserAccount GetOrderingUser(string username)
+        {
+            var user = _dbContext.Users.First(u => u.UserName == username);
+            return user;
+        }
+
+        public ShoppingCart ClearUserShoppingCart(UserAccount user)
+        {
+            //gauti shopping cart pagal user id
+            var shoppingCart = _dbContext.ShoppingCarts.First(s => s.User.Id == user.Id);
+            
+            //is lenteles shopping cart items istrinti visus yrasus kur yra shopping cart id
+            //gauti shopping cart items lista
+            var shoppingCartItems = _dbContext.ShoppingCartItems.Where(s => s.ShoppingCartId == shoppingCart.Id);
+           
+            //reikia tiesiog istrinti atfiltruota lista is bendro listo
+            foreach (var shoppingCartItem in shoppingCartItems)
+            {
+                _dbContext.ShoppingCartItems.Remove(shoppingCartItem);
+            }
+            _dbContext.SaveChanges();
+
+            return shoppingCart;
+        }
+
+        public ICollection<OrderedItem> AddOrderedItems(ICollection<OrderedItem> orderedItems)
+        {
+            foreach (var orderedItem in orderedItems)
+            {
+                _dbContext.OrderedItems.Add(orderedItem);
+            }
+            _dbContext.SaveChanges();
+            return orderedItems;
+        }
+
+        public ICollection<OrderedItem> GetShoppingCartItems(UserAccount user)
+        {
+            
+            //user has only one shopping cart 
+            //get user shopping cart
+            var shoppingCart = _dbContext.ShoppingCarts.First(s => s.User.Id == user.Id);
+
+            //get items with that shoopping cart id
+            var shoppingCartItems = _dbContext.ShoppingCartItems.Where(s => s.ShoppingCartId == shoppingCart.Id);
+
+            //itterathe through items in the shopping cart and add them to the collection of ordered items
+            ICollection<OrderedItem> orderedItems = new List<OrderedItem>();
+            foreach (var shoppingCartItem in shoppingCartItems)
+            {
+                OrderedItem newOrderedItem = new OrderedItem
+                {
+                    ItemId = shoppingCartItem.ItemId,
+                    Quantity = shoppingCartItem.Quantity
+                };
+                orderedItems.Add(newOrderedItem);
+            }
+             return orderedItems;
         }
     }
 }
