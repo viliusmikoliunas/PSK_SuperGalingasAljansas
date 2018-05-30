@@ -12,7 +12,7 @@ import '../ReduxFormStyles.css'
 let EditUserInfoForm = (props) => {
 	const { error, handleSubmit, submitting, pristine, dispatchUpdateUserInfo} = props
       return (
-        <form onSubmit={handleSubmit(dispatchUpdateUserInfo)} className="form-editUser">
+        <form onSubmit={handleSubmit(dispatchUpdateUserInfo)} className="form-redux">
             <Field
                 name="email"
                 type="email"

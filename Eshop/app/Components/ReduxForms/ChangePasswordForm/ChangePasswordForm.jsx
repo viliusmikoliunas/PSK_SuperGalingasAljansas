@@ -12,7 +12,7 @@ import '../ReduxFormStyles.css'
 let ChangePasswordForm = props => {
   const { error, handleSubmit, submitting, dispatchChangePassword} = props
   return (
-    <form onSubmit={handleSubmit(dispatchChangePassword)} className="form-changePassword">
+    <form onSubmit={handleSubmit(dispatchChangePassword)} className="form-redux">
         <Field
             name="currentPassword"
             type="password"

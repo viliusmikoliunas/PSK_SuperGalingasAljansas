@@ -13,7 +13,7 @@ import '../ReduxFormStyles.css'
 let CreateItemForm = props => {
   const { error, handleSubmit, submitting} = props
   return (
-    <form onSubmit={handleSubmit((data) => createNewItem(data))} className="form-registerUser">
+    <form onSubmit={handleSubmit((data) => createNewItem(data))} className="form-redux">
         <Field
             name="title"
             type="string"
