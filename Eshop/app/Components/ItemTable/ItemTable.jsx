@@ -24,7 +24,7 @@ class ItemTable extends React.Component {
     const htmlItems = [];
     const {items, allItemCount} = this.props
     for (const rowNumber in items ){
-      htmlItems.push(<ItemRow key={items[rowNumber].id} {...items[rowNumber]}/>);
+      htmlItems.push(<ItemRow key={items[rowNumber].id} item={items[rowNumber]}/>);
     }
 
     return (
@@ -35,8 +35,8 @@ class ItemTable extends React.Component {
               <th></th>
               <th>Title</th>
               <th>Cost</th>
-              <th>Category</th>
-              <th>Properties</th>
+              <th>Quantity</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
