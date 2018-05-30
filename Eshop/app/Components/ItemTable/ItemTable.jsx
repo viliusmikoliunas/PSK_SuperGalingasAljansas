@@ -7,6 +7,8 @@ import { Table } from 'reactstrap'
 import ItemRow from './ItemRow/ItemRow'
 import Pagination from '../Pagination/Pagination'
 
+import {getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
+import QuantityInput from '../QuantityInput/QuantityInput';
 
 class ItemTable extends React.Component {
   constructor(){
@@ -27,6 +29,12 @@ class ItemTable extends React.Component {
       htmlItems.push(<ItemRow key={items[rowNumber].id} item={items[rowNumber]}/>);
     }
 
+    const isAdmin = getUserRoleFromToken() === 'Admin'
+
+    const quantityHeader = isAdmin ? null : <th>Quantity</th>
+    const buttonHeader = isAdmin ? null : <th></th>
+
+
     return (
       <div className="itemTable">
         <Table responsive>
@@ -35,8 +43,8 @@ class ItemTable extends React.Component {
               <th></th>
               <th>Title</th>
               <th>Cost</th>
-              <th>Quantity</th>
-              <th></th>
+              {quantityHeader}
+              {buttonHeader}
             </tr>
           </thead>
           <tbody>

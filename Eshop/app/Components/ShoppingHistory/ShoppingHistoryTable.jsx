@@ -27,7 +27,6 @@ class ShoppingHistoryTable extends React.Component {
 
 
 
-        console.log(historyList)
         return (
             <Table responsive>
                 <thead>

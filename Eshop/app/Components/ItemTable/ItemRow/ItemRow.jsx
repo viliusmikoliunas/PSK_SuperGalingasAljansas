@@ -10,6 +10,8 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
 
+import {getUserRoleFromToken} from '../../../FunctionalComponents/jwt/parseJwt'
+
 
 class ItemRow extends React.Component {
     constructor(){
@@ -63,6 +65,22 @@ class ItemRow extends React.Component {
             })
             : "<No properties>"
 
+        const isAdmin = getUserRoleFromToken() === 'Admin'
+
+        const quantityElement = isAdmin
+        ? null
+        : <td><QuantityInput 
+            onChange={(value) => {
+                this.setState({
+                    currentQuantity: value
+                })
+            }}
+        /></td>
+        
+        const addToCartButton = isAdmin
+            ? null
+            : <td><Button color='info' onClick={() => this.handleAddToCart()}>Add to cart</Button></td>
+
         return(
             <tr className="itemRow">
                 <td scope="row">
@@ -73,15 +91,8 @@ class ItemRow extends React.Component {
                 </td>
                 <td><Link to={/item/ + id }>{title}</Link></td>
                 <td>{cost.toFixed(2)}</td>
-                <td><QuantityInput 
-                        onChange={(value) => {
-                            this.setState({
-                                currentQuantity: value
-                            })
-                        }}
-                    />
-                </td>
-                <td><Button color='info' onClick={() => this.handleAddToCart()}>Add to cart</Button></td>
+                {quantityElement}
+                {addToCartButton}
             </tr>
         )
     }
