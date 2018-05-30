@@ -26,7 +26,6 @@ class ItemRow extends React.Component {
             alert('item added to cart')
         }
         else {
-            //console.log(item)
             dispatchAddToCart(item, this.state.currentQuantity)
         }
     }
