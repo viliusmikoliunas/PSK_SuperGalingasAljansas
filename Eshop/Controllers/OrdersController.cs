@@ -81,49 +81,56 @@ namespace Eshop.Controllers
                 streamWriter.Close();
             }
 
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            PaymentResponse paymentResponseInfo = new PaymentResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            try
             {
-                var result = streamReader.ReadToEnd();
-                var paymentResponseJson = JObject.Parse(result);
-                paymentResponseInfo.Created_At = (DateTime)paymentResponseJson["created_at"];
-                paymentResponseInfo.Id = (string)paymentResponseJson["id"];
-            }
-            //*****payment made******
+                var httpResponse = (HttpWebResponse) httpWebRequest.GetResponse();
+                PaymentResponse paymentResponseInfo = new PaymentResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    var paymentResponseJson = JObject.Parse(result);
+                    paymentResponseInfo.Created_At = (DateTime) paymentResponseJson["created_at"];
+                    paymentResponseInfo.Id = (string) paymentResponseJson["id"];
+                }
+                //*****payment made******
 
 
-            //create new order with those items list
-            Order newOrder = new Order
-            {
-                Cost = ammount,
-                Date = DateTime.Now,
-                UserId = user.Id,
-                OrderedItem = items,
-                PaymentId = paymentResponseInfo.Id,
-                PaymentDate = DateTime.Now
-            };
+                //create new order with those items list
+                Order newOrder = new Order
+                {
+                    Cost = ammount,
+                    Date = DateTime.Now,
+                    UserId = user.Id,
+                    OrderedItem = items,
+                    PaymentId = paymentResponseInfo.Id,
+                    PaymentDate = DateTime.Now
+                };
 
-            //save order to the database
-            newOrder = _ordersRepository.Add(newOrder);
+                //save order to the database
+                newOrder = _ordersRepository.Add(newOrder);
 
-            //add new orders id to the ordered items
-            foreach (var orderedItem in items)
-            {
-                orderedItem.OrderId = newOrder.Id;
-            }
-            
-            //clear shopping cart
-            _ordersRepository.ClearUserShoppingCart(user);
-            
+                //add new orders id to the ordered items
+                foreach (var orderedItem in items)
+                {
+                    orderedItem.OrderId = newOrder.Id;
+                }
 
-            if (newOrder.PaymentId != null)
-            {
+                //clear shopping cart
                 _ordersRepository.ClearUserShoppingCart(user);
-                return Ok("Purchase successful");
+
+
+                if (newOrder.PaymentId != null)
+                {
+                    _ordersRepository.ClearUserShoppingCart(user);
+                    return Ok("Purchase successful");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Payment went wrong");
             }
 
-            return BadRequest("Something went wrong");
+            return BadRequest("Payment went wrong");
         }
 
 
