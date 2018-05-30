@@ -27,6 +27,24 @@ class ItemRow extends React.Component {
         }
         else {
             dispatchAddToCart(item, this.state.currentQuantity)
+            const shoppingc = JSON.parse(localStorage.getItem('shoppingCart'))
+            if (shoppingc == null || shoppingc.length == 0){
+                localStorage.setItem('shoppingCart', JSON.stringify([{
+                    ...item,
+                    quantity: this.state.currentQuantity
+                }]))
+            }
+            else {
+                const newList = shoppingc.map(i => {
+                    if (i.id === item.id){
+                        i.quantity += this.state.currentQuantity
+                        return i
+                    }
+                    else return item
+                })
+                localStorage.setItem('shoppingCart', JSON.stringify(newList))
+            }
+
         }
     }
 
@@ -70,7 +88,8 @@ class ItemRow extends React.Component {
 }
 export default connect(
     (state) => ({
-        loggedIn: state.LoginReducer.loggedIn
+        loggedIn: state.LoginReducer.loggedIn,
+        shoppingCart: state.ShoppingCartReducer.shoppingCart
     }),
     (dispatch) => bindActionCreators({
         dispatchAddToCart: addNewItem,
