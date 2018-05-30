@@ -11,6 +11,12 @@ export default (state = initialState, action) => {
                 paymentSuccessful: true
             }        
 
+        case 'REVIEW_DONE':
+            return{
+                ... state,
+                paymentSuccessful: false
+            }
+
         default:
             return state
     }

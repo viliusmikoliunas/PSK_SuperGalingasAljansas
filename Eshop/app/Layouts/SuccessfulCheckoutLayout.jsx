@@ -31,6 +31,7 @@ class CheckoutLayout extends Component {
     handleReviewSubmit() {
         console.log(this.state.rating)
         console.log(this.state.description)
+        //dispatch send to db
     }
 
     handleRatingChange(new_rating){
