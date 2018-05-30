@@ -8,7 +8,6 @@ import ReactStars from 'react-stars'
 import CheckoutForm from '../Components/ReduxForms/CheckoutForm/CheckoutForm'
 import loadCartFromDb from '../Redux/actions/ShoppingCartActions'
 
-
 class CheckoutLayout extends Component {
     constructor(props) {
         super(props);
@@ -28,9 +27,6 @@ class CheckoutLayout extends Component {
 
     render() {
         const {paymentSuccessful} = this.props
-
-        console.log(paymentSuccessful)
-
         const modalElement = 
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>Your review</ModalHeader>
@@ -42,7 +38,6 @@ class CheckoutLayout extends Component {
                         size={24}
                         color2={'#ffd700'} 
                     /><br/>
-                    Aprasas
                 </ModalBody>
                 <ModalFooter>
                     <Button color="secondary" onClick={this.toggle}>Close</Button>
@@ -64,7 +59,7 @@ export default connect(
         paymentSuccessful: state.CheckOutReducer.paymentSuccessful
     }),
     (dispatch) => bindActionCreators({
-        //dispatchLoadCart: loadCartFromDb
+       
     }
     ,dispatch)
 )(CheckoutLayout)

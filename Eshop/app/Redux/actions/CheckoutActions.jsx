@@ -29,3 +29,22 @@ const checkout = (checkoutData) => (dispatch) => {
 }
 
 export default checkout
+
+export const sendReview = (rating, description) => (dispatch) => {
+    const reviewServerAddress = '/api/reviews'
+    const reviewBody = generateRequestWithAuth('POST', {
+        'stars': rating,
+        'description': description
+    })
+    fetch(reviewServerAddress, reviewBody)
+        .then(response => {
+            if (response.ok){
+                alert('Review added successfully')
+                dispatch({
+                    type: 'REVIEW_DONE'
+                })
+                history.push('/')
+            }
+            else response.text().then(respText => alert(respText))
+        })
+}

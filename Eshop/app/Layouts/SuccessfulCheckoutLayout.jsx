@@ -10,6 +10,7 @@ import history from '../Redux/history'
 import CheckoutForm from '../Components/ReduxForms/CheckoutForm/CheckoutForm'
 import loadCartFromDb from '../Redux/actions/ShoppingCartActions'
 
+import {sendReview} from '../Redux/actions/CheckoutActions'
 
 class CheckoutLayout extends Component {
     constructor(props) {
@@ -29,9 +30,7 @@ class CheckoutLayout extends Component {
     }
 
     handleReviewSubmit() {
-        console.log(this.state.rating)
-        console.log(this.state.description)
-        //dispatch send to db
+        this.props.dispatchSendReview(this.state.rating, this.state.description)
     }
 
     handleRatingChange(new_rating){
@@ -94,7 +93,7 @@ export default connect(
         paymentSuccessful: state.CheckOutReducer.paymentSuccessful
     }),
     (dispatch) => bindActionCreators({
-        //dispatchLoadCart: loadCartFromDb
+        dispatchSendReview: sendReview
     }
     ,dispatch)
 )(CheckoutLayout)
