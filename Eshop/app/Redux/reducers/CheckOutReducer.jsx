@@ -1,5 +1,6 @@
 const initialState = {
-    paymentSuccessful: false
+    paymentSuccessful: false,
+    paymentIsProcessing: false
 }
 
 export default (state = initialState, action) => {
@@ -8,8 +9,21 @@ export default (state = initialState, action) => {
         case 'PAYMENT_SUCCESSFUL':
             return {
                 ...state,
-                paymentSuccessful: true
+                paymentSuccessful: true,
+                paymentIsProcessing: false
             }        
+
+        case 'PAYMENT_IS_BEING_SENT':
+            return{
+                ...state,
+                paymentIsProcessing: true
+            }
+
+        case 'PAYMENT_FAILED':
+            return {
+                ...state,
+                paymentIsProcessing: false
+            }
 
         case 'REVIEW_DONE':
             return{

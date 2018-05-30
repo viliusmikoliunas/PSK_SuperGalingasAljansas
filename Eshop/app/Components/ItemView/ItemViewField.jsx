@@ -10,7 +10,7 @@ class ItemViewField extends Component{
         super(props)
         this.state = {
             inEditMode: false,
-            value: ''
+            value: '' || this.props.initialValue
         }
     }
 

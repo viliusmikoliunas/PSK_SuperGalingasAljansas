@@ -167,18 +167,7 @@ class ItemView extends React.Component {
                         <tr>
                             {descriptionElement || <td>'"No description was provided for this item"'</td>}
                         </tr>
-                        <tr>
-                            <td>                        
-                                <p>Categories:</p>
-                                {collectionToString(itemCategories) || "This item doesn't belong to any category"}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>                        
-                                <p>Properties:</p>
-                                {collectionToString(itemTraits) || "This item doesn't have any properties"}
-                            </td>
-                        </tr>
+                        
                         {pictureLocationElement}
                     </tbody>
                 </Table>
@@ -187,6 +176,21 @@ class ItemView extends React.Component {
         )
     }
 }
+
+/*
+<tr>
+    <td>                        
+        <p>Categories:</p>
+        {collectionToString(itemCategories) || "This item doesn't belong to any category"}
+    </td>
+</tr>
+<tr>
+    <td>                        
+        <p>Properties:</p>
+        {collectionToString(itemTraits) || "This item doesn't have any properties"}
+    </td>
+</tr>
+*/
 
 export default connect(
     (state) => ({
