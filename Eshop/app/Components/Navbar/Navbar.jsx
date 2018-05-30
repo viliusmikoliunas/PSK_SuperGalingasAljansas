@@ -64,9 +64,9 @@ class Navbar extends Component {
         if (userRole === 'Admin')
             localStorage.removeItem('shoppingCart')
 
-        const shoppingCartElement = userRole !== 'Admin' 
+        const shoppingCartElement = userRole !== 'Admin' //({itemCount})
         ?   <NavItem>
-                <Link to={'/user/shopping-cart'}>Shopping cart({itemCount})</Link>
+                <Link to={'/user/shopping-cart'}>Shopping cart</Link>
             </NavItem> 
         : null
 

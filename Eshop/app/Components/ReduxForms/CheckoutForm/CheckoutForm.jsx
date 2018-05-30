@@ -62,13 +62,13 @@ class CheckoutForm extends React.Component{
                   />
                   <Field
                       name="exp_year"
-                      type="number"
+                      type="string"
                       component={renderTextField}
                       label="Expiry year"
                   />
                   <Field
                       name="exp_month"
-                      type="number"
+                      type="string"
                       component={renderTextField}
                       label="Expiry month"
                   />
