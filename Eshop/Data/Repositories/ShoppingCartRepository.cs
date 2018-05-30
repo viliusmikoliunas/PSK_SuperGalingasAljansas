@@ -2,6 +2,7 @@
 using Eshop.DataContracts.RepositoryInterfaces;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Eshop.Data.Repositories
 {
@@ -11,7 +12,7 @@ namespace Eshop.Data.Repositories
         private readonly AppDbContext _dbContext;
 
         public ShoppingCartRepository(AppDbContext appDbContext)
-        {
+        {            
             _dbContext = appDbContext;
         }
 
