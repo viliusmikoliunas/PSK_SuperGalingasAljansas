@@ -1,10 +1,11 @@
 import ShoppingCartActionTypes from '../actionTypes/ShoppingCartActionTypes'
 import generateRequestWithAuth from '../../FunctionalComponents/httpRequests/generateRequestWithAuth'
-
+import {getUserRoleFromToken} from '../../FunctionalComponents/jwt/parseJwt'
 
 const shoppingCardAddress = '/api/user/cart'
 
 const loadCartFromDb = () => (dispatch) => {
+    if (getUserRoleFromToken() === 'Admin') return
     const request = generateRequestWithAuth('GET', null)
     fetch(shoppingCardAddress,request)
         .then(response => {
@@ -25,7 +26,6 @@ const loadCartFromDb = () => (dispatch) => {
                     })
                 }
             }
-            else console.log(response.status + " " + response.statusText)
         })
         .catch((err) => {
             console.log("db error")
@@ -53,6 +53,8 @@ export const saveCartToDb = (cart) => (dispatch) => {
 }
 
 export const loadShoppingCartFromLocalStorage = () => (dispatch) => {
+    if (getUserRoleFromToken() === 'Admin') return
+
     const cartString = localStorage.getItem('shoppingCart')
     let cart = JSON.parse(cartString)
     if (cart == null){
@@ -65,7 +67,7 @@ export const loadShoppingCartFromLocalStorage = () => (dispatch) => {
     })
 }
 
-const formatShoppingCartItem = (item,quantity) => {
+export const formatShoppingCartItem = (item,quantity) => {
     return {
         id: item.id,
         quantity: quantity,

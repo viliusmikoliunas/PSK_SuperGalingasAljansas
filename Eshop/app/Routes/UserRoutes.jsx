@@ -5,6 +5,10 @@ import PrivateRoute from '../Components/CustomRouteComponents/PrivateRoute'
 import RouteWithLayout from '../Components/CustomRouteComponents/RouteWithLayout'
 import shoppingCartTable from '../Components/ShoppingCartTable/ShoppingCartTable'
 import CheckoutPage from '../Layouts/CheckoutLayout'
+import EditUserInfoForm from '../Layouts/EditUserInfoLayout'
+import ChangePasswordForm from '../Components/ReduxForms/ChangePasswordForm/ChangePasswordForm'
+import ShoppingHistoryTable from '../Components/ShoppingHistory/ShoppingHistoryTable'
+import poas from '../Layouts/SuccessfulCheckoutLayout'
 
 
 const UserRoleRoute = ({...rest}) => 
@@ -14,8 +18,12 @@ const userRoute = ({match}) => {
     return (
         <Switch>
             <PrivateRoute exact path ={`${match.path}/checkout`} roles={["User"]} component={CheckoutPage}/>
+            <PrivateRoute exact path ={`${match.path}/checkout-successful`} roles={["User"]} component={poas}/>
             <RouteWithLayout exact path={`${match.path}/shopping-cart`} layout={AdminLayout} component={shoppingCartTable} />
-            <Route exact path={`${match.path}/`} render={() => <Redirect to={`${match.path}/shopping-cart`}/>}/>
+            <RouteWithLayout exact path={`${match.path}/edit-info`} layout={AdminLayout} component={EditUserInfoForm} />
+            <RouteWithLayout exact path={`${match.path}/change-password`} layout={AdminLayout} component={ChangePasswordForm} />
+            <RouteWithLayout exact path={`${match.path}/shopping-history`} layout={AdminLayout} component={ShoppingHistoryTable} />
+            <Route exact path={`${match.path}/`} render={() => <Redirect to={`${match.path}/shopping-history`}/>}/>
         </Switch>
     )
 }

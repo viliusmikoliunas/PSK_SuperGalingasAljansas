@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom'
 import {Button,InputGroup,InputGroupAddon,Input} from 'reactstrap'
 import {updateQuantity, removeFromCart} from '../../Redux/actions/ShoppingCartActions'
 import QuantityInput from '../QuantityInput/QuantityInput'
+import toFixed from '../../FunctionalComponents/formatting/toFixed'
+
 
 class ShoppingCartItem extends Component{
 
@@ -19,7 +21,7 @@ class ShoppingCartItem extends Component{
             <tr>
                 <td><img src={imagePath} height="80" height="80"/></td>
                 <td><Link to={`/item/${id}`}>{title}</Link></td>
-                <td>{price}</td>
+                <td>{price != null ? price.toFixed(2) : 0}</td>
                 <td>
                     <QuantityInput 
                         onChange={this.handleQuantityFieldChange.bind(this)}

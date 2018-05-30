@@ -26,12 +26,12 @@ namespace Eshop.Controllers
         public IActionResult GetAll([FromQuery] PaginationRequest paginationRequest)
         {
             //temporary lame implementation - need to make repository/DB do this skip take stuff
-            var allItems = _itemsRepository.GetAll().ToList();
+            var allItems = _itemsRepository.GetAllDto().ToList();
             var items = allItems
                 .Skip((paginationRequest.Page - 1) * paginationRequest.Limit)
                 .Take(paginationRequest.Limit);
 
-            var response = new PaginationResponse<Item>
+            var response = new PaginationResponse<GetItemDto>
             {
                 Items = items,
                 AllItemsCount = allItems.Count
@@ -55,7 +55,9 @@ namespace Eshop.Controllers
                 Cost = itemData.Cost,
                 Title = itemData.Title,
                 Description = itemData.Description,
-                PictureLocation = itemData.PictureLink
+                PictureLocation = itemData.PictureLocation,
+                //ItemCategories = itemData.ItemCategories,
+                //ItemTraits = itemData.ItemTraits
             };
             _itemsRepository.Add(newItem);
 
@@ -65,21 +67,15 @@ namespace Eshop.Controllers
         [HttpDelete("{id}")]
         [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult DeleteItem(int id)
-        {      
+        {                 
             if (_itemsRepository.Delete(id)) return Ok("Item has been deleted");
             return NotFound("The item does not exist in the database");
         }
 
-        /*[HttpGet]
-        public Item GetItem(int id)
-        {
-            return _itemsRepository.GetItem(id);
-        }*/
-
         [HttpGet("{id}")]
         public IActionResult GetItem(int id)
         {
-            return Ok(_itemsRepository.GetItem(id));
+            return Ok(_itemsRepository.GetItemDto(id).FirstOrDefault());
         }
 
         [HttpPut]
@@ -95,7 +91,7 @@ namespace Eshop.Controllers
                     return BadRequest("Title missing");
                 if (updatedItem.Cost == 0)
                     return BadRequest("Unacceptable item cost");
-
+                /*
                 if (updatedItem.ItemTraits != null)
                 {
                     var itemTraits = itemToUpdate.ItemTraits.ToList();
@@ -103,8 +99,8 @@ namespace Eshop.Controllers
                     var newTraits = updatedItem.ItemTraits.Where(x => !itemTraits.Select(y => y.TraitId).Contains(x.TraitId)).ToList();
                     itemTraits.AddRange(newTraits);
                     itemToUpdate.ItemTraits = itemTraits;
-                }
-
+                }*/
+                /*
                 if (updatedItem.ItemCategories != null)
                 {
                     var itemCategories = itemToUpdate.ItemCategories.ToList();
@@ -113,7 +109,7 @@ namespace Eshop.Controllers
                     itemCategories.AddRange(newCategories);
                     itemToUpdate.ItemCategories = itemCategories;
                 }
-
+                */
                 if (itemToUpdate.Cost != updatedItem.Cost) itemToUpdate.Cost = updatedItem.Cost;
                 if (itemToUpdate.Description != updatedItem.Description) itemToUpdate.Description = updatedItem.Description;
                 if (itemToUpdate.PictureLocation != updatedItem.PictureLocation) itemToUpdate.PictureLocation = updatedItem.PictureLocation;

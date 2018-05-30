@@ -20,12 +20,12 @@ namespace Eshop.Data.Repositories
                 cartItem => cartItem.ShoppingCartId.Equals(shoppingCartId) && cartItem.ItemId == itemId);
         }
 
-        public void DeleteOrphans()
+        public async void DeleteOrphans()
         {
             _dbContext.ShoppingCartItems
                 .RemoveRange(_dbContext.ShoppingCartItems
                     .Where(cartItem => string.IsNullOrEmpty(cartItem.ShoppingCartId)));
-            _dbContext.SaveChanges(); 
+            await _dbContext.SaveChangesAsync();
         }
 
         public void RemoveRange(string shoppingCartId, List<int> itemId)

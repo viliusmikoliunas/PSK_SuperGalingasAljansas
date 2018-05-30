@@ -12,7 +12,6 @@ using System.Collections.Generic;
 namespace Eshop.Controllers
 {
     [Route("api/users")]
-    [Authorize(Roles = UserRoleString.Admin)]
     public class UsersController : Controller
     {
         private readonly UserManager<UserAccount> _userManager;
@@ -21,8 +20,31 @@ namespace Eshop.Controllers
         {
             _userManager = userManager;
         }
-        
+
+        [HttpGet("me")]
+        [Authorize]
+        [Produces("application/json")]
+        public async Task<IActionResult> GetMe()
+        {
+            var accName = JWTtoken.GetUsernameFromToken(Request);
+            if (accName == null) return Unauthorized();
+
+            var account = await _userManager.FindByNameAsync(accName);
+            if (account == null) return NotFound();
+
+            var response = new UserSelfInfoResponse
+            {
+                Email = account.Email,
+                Firstname = account.Firstname,
+                Lastname = account.Lastname,
+                PhoneNumber = account.PhoneNumber
+            };
+
+            return Ok(response);
+        }
+
         [HttpGet]
+        [Authorize(Roles = UserRoleString.Admin)]
         [Produces("application/json")]
         public async Task<IActionResult> GetAll()
         {
@@ -42,11 +64,12 @@ namespace Eshop.Controllers
         }
 
         [HttpPut("block")]
+        [Authorize(Roles = UserRoleString.Admin)]
         public async Task<IActionResult> BlockUser([FromBody] BlockRequest blockRequest)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var user = _userManager.Users.FirstOrDefault(u => u.UserName.Equals(blockRequest.Username)); 
+            var user = await _userManager.FindByNameAsync(blockRequest.Username);
             if (user != null)
             {
                 var isAdmin = await _userManager.IsInRoleAsync(user, UserRoleString.Admin);

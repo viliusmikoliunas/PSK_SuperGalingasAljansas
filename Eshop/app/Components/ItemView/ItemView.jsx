@@ -31,13 +31,12 @@ class ItemView extends React.Component {
     }
 
     onLeave(){
-        const {loggedIn, dispatchAddSingleItemToCart, dispatchAddToCart, item, itemId} = this.props
+        const {loggedIn, dispatchAddSingleItemToCart, item, itemId} = this.props
         if (this.state.totalQuantity > 0){
             if (loggedIn){
                 dispatchAddSingleItemToCart(item, this.state.totalQuantity, itemId)
             }
             else {
-                dispatchAddToCart(item, this.state.totalQuantity)
                 localStorage.setItem('shoppingCart', JSON.stringify(this.props.shoppingCartItems))
             }
         }
@@ -69,9 +68,11 @@ class ItemView extends React.Component {
 
     handleAddToCart(){
         const number = this.state.shoppingCartQuantity
+        const {item, dispatchAddToCart} = this.props
         this.setState({
             totalQuantity: this.state.totalQuantity + number
         })
+        dispatchAddToCart(item, number)
         alert("Item added to shopping cart")
     }
 
@@ -91,7 +92,7 @@ class ItemView extends React.Component {
 
     render() {
         const {dispatchAddToCart, item, shoppingCartItems, itemId} = this.props 
-        const {pictureLocation, title, cost, description, categories, traits} = item
+        const {pictureLocation, title, cost, description, itemCategories, itemTraits} = item
         const userRole = getUserRoleFromToken()
         const actionElement = userRole === 'Admin'
             ?   <div>
@@ -169,13 +170,13 @@ class ItemView extends React.Component {
                         <tr>
                             <td>                        
                                 <p>Categories:</p>
-                                {collectionToString(categories) || "This item doesn't belong to any category"}
+                                {collectionToString(itemCategories) || "This item doesn't belong to any category"}
                             </td>
                         </tr>
                         <tr>
                             <td>                        
-                                <p>Traits:</p>
-                                {collectionToString(traits) || "This item doesn't have any traits"}
+                                <p>Properties:</p>
+                                {collectionToString(itemTraits) || "This item doesn't have any properties"}
                             </td>
                         </tr>
                         {pictureLocationElement}

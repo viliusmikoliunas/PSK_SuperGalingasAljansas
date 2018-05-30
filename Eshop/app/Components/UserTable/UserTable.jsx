@@ -44,7 +44,7 @@ class UserTable extends React.Component {
                         <th>Email</th>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>Block Status</th>
+                        <th>Block action</th>
                     </tr>
                 </thead>
                 <tbody>

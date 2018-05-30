@@ -9,6 +9,7 @@ import {loadShoppingCartFromLocalStorage} from '../../../Redux/actions/ShoppingC
 import toFixed from '../../../FunctionalComponents/formatting/toFixed'
 import validate from './checkOutValidation'
 import renderTextField from '../ReduxFormFields/renderTextField'
+import '../ReduxFormStyles.css'
 
 
 class CheckoutForm extends React.Component{
@@ -26,10 +27,11 @@ class CheckoutForm extends React.Component{
         })
         total *= 100 //euros to euro cents
         total = parseInt(toFixed(total, 0))
+        console.log(total)
 
         paymentData = {
             ...paymentData,
-            ammount:  total,
+            amount:  total,
             number: paymentData.number.replace(/ /g,''),
             exp_year: parseInt(paymentData.exp_year),
             exp_month: parseInt(paymentData.exp_month)
@@ -45,8 +47,9 @@ class CheckoutForm extends React.Component{
         const { error, handleSubmit, submitting, dispatchCheckout} = this.props
         return (
           <div>
-              <Link to={'/user/shopping-cart'}>Back to shopping cart</Link>
-              <form onSubmit={handleSubmit(this.handleFormSubmission.bind(this))} className="form-checkout">
+              
+                <form onSubmit={handleSubmit(this.handleFormSubmission.bind(this))} className="form-redux">
+                    <Link to={'/user/shopping-cart'}>Back to shopping cart</Link>
                   <Field
                       name="number"
                       type="string"
@@ -61,13 +64,13 @@ class CheckoutForm extends React.Component{
                   />
                   <Field
                       name="exp_year"
-                      type="number"
+                      type="string"
                       component={renderTextField}
                       label="Expiry year"
                   />
                   <Field
                       name="exp_month"
-                      type="number"
+                      type="string"
                       component={renderTextField}
                       label="Expiry month"
                   />

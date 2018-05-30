@@ -88,6 +88,8 @@ namespace Eshop.Migrations
 
                     b.Property<DateTime>("Date");
 
+                    b.Property<DateTime?>("PaymentDate");
+
                     b.Property<string>("PaymentId");
 
                     b.Property<string>("UserId");

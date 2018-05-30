@@ -2,25 +2,48 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {Redirect, Link} from 'react-router-dom'
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
+import ReactStars from 'react-stars'
 
 import CheckoutForm from '../Components/ReduxForms/CheckoutForm/CheckoutForm'
-import {loadShoppingCartFromLocalStorage} from '../Redux/actions/ShoppingCartActions'
-
+import loadCartFromDb from '../Redux/actions/ShoppingCartActions'
 
 class CheckoutLayout extends Component {
-
-    componentDidMount(){
-        this.props.dispatchLoadCart()
+    constructor(props) {
+        super(props);
+        this.state = {
+          modal: false
+        };
+    
+        this.toggle = this.toggle.bind(this);
     }
 
-    render() {
-        let checkoutComponent = <Redirect to={'/'}/>
-        if (this.props.cart != null){
-            if (this.props.cart.length > 0){
-                checkoutComponent = <CheckoutForm/>
-            }
-        }
+    componentDidMount(){
+        const {dispatchLoadCartFromDb} = this.props
+        dispatchLoadCartFromDb()
+    }
 
+    toggle() {
+        this.setState({
+        modal: !this.state.modal
+        });
+    }
+
+
+    render() {
+        const {paymentSuccessful, shoppingCart} = this.props
+        //console.log(shoppingCart)
+        let amount = 0
+        shoppingCart.map(item => {
+            return (
+                amount += item.price*item.quantity
+            )
+        })
+        //console.log(amount)
+        const checkoutComponent = 
+            <CheckoutForm
+                amount = {amount}
+            />
         return (
             <div>
                 {checkoutComponent}
@@ -31,10 +54,11 @@ class CheckoutLayout extends Component {
 
 export default connect(
     (state) => ({
-        cart: state.ShoppingCartReducer.shoppingCart
+        paymentSuccessful: state.CheckOutReducer.paymentSuccessful,
+        shoppingCart: state.ShoppingCartReducer.shoppingCart
     }),
     (dispatch) => bindActionCreators({
-        dispatchLoadCart: loadShoppingCartFromLocalStorage
+        dispatchLoadCartFromDb: loadCartFromDb
     }
     ,dispatch)
 )(CheckoutLayout)

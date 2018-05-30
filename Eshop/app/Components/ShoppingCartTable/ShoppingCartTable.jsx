@@ -68,6 +68,7 @@ class ShoppingCartTable extends React.Component {
                 Please remove some items from the cart
             </div>
             : null
+
         return (
             <Table responsive>
                 <thead>

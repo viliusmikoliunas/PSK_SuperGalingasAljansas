@@ -5,7 +5,7 @@ const collectionToString =  (collection) => {
     let collectionString = ''
     if(collection != null){
         collection.map(item => {
-            collectionString += (item + " ")
+            collectionString += (item.title + " ")
         })
         collectionString = collectionString.slice(0, -1)
     }

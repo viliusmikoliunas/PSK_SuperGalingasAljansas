@@ -1,0 +1,80 @@
+.form-redux{
+    font: 95% Arial, Helvetica, sans-serif;
+    max-width: 400px;
+    margin: 10px auto;
+    padding: 16px;
+    background: #F7F7F7;
+    text-align: center;
+}
+
+.form-redux > strong{
+    color: red;
+}
+
+.form-redux input[type="string"],
+.form-redux input[type="password"],
+.form-redux input[type="tel"],
+.form-redux input[type="email"],
+.form-redux textarea,
+.form-redux select
+{
+    transition: all 0.30s ease;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    background: #fff;
+    margin-bottom: 4%;
+    border: 1px solid #ccc;
+    padding: 3%;
+    color: #555;
+    font: 95% Arial, Helvetica, sans-serif;
+}
+.form-redux input[type="string"]:focus,
+.form-redux input[type="password"]:focus,
+.form-redux input[type="tel"]:focus,
+.form-redux input[type="email"]:focus,
+.form-redux textarea:focus,
+.form-redux select:focus
+{
+    box-shadow: 0 0 5px #43D1AF;
+    padding: 3%;
+    border: 1px solid #43D1AF;
+}
+
+.form-redux button[type="submit"]{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    padding: 3%;
+    background: #43D1AF;
+    border-bottom: 2px solid #30C29E;
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;   
+    color: #fff;
+    margin-top: 10px;
+}
+.form-redux button[type="submit"]:hover{
+    background: #2EBC99;
+}
+
+.form-redux > div{
+    text-align: left;
+}
+
+.form-redux > div > div{
+    text-align: center;
+}
+
+.form-redux > div > div > span{
+    color: red;
+    margin: auto;
+    padding: 5px;
+}
+
+.div-loginForm{
+    text-align: center;
+}

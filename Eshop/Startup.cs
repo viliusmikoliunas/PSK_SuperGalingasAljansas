@@ -11,17 +11,26 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using Serilog.Events;
 
 namespace Eshop
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("System", LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File("C:/Eshop/Logs/Log_.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
             Configuration = configuration;
         }
 
@@ -30,6 +39,10 @@ namespace Eshop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging(loggingBuilder =>
+          loggingBuilder.AddSerilog(dispose: true));
+
+
             services.AddMvc();
 
             //Add DB context
@@ -89,21 +102,25 @@ namespace Eshop
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<ICategoriesRepository, CategoriesRepository>();
             services.AddScoped<ITraitsRepository, TraitsRepository>();
+            services.AddScoped<IOrdersRepository, OrdersRepository>();
             services.AddScoped<IReviewsRepository, ReviewsRepository>();
-            services.AddTransient<IShoppingCartItemsRepository, ShoppingCartItemsRepository>();
+            services.AddScoped<IShoppingCartItemsRepository, ShoppingCartItemsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseMiddleware<SerilogMiddleware>();
+            loggerFactory.AddSerilog();
+
             // Apply any pending migrations. Create database if it does not exist
-            
+
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
                 context.Database.Migrate();
             }
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -113,6 +130,12 @@ namespace Eshop
                         HotModuleReplacement = true,
                         ReactHotModuleReplacement = true
                     });
+
+                app.UseBrowserLink();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
             }
 
             app.UseStaticFiles();

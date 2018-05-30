@@ -63,7 +63,7 @@ namespace Eshop.Controllers
             return Ok("Category updated successfully");
         }
 
-        [HttpPut]
+        [HttpDelete]
         [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult DeleteCategory([FromBody] CategoryDto deletedCatgory)
         {
