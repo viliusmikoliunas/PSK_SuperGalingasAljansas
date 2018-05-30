@@ -11,15 +11,19 @@ import ShoppingCartReducer from './ShoppingCartReducer'
 import ItemViewReducer from './ItemViewReducer'
 import OrderListReducer from './OrderListReducer'
 import UserInfoFormReducer from './UserInfoFormReducer'
+import ShoppingHistoryReducer from './ShoppingHistoryReducer'
+import CheckOutReducer from './CheckOutReducer'
 
 
 const rootReducer = combineReducers({
+    CheckOutReducer,
     ItemTableReducer,
     ItemViewReducer,
     LoginReducer,
     OrderListReducer,
     RegisterReducer,
     ShoppingCartReducer,
+    ShoppingHistoryReducer,
     UserBlockStatusReducer,
     UserInfoFormReducer,
     UserListReducer,

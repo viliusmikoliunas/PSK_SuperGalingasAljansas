@@ -7,6 +7,7 @@ using Eshop.DataContracts;
 using Eshop.DataContracts.DataTransferObjects;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -17,10 +18,14 @@ namespace Eshop.Controllers
     public class ReviewsController : Controller
     {
         private readonly IReviewsRepository _reviewsRepository;
+        private readonly IOrdersRepository _ordersRepository;
+        private readonly UserManager<UserAccount> _accountManager;
 
-        public ReviewsController(IReviewsRepository reviewsRepository)
+        public ReviewsController(IReviewsRepository reviewsRepository, IOrdersRepository ordersRepository, UserManager<UserAccount> accountManager)
         {
             _reviewsRepository = reviewsRepository;
+            _ordersRepository = ordersRepository;
+            _accountManager = accountManager;
         }
 
         
@@ -61,17 +66,28 @@ namespace Eshop.Controllers
 
         [HttpPost]
         [Authorize(Roles = UserRoleString.User)]
-        public IActionResult AddReview([FromBody] ReviewDto reviewData)
+        public async Task<IActionResult> AddReview([FromBody] ReviewDto reviewData)
         {
+            //reviewData.orderId here will not be sent
             if (reviewData.Stars < 1 || reviewData.Stars > 5)
                 return BadRequest("Star evaluation missing or is in incorrect format");
+
+            var username = JWTtoken.GetUsernameFromToken(Request);
+            if (username == null) return BadRequest();
+
+            var acc = await _accountManager.FindByNameAsync(username);
+            var newestOrder = _ordersRepository.GetUserPurchaseHistory(acc.Id)
+                .OrderByDescending(order => order.Date)
+                .FirstOrDefault();
             
-            if (_reviewsRepository.GetAll().Any(r => r.Id == reviewData.OrderId))
+            if (newestOrder == null) return BadRequest("Order not found");
+
+            if (_reviewsRepository.GetById(newestOrder.Id) != null)
                 return BadRequest("This order already has a review");
 
             Review newReview = new Review
             {
-                Id = reviewData.OrderId,
+                Id = newestOrder.Id,
                 Description = reviewData.Description,
                 Stars = reviewData.Stars
             };
@@ -81,6 +97,7 @@ namespace Eshop.Controllers
             return Ok("Review added successfully");
         }
 
+        /* why we even have this? :D
         [HttpPut]
         [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult UpdateReview([FromBody] ReviewDto reviewData)
@@ -98,6 +115,7 @@ namespace Eshop.Controllers
             _reviewsRepository.Update(reviewToUpdate);
             return Ok("Review updated successfully");
         }
+        */
 
         [HttpDelete]
         [Authorize(Roles = UserRoleString.Admin)]

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Eshop.Data.Entities;
 using Eshop.DataContracts;
+using Eshop.DataContracts.DataTransferObjects.Responses;
 using Eshop.DataContracts.RepositoryInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -35,9 +36,20 @@ namespace Eshop.Controllers
             var user = await _accountManager.FindByNameAsync(username);
             if (user == null) return NotFound();
 
-            var list = _ordersRepository.GetUserPurchaseHistory(user.Id);
+            var list = _ordersRepository.GetUserPurchaseHistory(user.Id).ToList();
             if (list.Count() != 0)
-                return Ok(list);
+            {
+                List<ShoppingHistoryItemResponse> purchases = list.Select(order => new ShoppingHistoryItemResponse
+                    {
+                        Id = order.Id,
+                        Date = order.Date,
+                        Items = order.Items,
+                        Cost = order.Cost
+                    })
+                    .ToList();
+
+                return Ok(purchases);
+            }
             else
                 return NotFound("Purchase history is empty!");
         }

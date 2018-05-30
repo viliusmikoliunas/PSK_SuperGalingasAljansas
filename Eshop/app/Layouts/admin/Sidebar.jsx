@@ -23,6 +23,7 @@ const Sidebar = (props) => {
     <div>
       <SidebarLink to='/user/edit-info'>Edit Info</SidebarLink>
       <SidebarLink to='/user/change-password'>Change Password</SidebarLink>
+      <SidebarLink to='/user/shopping-history'>Shopping History</SidebarLink>
     </div>
     : null
 

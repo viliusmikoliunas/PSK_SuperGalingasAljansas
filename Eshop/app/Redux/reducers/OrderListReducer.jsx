@@ -18,10 +18,10 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 orders: state.orders.map(order => {
-                    if (order.Id === action.orderId){
+                    if (order.id === action.orderId){
                         return {
                             ...order,
-                            Confirmed: true
+                            confirmed: true
                         }
                     }
                     return order

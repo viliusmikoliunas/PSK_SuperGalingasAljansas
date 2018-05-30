@@ -8,6 +8,8 @@ using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
 using System.Linq;
 using Eshop.DataContracts.DataTransferObjects.Responses;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace Eshop.Controllers
 {
@@ -19,17 +21,20 @@ namespace Eshop.Controllers
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly IItemsRepository _itemsRepository;
         private readonly IShoppingCartItemsRepository _shoppingCartItemsRepository;
+        private readonly ILogger<ShoppingCartController> _logger;
 
-        public ShoppingCartController(IShoppingCartRepository shoppingCartRepository, IItemsRepository itemsRepository, IShoppingCartItemsRepository shoppingCartItemsRepository)
+        public ShoppingCartController(IShoppingCartRepository shoppingCartRepository, IItemsRepository itemsRepository, IShoppingCartItemsRepository shoppingCartItemsRepository, ILogger<ShoppingCartController> logger)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _itemsRepository = itemsRepository;
             _shoppingCartItemsRepository = shoppingCartItemsRepository;
+            _logger = logger;
         }
 
         [HttpGet("exists")]
         public IActionResult CheckIfUserHasShoppingCart()
         {
+            //_logger.LogInformation("User name: " + User.Identity.Name + "User role: " + User.Identity.ToString() + "Time: " + DateTime.Now.ToString("h:mm:ss tt") + "ShoppingCartController:CheckIfUserHasShoppingCart()");
             var userName = JWTtoken.GetTokenInfo(Request, "sub");
             if (userName == null) return NotFound("Wrong credentials");
 
@@ -40,6 +45,7 @@ namespace Eshop.Controllers
         [HttpGet]
         public IActionResult Get()
         {
+            //_logger.LogInformation("User name: " + User.Identity.Name + "User role: " + User.Identity.ToString() + "Time: " + DateTime.Now.ToString("h:mm:ss tt") + "ShoppingCartController:CheckIfUserHasShoppingCart()");
             var userName = JWTtoken.GetTokenInfo(Request, "sub");
             if (userName == null) return NotFound("Wrong credentials");
 
@@ -70,6 +76,8 @@ namespace Eshop.Controllers
         [HttpPost]
         public IActionResult AddItem([FromBody] ShoppingCartDto item)
         {
+            _logger.LogInformation("Hello from dummy controller!");
+            //_logger.LogInformation("User name: " + User.Identity.Name + "User role: " + User.Identity.ToString() + "Time: " + DateTime.Now.ToString("h:mm:ss tt") + "ShoppingCartController:CheckIfUserHasShoppingCart()");
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             if (item.itemQuantity == 0) return NoContent();
