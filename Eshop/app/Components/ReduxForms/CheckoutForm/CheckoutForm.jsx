@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import checkout from '../../../Redux/actions/CheckoutActions'
 import {loadShoppingCartFromLocalStorage} from '../../../Redux/actions/ShoppingCartActions'
+import {BarLoader} from 'react-spinners'
 
 import toFixed from '../../../FunctionalComponents/formatting/toFixed'
 import validate from './checkOutValidation'
@@ -27,7 +28,6 @@ class CheckoutForm extends React.Component{
         })
         total *= 100 //euros to euro cents
         total = parseInt(toFixed(total, 0))
-        console.log(total)
 
         paymentData = {
             ...paymentData,
@@ -44,7 +44,7 @@ class CheckoutForm extends React.Component{
     }
 
     render(){
-        const { error, handleSubmit, submitting, dispatchCheckout} = this.props
+        const { error, handleSubmit, submitting, dispatchCheckout, transactionIsPending} = this.props
         return (
           <div>
               
@@ -83,10 +83,15 @@ class CheckoutForm extends React.Component{
                   
               {error && <strong>{error}</strong>}
               <div>
-                  <button type="submit" disabled={submitting}>
+                  <button type="submit" disabled={submitting || transactionIsPending}>
                       Pay
                   </button>
               </div>
+              <BarLoader
+                    color={'#123abc'} 
+                    loading={transactionIsPending}
+                    width={368}
+                />
               </form>
           </div>
         )
@@ -95,7 +100,8 @@ class CheckoutForm extends React.Component{
 
 CheckoutForm = connect(
   (state) => ({
-    cartItemList: state.ShoppingCartReducer.shoppingCart
+    cartItemList: state.ShoppingCartReducer.shoppingCart,
+    transactionIsPending: state.CheckOutReducer.paymentIsProcessing
   }),
   (dispatch) => bindActionCreators({
       dispatchCheckout: checkout,

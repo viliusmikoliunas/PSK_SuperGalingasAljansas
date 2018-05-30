@@ -32,18 +32,19 @@ class CheckoutLayout extends Component {
 
     render() {
         const {paymentSuccessful, shoppingCart} = this.props
-        //console.log(shoppingCart)
         let amount = 0
         shoppingCart.map(item => {
             return (
                 amount += item.price*item.quantity
             )
         })
-        //console.log(amount)
         const checkoutComponent = 
             <CheckoutForm
                 amount = {amount}
             />
+        
+
+
         return (
             <div>
                 {checkoutComponent}

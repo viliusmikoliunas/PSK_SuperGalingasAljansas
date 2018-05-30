@@ -160,9 +160,9 @@ namespace Eshop.Controllers
         [Authorize(Roles = UserRoleString.Admin)]
         public IActionResult GetAll()
         {
-            var list = _ordersRepository.GetAll();
+            var list = _ordersRepository.GetAll().ToList();
             if (list.Count() != 0)
-                return Ok(list);
+                return Ok(list.OrderByDescending(order => order.Date));
             else
                 return NotFound("Orders not found!");
         }
