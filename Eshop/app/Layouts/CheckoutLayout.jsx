@@ -18,6 +18,11 @@ class CheckoutLayout extends Component {
         this.toggle = this.toggle.bind(this);
     }
 
+    componentDidMount(){
+        const {dispatchLoadCartFromDb} = this.props
+        dispatchLoadCartFromDb()
+    }
+
     toggle() {
         this.setState({
         modal: !this.state.modal
@@ -26,29 +31,22 @@ class CheckoutLayout extends Component {
 
 
     render() {
-        const {paymentSuccessful} = this.props
-        const modalElement = 
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                <ModalHeader toggle={this.toggle}>Your review</ModalHeader>
-                <ModalBody>
-                    <ReactStars
-                        count={5}
-                        //value={5}
-                        edit={false}
-                        size={24}
-                        color2={'#ffd700'} 
-                    /><br/>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="secondary" onClick={this.toggle}>Close</Button>
-                </ModalFooter>
-            </Modal>
-            
-        const checkoutComponent = <CheckoutForm/>
+        const {paymentSuccessful, shoppingCart} = this.props
+        //console.log(shoppingCart)
+        let amount = 0
+        shoppingCart.map(item => {
+            return (
+                amount += item.price*item.quantity
+            )
+        })
+        //console.log(amount)
+        const checkoutComponent = 
+            <CheckoutForm
+                amount = {amount}
+            />
         return (
             <div>
                 {checkoutComponent}
-                {modalElement}
             </div>
         )
     }
@@ -56,10 +54,11 @@ class CheckoutLayout extends Component {
 
 export default connect(
     (state) => ({
-        paymentSuccessful: state.CheckOutReducer.paymentSuccessful
+        paymentSuccessful: state.CheckOutReducer.paymentSuccessful,
+        shoppingCart: state.ShoppingCartReducer.shoppingCart
     }),
     (dispatch) => bindActionCreators({
-       
+        dispatchLoadCartFromDb: loadCartFromDb
     }
     ,dispatch)
 )(CheckoutLayout)

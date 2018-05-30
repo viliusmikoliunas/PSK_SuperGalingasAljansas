@@ -20,7 +20,7 @@ const checkout = (checkoutData) => (dispatch) => {
                 })
                 //temp
                 localStorage.removeItem('shoppingCart')
-                
+                history.push('/user/checkout-successful')
             }
             else response.text().then(
                 (responseText) => alert(responseText)

@@ -26,10 +26,11 @@ class CheckoutForm extends React.Component{
         })
         total *= 100 //euros to euro cents
         total = parseInt(toFixed(total, 0))
+        console.log(total)
 
         paymentData = {
             ...paymentData,
-            ammount:  total,
+            amount:  total,
             number: paymentData.number.replace(/ /g,''),
             exp_year: parseInt(paymentData.exp_year),
             exp_month: parseInt(paymentData.exp_month)
