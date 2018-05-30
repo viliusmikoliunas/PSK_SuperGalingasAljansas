@@ -66,7 +66,7 @@ class Navbar extends Component {
 
         const shoppingCartElement = userRole !== 'Admin' //({itemCount})
         ?   <NavItem>
-                <Link to={'/user/shopping-cart'}>Shopping cart</Link>
+                <Link to={'/user/shopping-cart'}>Shopping cart({itemCount})</Link>
             </NavItem> 
         : null
 
