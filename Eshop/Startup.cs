@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -111,7 +110,8 @@ namespace Eshop
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseMiddleware<SerilogMiddleware>();          
+            app.UseMiddleware<SerilogMiddleware>();
+            loggerFactory.AddSerilog();
 
             // Apply any pending migrations. Create database if it does not exist
 
@@ -120,8 +120,6 @@ namespace Eshop
                 var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
                 context.Database.Migrate();
             }
-
-            loggerFactory.AddSerilog();
 
             if (env.IsDevelopment())
             {
@@ -139,8 +137,6 @@ namespace Eshop
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            //new stuff
-            app.UseStatusCodePages();
 
             app.UseStaticFiles();
 

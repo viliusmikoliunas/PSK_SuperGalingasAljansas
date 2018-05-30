@@ -5,7 +5,7 @@ import QuantityInput from '../../QuantityInput/QuantityInput'
 import toFixed from '../../../FunctionalComponents/formatting/toFixed'
 import {Button} from 'reactstrap'
 import './ItemRowStyles.css'
-import {addNewItem, addSingleItemToShoppingCartInDb} from '../../../Redux/actions/ShoppingCartActions'
+import {addNewItem, addSingleItemToShoppingCartInDb, formatShoppingCartItem} from '../../../Redux/actions/ShoppingCartActions'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
@@ -23,31 +23,33 @@ class ItemRow extends React.Component {
 
     handleAddToCart(){
         const {item, dispatchAddToCart, loggedIn, dispatchAddToDbCart} = this.props
+        const {currentQuantity} = this.state
         if (loggedIn){
-            dispatchAddToDbCart(item, this.state.currentQuantity, item.id)
-            alert('item added to cart')
+            dispatchAddToDbCart(item, currentQuantity, item.id)
         }
         else {
-            dispatchAddToCart(item, this.state.currentQuantity)
+            dispatchAddToCart(item, currentQuantity)
             const shoppingc = JSON.parse(localStorage.getItem('shoppingCart'))
             if (shoppingc == null || shoppingc.length == 0){
-                localStorage.setItem('shoppingCart', JSON.stringify([{
-                    ...item,
-                    quantity: this.state.currentQuantity
-                }]))
+                const newItem = formatShoppingCartItem(item, currentQuantity)
+                localStorage.setItem('shoppingCart', JSON.stringify([newItem]))
             }
             else {
-                const newList = shoppingc.map(i => {
-                    if (i.id === item.id){
-                        i.quantity += this.state.currentQuantity
-                        return i
-                    }
-                    else return item
-                })
-                localStorage.setItem('shoppingCart', JSON.stringify(newList))
+                const suspect = shoppingc.find(it => it.id === item.id)
+                if (suspect == null) {
+                    shoppingc.push(formatShoppingCartItem(item, currentQuantity))
+                    localStorage.setItem('shoppingCart', JSON.stringify(shoppingc))
+                }
+                else {
+                    const index = shoppingc.indexOf(suspect)
+                    shoppingc.splice(index, 1)
+                    suspect.quantity += currentQuantity
+                    shoppingc.push(suspect)
+                    localStorage.setItem('shoppingCart', JSON.stringify(shoppingc))
+                }
             }
-
         }
+        alert('item added to cart')
     }
 
     render(){

@@ -21,7 +21,7 @@ class ShoppingCartItem extends Component{
             <tr>
                 <td><img src={imagePath} height="80" height="80"/></td>
                 <td><Link to={`/item/${id}`}>{title}</Link></td>
-                <td>{price.toFixed(2)}</td>
+                <td>{price != null ? price.toFixed(2) : 0}</td>
                 <td>
                     <QuantityInput 
                         onChange={this.handleQuantityFieldChange.bind(this)}

@@ -67,7 +67,7 @@ export const loadShoppingCartFromLocalStorage = () => (dispatch) => {
     })
 }
 
-const formatShoppingCartItem = (item,quantity) => {
+export const formatShoppingCartItem = (item,quantity) => {
     return {
         id: item.id,
         quantity: quantity,
