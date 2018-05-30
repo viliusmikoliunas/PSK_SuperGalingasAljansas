@@ -70,7 +70,7 @@ namespace Eshop.Data.Repositories
 
         public Review GetById(int id)
         {
-            return _dbContext.Reviews.First(r => r.Id == id);
+            return _dbContext.Reviews.FirstOrDefault(r => r.Id == id);
         }
 
         public Review Add(Review newReview)

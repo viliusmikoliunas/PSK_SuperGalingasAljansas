@@ -37,11 +37,11 @@ namespace Eshop.Data.Repositories
             return ordersList;
             // return (_dbContext.Orders.Include(order => order.OrderedItem).Include("OrderedItem.Item").Include(order => order.Review).Where(i => i.Confirmed == areOrdersConfirmed)).ToList();
         }
-
+        
         public IEnumerable<OrderDto> GetByUserId(string userId)
         {
             var orderList = from o in _dbContext.Orders
-                            where o.UserId == userId
+                            where o.UserId.Equals(userId)
                             select new OrderDto
                             {
                                 Id = o.Id,
@@ -53,10 +53,10 @@ namespace Eshop.Data.Repositories
                                 Items = (from u in o.OrderedItem select new OrderedItemDto { Title = u.Item.Title, Quantity = u.Quantity }).ToList(),
                                 PaymentDate = o.PaymentDate
                             };
-            return orderList;
+            return orderList.ToList();
            // return (_dbContext.Orders.Include(order => order.OrderedItem).Include("OrderedItem.Item").Include(order => order.Review).Where(i => i.UserId == userId)).ToList();
         }
-
+        
         public IEnumerable<OrderDto> GetAll()
         {
             var orders = _dbContext.Orders
@@ -101,7 +101,7 @@ namespace Eshop.Data.Repositories
                 .ThenInclude(orderedItem => orderedItem.Item);
 
             var orderList = from o in orders
-                            where o.UserId == userId// && o.Confirmed
+                            where o.UserId.Equals(userId)// && o.Confirmed
                             select new OrderDto
                             {
                                 Id = o.Id,
