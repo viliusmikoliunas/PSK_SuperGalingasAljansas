@@ -177,8 +177,7 @@ namespace Eshop.Data.Repositories
 
         public UserAccount GetOrderingUser(string username)
         {
-            var user = _dbContext.Users.First(u => u.UserName == username);
-            return user;
+            return _dbContext.Users.FirstOrDefault(u => u.UserName == username);
         }
 
         public ShoppingCart ClearUserShoppingCart(UserAccount user)

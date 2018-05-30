@@ -33,7 +33,7 @@ let CreateItemForm = props => {
             label="Item description"
         />
         <Field
-            name="pictureLink"
+            name="pictureLocation"
             type="string"
             component={renderTextField}
             label="Item picture link"

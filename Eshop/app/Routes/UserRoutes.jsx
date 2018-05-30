@@ -23,7 +23,7 @@ const userRoute = ({match}) => {
             <RouteWithLayout exact path={`${match.path}/edit-info`} layout={AdminLayout} component={EditUserInfoForm} />
             <RouteWithLayout exact path={`${match.path}/change-password`} layout={AdminLayout} component={ChangePasswordForm} />
             <RouteWithLayout exact path={`${match.path}/shopping-history`} layout={AdminLayout} component={ShoppingHistoryTable} />
-            <Route exact path={`${match.path}/`} render={() => <Redirect to={`${match.path}/shopping-cart`}/>}/>
+            <Route exact path={`${match.path}/`} render={() => <Redirect to={`${match.path}/shopping-history`}/>}/>
         </Switch>
     )
 }
