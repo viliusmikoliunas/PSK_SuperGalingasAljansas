@@ -5,7 +5,8 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 
 import validate from './validateFormFields'
 import renderTextField from '../ReduxFormFields/renderTextField'
-import {changePassword} from '../../../Redux/actions/EditUserInfoFormActions'
+import { changePassword } from '../../../Redux/actions/EditUserInfoFormActions'
+import '../ReduxFormStyles.css'
 
 
 let ChangePasswordForm = props => {

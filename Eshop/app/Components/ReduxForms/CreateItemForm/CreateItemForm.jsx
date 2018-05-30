@@ -6,7 +6,8 @@ import {Button} from 'reactstrap'
 import validate from './validateFormFields'
 import renderTextField from '../ReduxFormFields/renderTextField'
 import ItemView from '../../ItemView/ItemView'
-import {createNewItem} from '../../../Redux/actions/ItemViewActions'
+import { createNewItem } from '../../../Redux/actions/ItemViewActions'
+import '../ReduxFormStyles.css'
 
 
 let CreateItemForm = props => {

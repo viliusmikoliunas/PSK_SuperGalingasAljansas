@@ -9,6 +9,7 @@ import {loadShoppingCartFromLocalStorage} from '../../../Redux/actions/ShoppingC
 import toFixed from '../../../FunctionalComponents/formatting/toFixed'
 import validate from './checkOutValidation'
 import renderTextField from '../ReduxFormFields/renderTextField'
+import '../ReduxFormStyles.css'
 
 
 class CheckoutForm extends React.Component{
@@ -46,7 +47,7 @@ class CheckoutForm extends React.Component{
         return (
           <div>
               <Link to={'/user/shopping-cart'}>Back to shopping cart</Link>
-              <form onSubmit={handleSubmit(this.handleFormSubmission.bind(this))} className="form-checkout">
+              <form onSubmit={handleSubmit(this.handleFormSubmission.bind(this))} className="form-redux">
                   <Field
                       name="number"
                       type="string"

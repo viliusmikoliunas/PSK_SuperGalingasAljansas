@@ -5,7 +5,8 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 
 import validate from './validations'
 import renderTextField from '../ReduxFormFields/renderTextField'
-import {updateUserInfo} from '../../../Redux/actions/EditUserInfoFormActions'
+import { updateUserInfo } from '../../../Redux/actions/EditUserInfoFormActions'
+import '../ReduxFormStyles.css'
 
 
 let EditUserInfoForm = (props) => {
