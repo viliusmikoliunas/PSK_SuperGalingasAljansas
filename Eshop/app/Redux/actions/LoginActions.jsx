@@ -22,25 +22,9 @@ const login = (loginValues) => (dispatch) => {
                         dispatch({
                             type: LoginActionTypes.LOGIN_SUCCESS
                         })
-
                         //if user has local shopping cart but not in the server
                         //the local is uploded to server upon logging in
-                        const localItems = localStorage.getItem('shoppingCart')
-                        if (localItems != null){
-                            const req = generateRequestWithAuth('GET', null)
-                            fetch('api/user/cart/exists', req)
-                                .then(response => {
-                                    if (response.ok){
-                                        response.text()
-                                            .then(respText => {
-                                                if (respText === 'false'){
-                                                    saveCartToDb(JSON.parse(localItems))(dispatch)
-                                                    localStorage.removeItem('shoppingCart')
-                                                }
-                                            })
-                                    }
-                                })
-                        }
+                        saveShoppingCart()(dispatch)
                     }
                 )
                 history.push('/')
@@ -76,4 +60,26 @@ export const logout = () => (dispatch) => {
     })
     history.push('/')
     alert("You have logged out")
+}
+
+
+const saveShoppingCart = () => (dispatch) => {
+    //if user has local shopping cart but not in the server
+    //the local is uploded to server upon logging in
+    const localItems = localStorage.getItem('shoppingCart')
+    if (localItems != null){
+        const req = generateRequestWithAuth('GET', null)
+        fetch('api/user/cart/exists', req)
+            .then(response => {
+                if (response.ok){
+                    response.text()
+                        .then(respText => {
+                            if (respText === 'false'){
+                                saveCartToDb(JSON.parse(localItems))(dispatch)
+                                localStorage.removeItem('shoppingCart')
+                            }
+                        })
+                }
+            })
+    }
 }

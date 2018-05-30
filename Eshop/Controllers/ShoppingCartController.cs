@@ -39,7 +39,7 @@ namespace Eshop.Controllers
             if (userName == null) return NotFound("Wrong credentials");
 
             var shoppingCart = _shoppingCartRepository.Get(userName);
-            return Ok(shoppingCart.ShoppingCartItems.Any());
+            return Ok(shoppingCart.ShoppingCartItems != null);
         }
 
         [HttpGet]
