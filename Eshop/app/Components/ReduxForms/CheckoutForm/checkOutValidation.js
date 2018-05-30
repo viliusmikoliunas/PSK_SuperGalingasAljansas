@@ -31,14 +31,14 @@ const validate = values => {
     if (!values.exp_year){
         errors.exp_year = 'Required'
     }
-    else if (values.exp_year < 1970){
+    else if (!/^19[7-9][0-9]$|^20\d{2}$/.test(values.exp_year)){
         errors.exp_year = 'Incorrect year'
     }
 
     if (!values.exp_month){
         errors.exp_month = 'Required'
     }
-    else if (values.exp_month < 1 || values.exp_month > 12){
+    else if (!/^[1-9]$|^[0][1-9]$|^[1][0-2]$/.test(values.exp_month)){
         errors.exp_month = 'Incorrect month'
     }
 
