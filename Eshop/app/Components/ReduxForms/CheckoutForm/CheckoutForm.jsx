@@ -46,8 +46,9 @@ class CheckoutForm extends React.Component{
         const { error, handleSubmit, submitting, dispatchCheckout} = this.props
         return (
           <div>
-              <Link to={'/user/shopping-cart'}>Back to shopping cart</Link>
-              <form onSubmit={handleSubmit(this.handleFormSubmission.bind(this))} className="form-redux">
+              
+                <form onSubmit={handleSubmit(this.handleFormSubmission.bind(this))} className="form-redux">
+                    <Link to={'/user/shopping-cart'}>Back to shopping cart</Link>
                   <Field
                       name="number"
                       type="string"
